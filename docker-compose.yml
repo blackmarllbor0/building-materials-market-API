@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  music_player:
+    image: "container-registry.oracle.com/database/enterprise:latest"
+    container_name: ${DOCKER_CONTAINER_NAME}
+    restart: always
+    env_file:
+      - .env
+    environment:
+      ORACLE_PWD: ${ORACLE_PWD}
+      ORACLE_PDB: ${ORACLE_PDB}
+      ORACLE_SID: ${ORACLE_SID}
+    ports:
+      - "${ORACLE_PORT}:1515"
+    volumes:
+      - "oracle-data:/opt/oracle/oradata"
+      - "oracle-backup:/opt/oracle/backu"
+    healthcheck:
+      test: [ "CMD", "sqlplus", "-L", "sys/Oracle_123@//localhost:1521/ORCLCDB as sysdba", "@healthcheck.sql" ]
+      interval: "30s"
+      timeout: "10s"
+      retries: 5
+
+volumes:
+  oracle-data:
+  oracle-backup:

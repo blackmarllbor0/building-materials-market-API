@@ -1,0 +1,23 @@
+{
+  "name": "building-materials-market",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "npm run build && node dist/main.js",
+    "build": "tsc",
+    "up_db": "docker-compose up -d"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-prettier": "^5.0.0"
+  }
+}
