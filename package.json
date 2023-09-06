@@ -6,18 +6,25 @@
   "scripts": {
     "run": "npm run build && node dist/main.js",
     "build": "tsc",
-    "up_db": "docker-compose up -d"
+    "up_db": "docker-compose up -d",
+    "migrate_up": "npx knex migrate:latest",
+    "migrate_down": "npx knex migrate:rollback"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/knex": "^0.16.1",
+    "knex": "^2.5.1",
+    "oracledb": "^6.1.0",
     "prettier": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.5.9",
+    "@types/oracledb": "^5.3.1",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
-    "eslint-plugin-prettier": "^5.0.0"
+    "eslint-plugin-prettier": "^5.0.0",
+    "ts-node": "^10.9.1"
   }
 }
