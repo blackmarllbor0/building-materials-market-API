@@ -1,0 +1,16 @@
+DROP TABLE "auth_audit";
+DROP TABLE "auth_audit_event";
+DROP TABLE "session";
+DROP TABLE "delivery";
+DROP TABLE "order_history";
+DROP TABLE "order_detail";
+DROP TABLE "order";
+DROP TABLE "order_payment_type";
+DROP TABLE "feedback";
+DROP TABLE "product";
+DROP TABLE "company";
+DROP TABLE "category";
+DROP TABLE "order_status";
+DROP TABLE "user";
+DROP TABLE "user_status";
+DROP TABLE "user_role";
