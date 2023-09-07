@@ -23,8 +23,34 @@ const CASCADE = 'CASCADE';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
+    .createTableIfNotExists(tables.userStatus, (table: Knex.TableBuilder) => {
+      table.increments('id');
+      table.string('name').notNullable().unique();
+      table.timestamp('create_date').defaultTo(knex.fn.now());
+      table.timestamp('update_date');
+      table.timestamp('delete_date');
+    })
+    .createTableIfNotExists(tables.userRole, (table: Knex.TableBuilder) => {
+      table.increments('id');
+      table.string('name').notNullable().unique();
+      table.timestamp('create_date').defaultTo(knex.fn.now());
+      table.timestamp('update_date');
+      table.timestamp('delete_date');
+    })
     .createTableIfNotExists(tables.user, (table: Knex.TableBuilder) => {
       table.increments('id');
+      table
+        .integer('user_role_id')
+        .notNullable()
+        .references('id')
+        .inTable(tables.userRole)
+        .onDelete(CASCADE);
+      table
+        .integer('user_status_id')
+        .notNullable()
+        .references('id')
+        .inTable(tables.userStatus)
+        .onDelete(CASCADE);
       table.string('name').notNullable();
       table.string('email').notNullable().unique();
       table.string('phone_number').notNullable().unique();
@@ -49,6 +75,16 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
       table.timestamp('delete_date');
     })
+    .createTableIfNotExists(
+      tables.authAuditEvent,
+      (table: Knex.TableBuilder) => {
+        table.increments('id');
+        table.string('name').notNullable().unique();
+        table.timestamp('create_date').defaultTo(knex.fn.now());
+        table.timestamp('update_date');
+        table.timestamp('delete_date');
+      },
+    )
     .createTableIfNotExists(tables.authAudit, (table: Knex.TableBuilder) => {
       table.increments('id');
       table
@@ -57,50 +93,18 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.user)
         .onDelete(CASCADE);
-
-      table.timestamp('create_date').defaultTo(knex.fn.now());
-      table.timestamp('update_date');
-      table.timestamp('delete_date');
-    })
-    .createTableIfNotExists(
-      tables.authAuditEvent,
-      (table: Knex.TableBuilder) => {
-        table.increments('id');
-        table
-          .integer('auth_audit_id')
-          .notNullable()
-          .references('id')
-          .inTable(tables.authAudit)
-          .onDelete(CASCADE);
-
-        table.string('name').notNullable().unique();
-        table.timestamp('create_date').defaultTo(knex.fn.now());
-        table.timestamp('update_date');
-        table.timestamp('delete_date');
-      },
-    )
-    .createTableIfNotExists(tables.userStatus, (table: Knex.TableBuilder) => {
-      table.increments('id');
       table
-        .integer('user_id')
+        .integer('auth_audit_event_id')
         .notNullable()
         .references('id')
-        .inTable(tables.user)
+        .inTable(tables.authAuditEvent)
         .onDelete(CASCADE);
-      table.string('name').notNullable().unique();
-      table.timestamp('create_date').defaultTo(knex.fn.now());
-      table.timestamp('update_date');
-      table.timestamp('delete_date');
-    })
-    .createTableIfNotExists(tables.userRole, (table: Knex.TableBuilder) => {
-      table.increments('id');
       table
-        .integer('user_id')
+        .integer('session_id')
         .notNullable()
         .references('id')
-        .inTable(tables.user)
+        .inTable(tables.session)
         .onDelete(CASCADE);
-      table.string('name').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
       table.timestamp('delete_date');
@@ -279,11 +283,9 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTableIfExists(tables.authAuditEvent)
     .dropTableIfExists(tables.authAudit)
+    .dropTableIfExists(tables.authAuditEvent)
     .dropTableIfExists(tables.session)
-    .dropTableIfExists(tables.userStatus)
-    .dropTableIfExists(tables.userRole)
     .dropTableIfExists(tables.delivery)
     .dropTableIfExists(tables.orderHistory)
     .dropTableIfExists(tables.orderDetail)
@@ -294,5 +296,7 @@ export async function down(knex: Knex): Promise<void> {
     .dropTableIfExists(tables.manufacturingCompany)
     .dropTableIfExists(tables.category)
     .dropTableIfExists(tables.orderStatus)
-    .dropTableIfExists(tables.user);
+    .dropTableIfExists(tables.user)
+    .dropTableIfExists(tables.userStatus)
+    .dropTableIfExists(tables.userRole);
 }

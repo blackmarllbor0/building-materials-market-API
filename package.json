@@ -1,8 +1,8 @@
 {
   "name": "building-materials-market",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API for builder material market",
+  "main": "main.js",
   "scripts": {
     "run": "npm run build && node dist/main.js",
     "build": "tsc",
@@ -10,16 +10,16 @@
     "migrate_up": "npx knex migrate:latest",
     "migrate_down": "npx knex migrate:rollback"
   },
-  "author": "",
+  "author": "blackmarllbor0",
   "license": "ISC",
   "dependencies": {
-    "@types/knex": "^0.16.1",
     "dotenv": "^16.3.1",
     "knex": "^2.5.1",
     "oracledb": "^6.1.0",
     "prettier": "^3.0.3"
   },
   "devDependencies": {
+    "@types/knex": "^0.16.1",
     "@types/node": "^20.5.9",
     "@types/oracledb": "^5.3.1",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
