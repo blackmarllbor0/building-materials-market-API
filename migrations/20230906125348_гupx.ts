@@ -53,7 +53,6 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').notNullable().unique();
       table.string('phone_number').notNullable().unique();
       table.string('password_hash').notNullable().unique();
-      table.string('role').defaultTo('customer');
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
