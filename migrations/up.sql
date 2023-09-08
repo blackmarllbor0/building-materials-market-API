@@ -1,19 +1,19 @@
 CREATE TABLE "user_role" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp
 );
 
 CREATE TABLE "user_status" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp
 );
 
 CREATE TABLE "user" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	user_role_id integer NOT NULL,
 	user_status_id integer NOT NULL,
 	name varchar(50) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "session" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	user_id integer NOT NULL,
 	token varchar(255) NOT NULL UNIQUE,
 	live_time timestamp NOT NULL,
@@ -41,14 +41,14 @@ CREATE TABLE "session" (
 );
 
 CREATE TABLE "auth_audit_event" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp
 );
 
 CREATE TABLE "auth_audit" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	user_id integer NOT NULL,
 	auth_audit_event_id integer NOT NULL,
 	session_id integer NOT NULL,
@@ -62,14 +62,14 @@ CREATE TABLE "auth_audit" (
 );
 
 CREATE TABLE "order_payment_type" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp
 );
 
 CREATE TABLE "order_status" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	code integer NOT NULL UNIQUE,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -77,7 +77,7 @@ CREATE TABLE "order_status" (
 );
 
 CREATE TABLE "order" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	user_id integer NOT NULL,
 	order_status_id integer NOT NULL,
 	order_payment_type_id NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE "order" (
 );
 
 CREATE TABLE "delivery" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	order_id integer NOT NULL,
 	ammount decimal NOT NULL,
 	address_from varchar(255) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE "delivery" (
 );
 
 CREATE TABLE "order_history" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	order_status_id integer NOT NULL,
 	order_id integer NOT NULL,
 	total_quantity integer NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE "order_history" (
 );
 
 CREATE TABLE "company" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	link_to_website varchar(255) NOT NULL UNIQUE,
 	link_to_logo_image varchar(255) NOT NULL UNIQUE,
@@ -132,14 +132,14 @@ CREATE TABLE "company" (
 );
 
 CREATE TABLE "category" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	name varchar(50) NOT NULL UNIQUE,
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp
 );
 
 CREATE TABLE "product" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	company_id integer NOT NULL,
 	category_id integer NOT NULL,
 	quantity integer NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE "product" (
 );
 
 CREATE TABLE "feedback" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	user_id integer NOT NULL,
 	product_id integer NOT NULL,
 	company_id integer NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE "feedback" (
 );
 
 CREATE TABLE "order_detail" (
-	id integer PRIMARY KEY,
+	id integer GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	order_id integer NOT NULL,
 	product_id integer NOT NULL,
 	isDeleted number(1) DEFAULT 0,
