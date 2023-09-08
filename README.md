@@ -1,4 +1,9 @@
+### Note: don't forget to install all dependencies!
+
+`npm install`
+
 ### Environment variables for start app:
+
 ```
 SERVER_PORT=8080
 
