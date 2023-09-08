@@ -23,8 +23,10 @@ CREATE TABLE "user" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT ur_u_fk FOREIGN KEY ( user_role_id ) REFERENCES "user_role" ( id ),
-	CONSTRAINT us_u_fk FOREIGN KEY ( user_status_id ) REFERENCES "user_status" ( id )
+	CONSTRAINT ur_u_fk FOREIGN KEY ( user_role_id ) REFERENCES "user_role" ( id ) ON DELETE CASCADE,
+	CONSTRAINT us_u_fk FOREIGN KEY ( user_status_id )
+	REFERENCES "user_status" ( id ) ON DELETE CASCADE
+
 );
 
 CREATE TABLE "session" (
@@ -35,7 +37,7 @@ CREATE TABLE "session" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT u_s_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id )
+	CONSTRAINT u_s_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "auth_audit_event" (
@@ -53,9 +55,10 @@ CREATE TABLE "auth_audit" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT u_aa_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ),
-	CONSTRAINT aae_aa_fk FOREIGN KEY ( auth_audit_event_id ) REFERENCES "auth_audit_event" ( id ),
-	CONSTRAINT s_aa_fk FOREIGN KEY ( session_id ) REFERENCES "session" ( id )
+	CONSTRAINT u_aa_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ) ON DELETE CASCADE,
+	CONSTRAINT aae_aa_fk FOREIGN KEY ( auth_audit_event_id )
+	REFERENCES "auth_audit_event" ( id ) ON DELETE CASCADE,
+	CONSTRAINT s_aa_fk FOREIGN KEY ( session_id )  REFERENCES "session" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "order_payment_type" (
@@ -82,9 +85,11 @@ CREATE TABLE "order" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT u_o_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ),
-	CONSTRAINT os_o_fk FOREIGN KEY ( order_status_id ) REFERENCES "order_status" ( id ),
-	CONSTRAINT opt_o_fk FOREIGN KEY ( order_payment_type_id ) REFERENCES "order_payment_type" ( id )
+	CONSTRAINT u_o_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ) ON DELETE CASCADE,
+	CONSTRAINT os_o_fk FOREIGN KEY ( order_status_id )
+	REFERENCES "order_status" ( id ) ON DELETE CASCADE,
+	CONSTRAINT opt_o_fk FOREIGN KEY ( order_payment_type_id )
+	REFERENCES "order_payment_type" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "delivery" (
@@ -97,7 +102,7 @@ CREATE TABLE "delivery" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT o_d_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id )
+	CONSTRAINT o_d_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "order_history" (
@@ -109,8 +114,9 @@ CREATE TABLE "order_history" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT os_oh_fk FOREIGN KEY ( order_status_id ) REFERENCES "order_status" ( id ),
-	CONSTRAINT o_oh_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id )
+	CONSTRAINT os_oh_fk FOREIGN KEY ( order_status_id )
+	REFERENCES "order_status" ( id ) ON DELETE CASCADE,
+	CONSTRAINT o_oh_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "company" (
@@ -145,8 +151,10 @@ CREATE TABLE "product" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT cp_p_fk FOREIGN KEY ( company_id ) REFERENCES "company" ( id ),
-	CONSTRAINT ct_p_fk FOREIGN KEY ( category_id ) REFERENCES "category" ( id )
+	CONSTRAINT cp_p_fk FOREIGN KEY ( company_id )
+	REFERENCES "company" ( id ) ON DELETE CASCADE,
+	CONSTRAINT ct_p_fk FOREIGN KEY ( category_id )
+	REFERENCES "category" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "feedback" (
@@ -160,9 +168,9 @@ CREATE TABLE "feedback" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT u_f_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ),
-	CONSTRAINT p_f_fk FOREIGN KEY ( product_id ) REFERENCES "product" ( id ),
-	CONSTRAINT c_f_fk FOREIGN KEY ( company_id ) REFERENCES "company" ( id )
+	CONSTRAINT u_f_fk FOREIGN KEY ( user_id ) REFERENCES "user" ( id ) ON DELETE CASCADE,
+	CONSTRAINT p_f_fk FOREIGN KEY ( product_id ) REFERENCES "product" ( id ) ON DELETE CASCADE,
+	CONSTRAINT c_f_fk FOREIGN KEY ( company_id ) REFERENCES "company" ( id ) ON DELETE CASCADE
 );
 
 CREATE TABLE "order_detail" (
@@ -173,6 +181,6 @@ CREATE TABLE "order_detail" (
 	create_date timestamp DEFAULT CURRENT_TIMESTAMP,
 	update_date timestamp,
 
-	CONSTRAINT o_od_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id ),
-	CONSTRAINT p_od_fk FOREIGN KEY ( product_id ) REFERENCES "product" ( id )
+	CONSTRAINT o_od_fk FOREIGN KEY ( order_id ) REFERENCES "order" ( id ) ON DELETE CASCADE,
+	CONSTRAINT p_od_fk FOREIGN KEY ( product_id ) REFERENCES "product" ( id ) ON DELETE CASCADE
 );
