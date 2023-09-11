@@ -1,0 +1,53 @@
+post:
+  summary: Create a new user role.
+  tags:
+    - User-Role
+  security:
+    - CookieAuth: [ ]
+    - AdminRole: [ ]
+  requestBody:
+    description: User role name.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+  responses:
+    201:
+      description: Created new user role.
+      content:
+        application/json:
+          example:
+            id: 1
+            name: admin
+            createDate: 00.00.0000
+    400:
+      description: User role with this name already exists.
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+
+get:
+  tags:
+    - User-Role
+  summary: Get all user roles.
+  security:
+    - CookieAuth: [ ]
+    - AdminRole: [ ]
+  responses:
+    200:
+      description: All user role received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/UserRoles.yaml'
+    404:
+      description: No user role found.
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'

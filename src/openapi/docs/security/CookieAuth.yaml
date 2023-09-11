@@ -1,0 +1,4 @@
+type: apiKey
+in: cookie
+name: Authorization
+description: User session token.

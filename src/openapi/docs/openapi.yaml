@@ -1,0 +1,37 @@
+openapi: 3.0.0
+
+info:
+  title: builder-materials-market
+  description: Online store for purchasing various building materials from various companies.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Main application server.
+
+tags:
+  - name: User-Role
+    description: Manage user roles for administrator.
+
+components:
+  securitySchemes:
+    CookieAuth:
+      $ref: './security/CookieAuth.yaml'
+    AdminAuth:
+      $ref: './security/AdminRole.yaml'
+  responses:
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+  schemas:
+    UserRole:
+      $ref: './schemas/UserRole.yaml'
+    UserRoles:
+      $ref: './schemas/UserRoles.yaml'
+
+
+
+paths:
+  /user-role:
+    $ref: './paths/user-role/base.yaml'

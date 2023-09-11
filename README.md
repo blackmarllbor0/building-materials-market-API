@@ -1,6 +1,10 @@
 ### Note: don't forget to install all dependencies!
 
-`npm install`
+```npm install```
+
+### If the openAPI specification in YAML files is changed, then it must be compiled into one file using the  command:
+
+```npm run gen:spec```
 
 ### Environment variables for start app:
 
