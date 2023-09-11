@@ -21,17 +21,21 @@ components:
       $ref: './security/AdminRole.yaml'
   responses:
     401:
-      $ref: './responses/401.yaml'
+      $ref: './responses/auth/401.yaml'
     403:
-      $ref: './responses/403.yaml'
+      $ref: './responses/auth/403.yaml'
   schemas:
     UserRole:
       $ref: './schemas/UserRole.yaml'
     UserRoles:
       $ref: './schemas/UserRoles.yaml'
-
+  parameters:
+    UserRoleId:
+      $ref: './parameters/userRoleId.yaml'
 
 
 paths:
   /user-role:
     $ref: './paths/user-role/base.yaml'
+  /user-role/{user-role-id}:
+    $ref: './paths/user-role/{user-role-id}.yaml'

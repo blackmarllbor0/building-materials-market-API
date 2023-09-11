@@ -27,9 +27,9 @@ post:
     400:
       description: User role with this name already exists.
     401:
-      $ref: './responses/401.yaml'
+      $ref: './responses/auth/401.yaml'
     403:
-      $ref: './responses/403.yaml'
+      $ref: './responses/auth/403.yaml'
 
 get:
   tags:
@@ -48,6 +48,6 @@ get:
     404:
       description: No user role found.
     401:
-      $ref: './responses/401.yaml'
+      $ref: './responses/auth/401.yaml'
     403:
-      $ref: './responses/403.yaml'
+      $ref: './responses/auth/403.yaml'

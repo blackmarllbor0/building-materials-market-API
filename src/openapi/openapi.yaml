@@ -48,6 +48,14 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/UserRole"
+  parameters:
+    UserRoleId:
+      name: user-role-id
+      in: path
+      required: true
+      description: user-role-id
+      schema:
+        type: integer
 paths:
   /user-role:
     post:
@@ -102,3 +110,63 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: No user role found.
+  "/user-role/{user-role-id}":
+    get:
+      tags:
+        - User-Role
+      summary: Get user role by user-role-id.
+      parameters:
+        - $ref: "#/components/parameters/UserRoleId"
+      responses:
+        "200":
+          description: User role received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRole"
+        "401":
+          $ref: "#/components/responses/403"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Not found user role with this id.
+    put:
+      tags:
+        - User-Role
+      summary: Update user role name by id.
+      security:
+        - CookieAuth: []
+        - AdminRole: []
+      parameters:
+        - $ref: "#/components/parameters/UserRoleId"
+      responses:
+        "200":
+          description: User role successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRole"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
+    delete:
+      tags:
+        - User-Role
+      summary: Delete user role name by id.
+      security:
+        - CookieAuth: []
+        - AdminRole: []
+      parameters:
+        - $ref: "#/components/parameters/UserRoleId"
+      responses:
+        "200":
+          description: User role successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
