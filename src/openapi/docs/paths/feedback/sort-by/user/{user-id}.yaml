@@ -1,0 +1,20 @@
+get:
+  tags:
+    - feedback
+  summary: Sort feedback by user-id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: Feedback sorted.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/feedback/feedbacks.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../../../responses/user/user-not-found-by-id.yaml'

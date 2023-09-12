@@ -1,0 +1,6 @@
+name: feedback-id
+in: path
+required: true
+description: Feedback id.
+schema:
+  type: integer

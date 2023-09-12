@@ -1,0 +1,21 @@
+get:
+  tags:
+    - feedback
+  summary: Sort feedback by product-id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/product/product-id.yaml'
+    - $ref: './parameters/company/query-company-id.yaml'
+  responses:
+    200:
+      description: Feedback sorted.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/feedback/feedbacks.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../../../responses/product/product-not-found-by-id.yaml'

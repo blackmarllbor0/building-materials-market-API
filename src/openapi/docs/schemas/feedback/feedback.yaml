@@ -1,0 +1,26 @@
+type: object
+properties:
+  userId:
+    type: integer
+  productId:
+    type: integer
+  companyId:
+    type: integer
+  rating:
+    type: integer
+    minimum: 1
+    maximum: 5
+    default: 5
+  title:
+    type: string
+    minLength: 15
+  message:
+    type: string
+    minLength: 50
+example:
+  id: 1
+  rating: 5
+  title: the very very good!
+  message: text
+  createDate: 00.11.2222
+  updateDate: 99.88.7777

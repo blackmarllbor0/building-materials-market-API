@@ -22,6 +22,8 @@ tags:
     description: All information about the company and data management by the administrator.
   - name: product
     description: All information about products of different companies and administration.
+  - name: feedback
+    description: Product reviews.
 components:
   securitySchemes:
     cookie-auth:
@@ -228,6 +230,37 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/product"
+    feedback:
+      type: object
+      properties:
+        userId:
+          type: integer
+        productId:
+          type: integer
+        companyId:
+          type: integer
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          default: 5
+        title:
+          type: string
+          minLength: 15
+        message:
+          type: string
+          minLength: 50
+      example:
+        id: 1
+        rating: 5
+        title: the very very good!
+        message: text
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    feedbacks:
+      type: array
+      items:
+        $ref: "#/components/schemas/feedback"
   parameters:
     user-role-id:
       name: user-role-id
@@ -306,6 +339,13 @@ components:
       description: Product name.
       schema:
         type: string
+    feedback-id:
+      name: feedback-id
+      in: path
+      required: true
+      description: Feedback id.
+      schema:
+        type: integer
 paths:
   /user-role:
     post:
@@ -1488,7 +1528,12 @@ paths:
           schema:
             type: integer
         - $ref: "#/components/parameters/query-category-id"
-        - $ref: "#/components/parameters/query-company-id"
+        - name: company-id
+          in: query
+          required: false
+          description: Company id.
+          schema:
+            type: integer
       responses:
         "200":
           description: Product sorted.
@@ -1502,3 +1547,197 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/paths/~1product~1sort-by~1category-and-company/get/responses/404"
+  /feedback:
+    post:
+      summary: Create new feedback.
+      tags:
+        - feedback
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      requestBody:
+        description: Feedback data for creating new feedback.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                productId:
+                  type: integer
+                companyId:
+                  type: integer
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  default: 5
+                title:
+                  type: string
+                  minLength: 15
+                message:
+                  type: string
+                  minLength: 50
+      responses:
+        "201":
+          description: Created new user feedback.
+          content:
+            application/json:
+              example:
+                id: 1
+                rating: 5
+                title: the very very good!
+                message: text
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+  "/feedback/{feedback-id}":
+    get:
+      tags:
+        - feedback
+      summary: Get feedback by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/feedback-id"
+      responses:
+        "200":
+          description: Feedback received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedback"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Feedback not found by this id.
+    put:
+      tags:
+        - feedback
+      summary: Update feedback by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/feedback-id"
+      requestBody:
+        description: Updated feedback data.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  default: 5
+                title:
+                  type: string
+                  minLength: 15
+                message:
+                  type: string
+                  minLength: 50
+      responses:
+        "200":
+          description: Product successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedback"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1feedback~1%7Bfeedback-id%7D/get/responses/404"
+    delete:
+      tags:
+        - feedback
+      summary: Delete feedback by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/feedback-id"
+      responses:
+        "200":
+          description: Feedback successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1feedback~1%7Bfeedback-id%7D/get/responses/404"
+  "/feedback/sort-by/user/{user-id}":
+    get:
+      tags:
+        - feedback
+      summary: Sort feedback by user-id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          description: Feedback sorted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedbacks"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/feedback/sort-by/product/{product-id}":
+    get:
+      tags:
+        - feedback
+      summary: Sort feedback by product-id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/product-id"
+        - $ref: "#/components/parameters/query-company-id"
+      responses:
+        "200":
+          description: Feedback sorted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedbacks"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1product~1%7Bproduct-id%7D/get/responses/404"
+  /feedback/sort-by/rating/:
+    get:
+      tags:
+        - feedback
+      summary: Sort feedback by rating.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - name: to
+          in: query
+          description: From maximum to minimum and vice versa.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Feedback sorted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedbacks"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Feedbacks not found.

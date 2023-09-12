@@ -24,6 +24,8 @@ tags:
     description: All information about the company and data management by the administrator.
   - name: product
     description: All information about products of different companies and administration.
+  - name: feedback
+    description: Product reviews.
 
 components:
   securitySchemes:
@@ -69,6 +71,10 @@ components:
       $ref: './schemas/product/product.yaml'
     products:
       $ref: './schemas/product/products.yaml'
+    feedback:
+      $ref: './schemas/feedback/feedback.yaml'
+    feedbacks:
+      $ref: './schemas/feedback/feedbacks.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -92,6 +98,8 @@ components:
       $ref: './parameters/product/product-id.yaml'
     product-name:
       $ref: './parameters/product/product-title.yaml'
+    feedback-id:
+      $ref: './parameters/feedback/feedback-id.yaml'
 
 paths:
   /user-role:
@@ -135,10 +143,20 @@ paths:
   /product/{product-title}:
     $ref: './paths/product/{product-title}.yaml'
   /product/sort-by/category/{category-id}:
-    $ref: './paths/product/sort/category/{category-id}.yaml'
+    $ref: './paths/product/sort-by/category/{category-id}.yaml'
   /product/sort-by/company/{company-id}:
-    $ref: './paths/product/sort/company/{company-id}.yaml'
+    $ref: './paths/product/sort-by/company/{company-id}.yaml'
   /product/sort-by/category-and-company:
-    $ref: './paths/product/sort/category-and-company/base.yaml'
+    $ref: './paths/product/sort-by/category-and-company/base.yaml'
   /product/sort-by/price:
-    $ref: './paths/product/sort/price/base.yaml'
+    $ref: './paths/product/sort-by/price/base.yaml'
+  /feedback:
+    $ref: './paths/feedback/base.yaml'
+  /feedback/{feedback-id}:
+    $ref: './paths/feedback/{feedback-id}.yaml'
+  /feedback/sort-by/user/{user-id}:
+    $ref: './paths/feedback/sort-by/user/{user-id}.yaml'
+  /feedback/sort-by/product/{product-id}:
+    $ref: './paths/feedback/sort-by/product/{product-id}.yaml'
+  /feedback/sort-by/rating/:
+    $ref: './paths/feedback/sort-by/rating/base.yaml'
