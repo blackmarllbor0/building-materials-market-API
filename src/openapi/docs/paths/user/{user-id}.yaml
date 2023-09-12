@@ -1,0 +1,86 @@
+get:
+  tags:
+    - user
+  summary: Get user by user id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: '../../parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: User received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/user/user.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../responses/user/user-not-found-by-id.yaml'
+
+put:
+  tags:
+    - user
+  summary: Update user by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: '../../parameters/user/user-id.yaml'
+  requestBody:
+    description: Update user date.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              nullable: true
+            email:
+              type: string
+              nullable: true
+              minLength: 6
+            phoneNumber:
+              type: string
+              nullable: true
+              minLength: 10
+              maxLength: 15
+            password:
+              type: string
+              nullable: true
+              minLength: 8
+  responses:
+    200:
+      description: User successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/user/user.yaml'
+    400:
+      $ref: '../../responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../.././responses/user/user-not-found-by-id.yaml'
+    409:
+      $ref: '../../responses/user/user-with-this-email-already-exists.yaml'
+
+delete:
+  tags:
+    - user
+  summary: Delete user by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: '../../parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: User successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../.././responses/user/user-not-found-by-id.yaml'

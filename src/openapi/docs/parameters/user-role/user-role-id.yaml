@@ -1,6 +1,6 @@
 name: user-role-id
 in: path
 required: true
-description: user-role-id
+description: User role id.
 schema:
   type: integer

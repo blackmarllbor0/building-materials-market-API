@@ -10,6 +10,6 @@ properties:
     type: string
 example:
   id: 1
-  name: Harry Potter
+  name: admin
   createDate: 00.11.2222
   updateDate: 99.88.7777

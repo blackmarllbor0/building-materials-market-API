@@ -6,36 +6,65 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api/v1/
     description: Main application server.
 
 tags:
-  - name: User-Role
+  - name: user-role
     description: Manage user roles for administrator.
+  - name: user-status
+    description: Manage user status for administrator.
+  - name: user
+    description: Custom data management and administrative panel.
 
 components:
   securitySchemes:
-    CookieAuth:
-      $ref: './security/CookieAuth.yaml'
-    AdminAuth:
-      $ref: './security/AdminRole.yaml'
+    cookie-auth:
+      $ref: './security/cookie-auth.yaml'
+    admin-role:
+      $ref: './security/admin-role.yaml'
+    customer-role:
+      $ref: './security/customer-role.yaml'
   responses:
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
   schemas:
-    UserRole:
-      $ref: './schemas/UserRole.yaml'
-    UserRoles:
-      $ref: './schemas/UserRoles.yaml'
+    user-role:
+      $ref: './schemas/user-role/user-role.yaml'
+    user-roles:
+      $ref: './schemas/user-role/user-roles.yaml'
+    user-status:
+      $ref: './schemas/user-status/user-status.yaml'
+    user-statuses:
+      $ref: './schemas/user-status/user-statuses.yaml'
+    user:
+      $ref: './schemas/user/user.yaml'
+    users:
+      $ref: './schemas/user/users.yaml'
   parameters:
-    UserRoleId:
-      $ref: './parameters/userRoleId.yaml'
-
+    user-role-id:
+      $ref: './parameters/user-role/user-role-id.yaml'
 
 paths:
   /user-role:
     $ref: './paths/user-role/base.yaml'
   /user-role/{user-role-id}:
     $ref: './paths/user-role/{user-role-id}.yaml'
+  /user-status:
+    $ref: './paths/user-status/base.yaml'
+  /user-status/{user-status-id}:
+    $ref: './paths/user-status/{user-status-id}.yaml'
+  /user:
+    $ref: './paths/user/base.yaml'
+  /user/{user-id}:
+    $ref: './paths/user/{user-id}.yaml'
+  /user/blocked/{user-id}:
+    $ref: './paths/user/blocked/{user-id}.yaml'
+  /user/unblocked/{user-id}:
+    $ref: './paths/user/unblocked/{user-id}.yaml'
+  /user/deleted/{user-id}:
+    $ref: './paths/user/deleted/{user-id}.yaml'
+  /user/undeleted/{user-id}:
+    $ref: './paths/user/undeleted/{user-id}.yaml'

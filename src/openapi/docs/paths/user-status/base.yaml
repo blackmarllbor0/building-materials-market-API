@@ -1,12 +1,12 @@
 post:
-  summary: Create a new user role.
+  summary: Create a new user status.
   tags:
-    - user-role
+    - user-status
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   requestBody:
-    description: User role name.
+    description: User status name.
     required: true
     content:
       application/json:
@@ -17,12 +17,12 @@ post:
               type: string
   responses:
     201:
-      description: Created new user role.
+      description: Created new user status.
       content:
         application/json:
           example:
             id: 1
-            name: admin
+            name: online
             createDate: 00.11.2222
     400:
       $ref: '../../responses/validation/400.yaml'
@@ -31,25 +31,25 @@ post:
     403:
       $ref: './responses/auth/403.yaml'
     409:
-      $ref: '../../responses/user-role/user-role-with-this-name-already-exists.yaml'
+      $ref: '../../responses/user-status/user-status-with-this-name-already-exists.yaml'
 
 get:
   tags:
-    - user-role
-  summary: Get all user roles.
+    - user-status
+  summary: Get all user status.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   responses:
     200:
-      description: All user role received.
+      description: All user status received.
       content:
         application/json:
           schema:
-            $ref: './schemas/user-role/user-roles.yaml'
+            $ref: './schemas/user-status/user-statuses.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
     404:
-      description: No user role found.
+      description: No user status found.

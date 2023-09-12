@@ -1,61 +1,73 @@
 get:
   tags:
-    - User-Role
-  summary: Get user role by user-role-id.
+    - user-role
+  summary: Get user role by user role id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
   parameters:
-    - $ref: './parameters/userRoleId.yaml'
+    - $ref: './parameters/user-role/user-role-id.yaml'
   responses:
     200:
       description: User role received.
       content:
         application/json:
           schema:
-            $ref: './schemas/UserRole.yaml'
+            $ref: './schemas/user-role/user-role.yaml'
     404:
-      $ref: '../.././responses/userRole/UserRoleNotFound.yaml'
+      $ref: '../.././responses/user-role/user-role-not-found.yaml'
     401:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
 
 put:
   tags:
-    - User-Role
+    - user-role
   summary: Update user role name by id.
   security:
-    - CookieAuth: [ ]
-    - AdminRole: [ ]
+    - cookie-auth: [ ]
+    - admin-role: [ ]
   parameters:
-    - $ref: './parameters/userRoleId.yaml'
+    - $ref: '../../parameters/user-role/user-role-id.yaml'
+    - name: user-role-name
+      in: query
+      description: Updated user role name.
+      schema:
+        type: string
   responses:
     200:
       description: User role successfully updated.
       content:
         application/json:
           schema:
-            $ref: './schemas/UserRole.yaml'
-    404:
-      $ref: '../.././responses/userRole/UserRoleNotFound.yaml'
+            $ref: './schemas/user-role/user-role.yaml'
+    400:
+      $ref: '../../responses/validation/400.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/user-role/user-role-not-found.yaml'
+    409:
+      $ref: '../../responses/user-role/user-role-with-this-name-already-exists.yaml'
 
 delete:
   tags:
-    - User-Role
+    - user-role
   summary: Delete user role name by id.
   security:
-    - CookieAuth: [ ]
-    - AdminRole: [ ]
+    - cookie-auth: [ ]
+    - admin-role: [ ]
   parameters:
-    - $ref: './parameters/userRoleId.yaml'
+    - $ref: './parameters/user-role/user-role-id.yaml'
   responses:
     200:
       description: User role successfully deleted.
-    404:
-      $ref: '../.././responses/userRole/UserRoleNotFound.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/user-role/user-role-not-found.yaml'

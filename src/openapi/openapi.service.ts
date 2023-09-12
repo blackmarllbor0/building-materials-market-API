@@ -10,7 +10,7 @@ export class OpenapiService implements IOpenapi {
   private readonly openapiPath: string;
 
   constructor() {
-    this.openapiPath = path.join(__dirname, 'openapi.yaml');
+    this.openapiPath = path.join(__dirname, '..', '..', 'openapi.yaml');
   }
 
   public getValidatorMiddleware(): OpenApiRequestHandler[] {

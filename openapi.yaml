@@ -1,0 +1,616 @@
+openapi: 3.0.0
+info:
+  title: builder-materials-market
+  description: Online store for purchasing various building materials from various
+    companies.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Main application server.
+tags:
+  - name: user-role
+    description: Manage user roles for administrator.
+  - name: user-status
+    description: Manage user status for administrator.
+  - name: user
+    description: Custom data management and administrative panel.
+components:
+  securitySchemes:
+    cookie-auth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+      description: User session token.
+    admin-role:
+      type: apiKey
+      in: cookie
+      name: Admin
+      description: Role for administrator.
+    customer-role:
+      type: apiKey
+      in: cookie
+      name: Customer
+      description: Role for customer.
+  responses:
+    "401":
+      description: User is not authenticate.
+    "403":
+      description: User is not administrator.
+  schemas:
+    user-role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        name: admin
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    user-roles:
+      type: array
+      items:
+        $ref: "#/components/schemas/user-role"
+    user-status:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        name: online
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    user-statuses:
+      type: array
+      items:
+        $ref: "#/components/schemas/user-status"
+    user:
+      type: object
+      properties:
+        user-role:
+          type: integer
+          default: 2
+          nullable: true
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          minLength: 6
+        phoneNumber:
+          type: string
+          maxLength: 15
+          minLength: 10
+        password:
+          type: string
+      example:
+        id: 1
+        name: Harry Potter
+        email: potter@hogwarts.com
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    users:
+      type: array
+      items:
+        $ref: "#/components/schemas/user"
+  parameters:
+    user-role-id:
+      name: user-role-id
+      in: path
+      required: true
+      description: User role id.
+      schema:
+        type: integer
+paths:
+  /user-role:
+    post:
+      summary: Create a new user role.
+      tags:
+        - user-role
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      requestBody:
+        description: User role name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Created new user role.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: admin
+                createDate: 00.11.2222
+        "400":
+          description: Data validation error.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: User role with this name already exists.
+    get:
+      tags:
+        - user-role
+      summary: Get all user roles.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      responses:
+        "200":
+          description: All user role received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-roles"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No user role found.
+  "/user-role/{user-role-id}":
+    get:
+      tags:
+        - user-role
+      summary: Get user role by user role id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-role-id"
+      responses:
+        "200":
+          description: User role received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-role"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Not found user role with this id.
+    put:
+      tags:
+        - user-role
+      summary: Update user role name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: user-role-id
+          in: path
+          required: true
+          description: User role id.
+          schema:
+            type: integer
+        - name: user-role-name
+          in: query
+          description: Updated user role name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User role successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-role"
+        "400":
+          $ref: "#/paths/~1user-role/post/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
+        "409":
+          $ref: "#/paths/~1user-role/post/responses/409"
+    delete:
+      tags:
+        - user-role
+      summary: Delete user role name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-role-id"
+      responses:
+        "200":
+          description: User role successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
+  /user-status:
+    post:
+      summary: Create a new user status.
+      tags:
+        - user-status
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      requestBody:
+        description: User status name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Created new user status.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: online
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/paths/~1user-role/post/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: User status with this name already exists.
+    get:
+      tags:
+        - user-status
+      summary: Get all user status.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      responses:
+        "200":
+          description: All user status received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-statuses"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No user status found.
+  "/user-status/{user-status-id}":
+    get:
+      tags:
+        - user-status
+      summary: Get user statues by user status id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: user-status-id
+          in: path
+          required: true
+          description: User status id.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User status received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-status"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Not found user status with this id.
+    put:
+      tags:
+        - user-status
+      summary: Update user status name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/parameters/0"
+      requestBody:
+        description: Update user date.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: User role successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user-status"
+        "400":
+          $ref: "#/paths/~1user-role/post/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/responses/404"
+        "409":
+          $ref: "#/paths/~1user-status/post/responses/409"
+    delete:
+      tags:
+        - user-status
+      summary: Delete user status name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User status successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/responses/404"
+  /user:
+    post:
+      summary: Create new user.
+      tags:
+        - user
+      requestBody:
+        description: User status name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user-role:
+                  type: integer
+                  default: 2
+                  nullable: true
+                name:
+                  type: string
+                  minLength: 2
+                email:
+                  type: string
+                  minLength: 6
+                phoneNumber:
+                  type: string
+                  maxLength: 15
+                  minLength: 10
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        "201":
+          description: Created new user status.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Harry Potter
+                email: potter@hogwarts.com
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/paths/~1user-role/post/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: User with this email already exists.
+    get:
+      tags:
+        - user
+      summary: Get all users.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      responses:
+        "200":
+          description: All user received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No users found.
+  "/user/{user-id}":
+    get:
+      tags:
+        - user
+      summary: Get user by user id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: User id.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Not found user with this id.
+    put:
+      tags:
+        - user
+      summary: Update user by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      requestBody:
+        description: Update user date.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: true
+                email:
+                  type: string
+                  nullable: true
+                  minLength: 6
+                phoneNumber:
+                  type: string
+                  nullable: true
+                  minLength: 10
+                  maxLength: 15
+                password:
+                  type: string
+                  nullable: true
+                  minLength: 8
+      responses:
+        "200":
+          description: User successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          $ref: "#/paths/~1user-role/post/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+        "409":
+          $ref: "#/paths/~1user/post/responses/409"
+    delete:
+      tags:
+        - user
+      summary: Delete user by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/user/blocked/{user-id}":
+    put:
+      tags:
+        - user
+      summary: Block user by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User successfully blocked.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/user/unblocked/{user-id}":
+    put:
+      tags:
+        - user
+      summary: Unblock user by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User successfully unblocked.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/user/deleted/{user-id}":
+    put:
+      tags:
+        - user
+      summary: Delete user account user by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User account successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/user/undeleted/{user-id}":
+    put:
+      tags:
+        - user
+      summary: Undelete user account user by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+      responses:
+        "200":
+          description: User account successfully undeleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"

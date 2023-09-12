@@ -1,0 +1,18 @@
+put:
+  tags:
+    - user
+  summary: Unblock user by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: '../../../parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: User successfully unblocked.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../.././responses/user/user-not-found-by-id.yaml'

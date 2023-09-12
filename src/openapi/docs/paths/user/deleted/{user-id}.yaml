@@ -1,0 +1,16 @@
+put:
+  tags:
+    - user
+  summary: Delete user account user by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: '../../../parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: User account successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../.././responses/user/user-not-found-by-id.yaml'
