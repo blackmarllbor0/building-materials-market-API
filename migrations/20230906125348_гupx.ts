@@ -53,6 +53,8 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').notNullable().unique();
       table.string('phone_number').notNullable().unique();
       table.string('password_hash').notNullable().unique();
+      table.boolean('isBlocked').defaultTo(false);
+      table.boolean('isDeleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
@@ -258,7 +260,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.product)
         .onDelete(CASCADE);
-      table.integer('quantity').notNullable();
+      table.boolean('isDeleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     });
