@@ -1,0 +1,60 @@
+post:
+  summary: Create a new order status.
+  tags:
+    - order-status
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  requestBody:
+    description: Name and code for order status.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            code:
+              type: integer
+              minLength: 3
+              maxLength: 3
+            name:
+              type: string
+  responses:
+    201:
+      description: Created new order status.
+      content:
+        application/json:
+          example:
+            id: 1
+            code: 402
+            name: paid
+            createDate: 00.11.2222
+    400:
+      $ref: '../../responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    409:
+      $ref: '../../responses/order-status/order-status-with-this-name-already-exist.yaml'
+
+get:
+  tags:
+    - order-status
+  summary: Get all order-statuses.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  responses:
+    200:
+      description: All order-status received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-status/order-statuses.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No order-status found.

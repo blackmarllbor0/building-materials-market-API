@@ -3,7 +3,7 @@ post:
   tags:
     - user
   requestBody:
-    description: User status name.
+    description: User data for creating new user.
     required: true
     content:
       application/json:
@@ -53,6 +53,15 @@ get:
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
+  parameters:
+    - name: limit
+      in: query
+      description: Number of users received (not required).
+      required: false
+      schema:
+        type: integer
+        default: 15
+        nullable: true
   responses:
     200:
       description: All user received.

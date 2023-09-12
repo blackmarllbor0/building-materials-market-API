@@ -16,6 +16,8 @@ tags:
     description: Manage user status for administrator.
   - name: user
     description: Custom data management and administrative panel.
+  - name: order-status
+    description: Manage order statues for administrator.
 
 components:
   securitySchemes:
@@ -43,6 +45,10 @@ components:
       $ref: './schemas/user/user.yaml'
     users:
       $ref: './schemas/user/users.yaml'
+    order-status:
+      $ref: './schemas/order-status/order-status.yaml'
+    order-statuses:
+      $ref: './schemas/order-status/order-statuses.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -68,3 +74,5 @@ paths:
     $ref: './paths/user/deleted/{user-id}.yaml'
   /user/undeleted/{user-id}:
     $ref: './paths/user/undeleted/{user-id}.yaml'
+  /order-status:
+    $ref: './paths/order-status/base.yaml'

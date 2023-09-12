@@ -123,16 +123,12 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      requestBody:
-        description: User role name.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
+      parameters:
+        - name: user-role-name
+          in: query
+          description: New user role name.
+          schema:
+            type: string
       responses:
         "201":
           description: Created new user role.
@@ -209,7 +205,7 @@ paths:
             type: integer
         - name: user-role-name
           in: query
-          description: Updated user role name
+          description: Updated user role name.
           schema:
             type: string
       responses:
@@ -255,16 +251,12 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      requestBody:
-        description: User status name.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
+      parameters:
+        - name: user-status-name
+          in: query
+          description: New user status name.
+          schema:
+            type: string
       responses:
         "201":
           description: Created new user status.
@@ -339,19 +331,14 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/parameters/0"
-      requestBody:
-        description: Update user date.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
+        - name: user-status-name
+          in: query
+          description: Updated user status name.
+          schema:
+            type: string
       responses:
         "200":
-          description: User role successfully updated.
+          description: User status successfully updated.
           content:
             application/json:
               schema:
@@ -439,6 +426,15 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
+      parameters:
+        - name: limit
+          in: query
+          description: Number of users received (not required).
+          required: false
+          schema:
+            type: integer
+            default: 15
+            nullable: true
       responses:
         "200":
           description: All user received.

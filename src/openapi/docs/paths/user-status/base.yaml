@@ -5,16 +5,12 @@ post:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
-  requestBody:
-    description: User status name.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            name:
-              type: string
+  parameters:
+    - name: user-status-name
+      in: query
+      description: New user status name.
+      schema:
+        type: string
   responses:
     201:
       description: Created new user status.

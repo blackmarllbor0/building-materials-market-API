@@ -5,16 +5,12 @@ post:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
-  requestBody:
-    description: User role name.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            name:
-              type: string
+  parameters:
+    - name: user-role-name
+      in: query
+      description: New user role name.
+      schema:
+        type: string
   responses:
     201:
       description: Created new user role.
