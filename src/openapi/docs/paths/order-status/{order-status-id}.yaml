@@ -1,0 +1,81 @@
+get:
+  tags:
+    - order-status
+  summary: Get order status by order status id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-status/order-status-id.yaml'
+  responses:
+    200:
+      description: Order status received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-status/order-status.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../responses/order-status/order-status-not-found-by-id.yaml'
+
+put:
+  tags:
+    - order-status
+  summary: Update order status name by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-status/order-status-id.yaml'
+  requestBody:
+    description: Code or name order status.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            code:
+              type: integer
+              nullable: true
+              minLength: 3
+              maxLength: 3
+            name:
+              type: string
+              nullable: true
+  responses:
+    200:
+      description: Order status successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-status/order-status.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/order-status/order-status-not-found-by-id.yaml'
+
+delete:
+  tags:
+    - order-status
+  summary: Delete order status by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-status/order-status-id.yaml'
+  responses:
+    200:
+      description: Order status successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/order-status/order-status-not-found-by-id.yaml'

@@ -1,0 +1,50 @@
+put:
+  tags:
+    - category
+  summary: Update category name by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/category/category.yaml'
+    - name: category-name
+      in: query
+      description: Updated category name.
+      schema:
+        type: string
+  responses:
+    200:
+      description: Category successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/category/category.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../responses/category/category-not-found-by-id.yaml'
+    409:
+      $ref: '../../responses/category/category-with-this-name-already-exists.yaml'
+
+delete:
+  tags:
+    - category
+  summary: Delete category by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/category/category.yaml'
+  responses:
+    200:
+      description: Category successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../responses/category/category-not-found-by-id.yaml'

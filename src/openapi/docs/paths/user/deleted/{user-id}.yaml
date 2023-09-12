@@ -6,7 +6,7 @@ put:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
-    - $ref: '../../../parameters/user/user-id.yaml'
+    - $ref: './parameters/user/user-id.yaml'
   responses:
     200:
       description: User account successfully deleted.

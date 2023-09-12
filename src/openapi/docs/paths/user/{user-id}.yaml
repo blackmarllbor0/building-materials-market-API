@@ -6,7 +6,7 @@ get:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
-    - $ref: '../../parameters/user/user-id.yaml'
+    - $ref: './parameters/user/user-id.yaml'
   responses:
     200:
       description: User received.
@@ -27,7 +27,7 @@ put:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
-    - $ref: '../../parameters/user/user-id.yaml'
+    - $ref: './parameters/user/user-id.yaml'
   requestBody:
     description: Update user date.
     required: true
@@ -60,7 +60,7 @@ put:
           schema:
             $ref: './schemas/user/user.yaml'
     400:
-      $ref: '../../responses/validation/400.yaml'
+      $ref: './responses/validation/400.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     404:
@@ -76,7 +76,7 @@ delete:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: '../../parameters/user/user-id.yaml'
+    - $ref: './parameters/user/user-id.yaml'
   responses:
     200:
       description: User successfully deleted.

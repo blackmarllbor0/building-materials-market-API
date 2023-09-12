@@ -1,24 +1,24 @@
 post:
-  summary: Create a new user role.
+  summary: Create a new category.
   tags:
-    - user-role
+    - category
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - name: user-role-name
+    - name: category-name
       in: query
-      description: New user role name.
+      description: Category name.
       schema:
         type: string
   responses:
     201:
-      description: Created new user role.
+      description: Created new category.
       content:
         application/json:
           example:
             id: 1
-            name: admin
+            name: concrete
             createDate: 00.11.2222
     400:
       $ref: './responses/validation/400.yaml'
@@ -27,25 +27,25 @@ post:
     403:
       $ref: './responses/auth/403.yaml'
     409:
-      $ref: '../../responses/user-role/user-role-with-this-name-already-exists.yaml'
+      $ref: '../../responses/category/category-with-this-name-already-exists.yaml'
 
 get:
   tags:
-    - user-role
-  summary: Get all user roles.
+    - category
+  summary: Get all categories.
   security:
     - cookie-auth: [ ]
-    - admin-role: [ ]
+    - customer-role: [ ]
   responses:
     200:
-      description: All user role received.
+      description: All categories received.
       content:
         application/json:
           schema:
-            $ref: './schemas/user-role/user-roles.yaml'
+            $ref: '../../schemas/category/categories.yaml '
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
     404:
-      description: No user role found.
+      description: No categories found.

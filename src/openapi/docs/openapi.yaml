@@ -18,6 +18,8 @@ tags:
     description: Custom data management and administrative panel.
   - name: order-status
     description: Manage order statues for administrator.
+  - name: category
+    description: Manage category for administrator and viewing for user.
 
 components:
   securitySchemes:
@@ -32,6 +34,8 @@ components:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
   schemas:
     user-role:
       $ref: './schemas/user-role/user-role.yaml'
@@ -49,9 +53,21 @@ components:
       $ref: './schemas/order-status/order-status.yaml'
     order-statuses:
       $ref: './schemas/order-status/order-statuses.yaml'
+    category:
+      $ref: './schemas/category/category.yaml'
+    categories:
+      $ref: './schemas/category/categories.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
+    user-status-id:
+      $ref: './parameters/user-status/user-status-id.yaml'
+    user-id:
+      $ref: './parameters/user/user-id.yaml'
+    order-status-id:
+      $ref: './parameters/order-status/order-status-id.yaml'
+    category-id:
+      $ref: './parameters/category/category.yaml'
 
 paths:
   /user-role:
@@ -76,3 +92,9 @@ paths:
     $ref: './paths/user/undeleted/{user-id}.yaml'
   /order-status:
     $ref: './paths/order-status/base.yaml'
+  /order-status/{order-status-id}:
+    $ref: './paths/order-status/{order-status-id}.yaml'
+  /category:
+    $ref: './paths/category/base.yaml'
+  /category/{category-id}:
+    $ref: './paths/category/{category-id}.yaml'

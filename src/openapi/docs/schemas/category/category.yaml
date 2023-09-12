@@ -1,14 +1,15 @@
 type: object
 properties:
-  code:
+  id:
     type: integer
-    minLength: 3
-    maxLength: 3
   name:
+    type: string
+  createDate:
+    type: string
+  updateDate:
     type: string
 example:
   id: 1
-  code: 402
-  name: paid
+  name: concrete
   createDate: 00.11.2222
   updateDate: 99.88.7777

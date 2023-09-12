@@ -14,6 +14,10 @@ tags:
     description: Manage user status for administrator.
   - name: user
     description: Custom data management and administrative panel.
+  - name: order-status
+    description: Manage order statues for administrator.
+  - name: category
+    description: Manage category for administrator and viewing for user.
 components:
   securitySchemes:
     cookie-auth:
@@ -32,6 +36,8 @@ components:
       name: Customer
       description: Role for customer.
   responses:
+    "400":
+      description: Data validation error.
     "401":
       description: User is not authenticate.
     "403":
@@ -106,12 +112,79 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/user"
+    order-status:
+      type: object
+      properties:
+        code:
+          type: integer
+          minLength: 3
+          maxLength: 3
+        name:
+          type: string
+      example:
+        id: 1
+        code: 402
+        name: paid
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    order-statuses:
+      type: array
+      items:
+        $ref: "#/components/schemas/order-status"
+    category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        name: concrete
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    categories:
+      type: array
+      items:
+        $ref: "#/components/schemas/category"
   parameters:
     user-role-id:
       name: user-role-id
       in: path
       required: true
       description: User role id.
+      schema:
+        type: integer
+    user-status-id:
+      name: user-status-id
+      in: path
+      required: true
+      description: User status id.
+      schema:
+        type: integer
+    user-id:
+      name: user-id
+      in: path
+      required: true
+      description: User id.
+      schema:
+        type: integer
+    order-status-id:
+      name: order-status-id
+      in: path
+      required: true
+      description: Order status id.
+      schema:
+        type: integer
+    category-id:
+      name: category-id
+      in: path
+      required: true
+      description: Category id.
       schema:
         type: integer
 paths:
@@ -139,7 +212,7 @@ paths:
                 name: admin
                 createDate: 00.11.2222
         "400":
-          description: Data validation error.
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -197,12 +270,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - name: user-role-id
-          in: path
-          required: true
-          description: User role id.
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/user-role-id"
         - name: user-role-name
           in: query
           description: Updated user role name.
@@ -216,7 +284,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/user-role"
         "400":
-          $ref: "#/paths/~1user-role/post/responses/400"
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -267,7 +335,7 @@ paths:
                 name: online
                 createDate: 00.11.2222
         "400":
-          $ref: "#/paths/~1user-role/post/responses/400"
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -303,12 +371,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - name: user-status-id
-          in: path
-          required: true
-          description: User status id.
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/user-status-id"
       responses:
         "200":
           description: User status received.
@@ -330,7 +393,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-status-id"
         - name: user-status-name
           in: query
           description: Updated user status name.
@@ -344,7 +407,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/user-status"
         "400":
-          $ref: "#/paths/~1user-role/post/responses/400"
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -356,12 +419,12 @@ paths:
     delete:
       tags:
         - user-status
-      summary: Delete user status name by id.
+      summary: Delete user status by id.
       security:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-status-id"
       responses:
         "200":
           description: User status successfully deleted.
@@ -377,7 +440,7 @@ paths:
       tags:
         - user
       requestBody:
-        description: User status name.
+        description: User data for creating new user.
         required: true
         content:
           application/json:
@@ -412,7 +475,7 @@ paths:
                 email: potter@hogwarts.com
                 createDate: 00.11.2222
         "400":
-          $ref: "#/paths/~1user-role/post/responses/400"
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -457,12 +520,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - name: user-id
-          in: path
-          required: true
-          description: User id.
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User received.
@@ -482,7 +540,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       requestBody:
         description: Update user date.
         required: true
@@ -515,7 +573,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/user"
         "400":
-          $ref: "#/paths/~1user-role/post/responses/400"
+          $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "404":
@@ -530,7 +588,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User successfully deleted.
@@ -547,7 +605,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User successfully blocked.
@@ -566,7 +624,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User successfully unblocked.
@@ -585,7 +643,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User account successfully deleted.
@@ -602,7 +660,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/paths/~1user~1%7Buser-id%7D/get/parameters/0"
+        - $ref: "#/components/parameters/user-id"
       responses:
         "200":
           description: User account successfully undeleted.
@@ -610,3 +668,246 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  /order-status:
+    post:
+      summary: Create a new order status.
+      tags:
+        - order-status
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      requestBody:
+        description: Name and code for order status.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  minLength: 3
+                  maxLength: 3
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Created new order status.
+          content:
+            application/json:
+              example:
+                id: 1
+                code: 402
+                name: paid
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: Order status with this name already exists.
+    get:
+      tags:
+        - order-status
+      summary: Get all order-statuses.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      responses:
+        "200":
+          description: All order-status received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-statuses"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No order-status found.
+  "/order-status/{order-status-id}":
+    get:
+      tags:
+        - order-status
+      summary: Get order status by order status id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-status-id"
+      responses:
+        "200":
+          description: Order status received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-status"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Order status with this id not found.
+    put:
+      tags:
+        - order-status
+      summary: Update order status name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-status-id"
+      requestBody:
+        description: Code or name order status.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  nullable: true
+                  minLength: 3
+                  maxLength: 3
+                name:
+                  type: string
+                  nullable: true
+      responses:
+        "200":
+          description: Order status successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-status"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1order-status~1%7Border-status-id%7D/get/responses/404"
+    delete:
+      tags:
+        - order-status
+      summary: Delete order status by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-status-id"
+      responses:
+        "200":
+          description: Order status successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1order-status~1%7Border-status-id%7D/get/responses/404"
+  /category:
+    post:
+      summary: Create a new category.
+      tags:
+        - category
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: category-name
+          in: query
+          description: Category name.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Created new category.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: concrete
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: Category with this name already exists.
+    get:
+      tags:
+        - category
+      summary: Get all categories.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      responses:
+        "200":
+          description: All categories received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/category"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No categories found.
+  "/category/{category-id}":
+    put:
+      tags:
+        - category
+      summary: Update category name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/category-id"
+        - name: category-name
+          in: query
+          description: Updated category name.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Category successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Category not found by this id.
+        "409":
+          $ref: "#/paths/~1category/post/responses/409"
+    delete:
+      tags:
+        - category
+      summary: Delete category by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/category-id"
+      responses:
+        "200":
+          description: Category successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/paths/~1category~1%7Bcategory-id%7D/put/responses/404"

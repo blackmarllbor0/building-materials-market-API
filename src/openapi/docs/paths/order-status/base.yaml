@@ -30,7 +30,7 @@ post:
             name: paid
             createDate: 00.11.2222
     400:
-      $ref: '../../responses/validation/400.yaml'
+      $ref: './responses/validation/400.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:

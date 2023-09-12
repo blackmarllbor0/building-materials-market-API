@@ -6,7 +6,7 @@ get:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: '../../parameters/user-status/user-status-id.yaml'
+    - $ref: './parameters/user-status/user-status-id.yaml'
   responses:
     200:
       description: User status received.
@@ -29,7 +29,7 @@ put:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: '../../parameters/user-status/user-status-id.yaml'
+    - $ref: './parameters/user-status/user-status-id.yaml'
     - name: user-status-name
       in: query
       description: Updated user status name.
@@ -43,7 +43,7 @@ put:
           schema:
             $ref: './schemas/user-status/user-status.yaml'
     400:
-      $ref: '../../responses/validation/400.yaml'
+      $ref: './responses/validation/400.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
@@ -56,12 +56,12 @@ put:
 delete:
   tags:
     - user-status
-  summary: Delete user status name by id.
+  summary: Delete user status by id.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: '../../parameters/user-status/user-status-id.yaml'
+    - $ref: './parameters/user-status/user-status-id.yaml'
   responses:
     200:
       description: User status successfully deleted.

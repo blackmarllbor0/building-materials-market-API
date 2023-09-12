@@ -14,12 +14,12 @@ get:
         application/json:
           schema:
             $ref: './schemas/user-role/user-role.yaml'
-    404:
-      $ref: '../.././responses/user-role/user-role-not-found.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
       $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/user-role/user-role-not-found.yaml'
 
 put:
   tags:
@@ -29,7 +29,7 @@ put:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: '../../parameters/user-role/user-role-id.yaml'
+    - $ref: './parameters/user-role/user-role-id.yaml'
     - name: user-role-name
       in: query
       description: Updated user role name.
@@ -43,7 +43,7 @@ put:
           schema:
             $ref: './schemas/user-role/user-role.yaml'
     400:
-      $ref: '../../responses/validation/400.yaml'
+      $ref: './responses/validation/400.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:
