@@ -42,7 +42,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/category/categories.yaml '
+            $ref: './schemas/category/categories.yaml'
     401:
       $ref: './responses/auth/401.yaml'
     403:

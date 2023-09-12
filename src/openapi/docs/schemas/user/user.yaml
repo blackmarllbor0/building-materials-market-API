@@ -1,6 +1,6 @@
 type: object
 properties:
-  user-role:
+  userRole:
     type: integer
     default: 2
     nullable: true

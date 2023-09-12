@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: builder-materials-market
-  description: Online store for purchasing various building materials from various companies.
+  description: Online store for purchasing various building materials from various companies.yaml.
   version: 1.0.0
 
 servers:
@@ -20,6 +20,10 @@ tags:
     description: Manage order statues for administrator.
   - name: category
     description: Manage category for administrator and viewing for user.
+  - name: company
+    description: All information about the company and data management by the administrator.
+  - name: product
+    description: All information about products of different companies and administration.
 
 components:
   securitySchemes:
@@ -57,6 +61,14 @@ components:
       $ref: './schemas/category/category.yaml'
     categories:
       $ref: './schemas/category/categories.yaml'
+    company:
+      $ref: './schemas/company/company.yaml'
+    companies:
+      $ref: './schemas/company/companies.yaml'
+    product:
+      $ref: './schemas/product/product.yaml'
+    products:
+      $ref: './schemas/product/products.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -67,7 +79,15 @@ components:
     order-status-id:
       $ref: './parameters/order-status/order-status-id.yaml'
     category-id:
-      $ref: './parameters/category/category.yaml'
+      $ref: './parameters/category/category-id.yaml'
+    company-id:
+      $ref: './parameters/company/company-id.yaml'
+    company-name:
+      $ref: './parameters/company/company-name.yaml'
+    product-id:
+      $ref: './parameters/product/product-id.yaml'
+    product-name:
+      $ref: './parameters/product/product-name.yaml'
 
 paths:
   /user-role:
@@ -98,3 +118,9 @@ paths:
     $ref: './paths/category/base.yaml'
   /category/{category-id}:
     $ref: './paths/category/{category-id}.yaml'
+  /company:
+    $ref: './paths/company/base.yaml'
+  /company/{company-id}:
+    $ref: './paths/company/{company-id}.yaml'
+  /company/{company-name}:
+    $ref: './paths/company/{company-name}.yaml'

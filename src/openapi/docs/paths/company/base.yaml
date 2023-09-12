@@ -1,0 +1,80 @@
+post:
+  summary: Create new company.
+  tags:
+    - company
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  requestBody:
+    description: Company data for added new company.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            linkToWebSite:
+              type: string
+            linkToLogoImage:
+              type: string
+            phoneNumber:
+              type: string
+              minLength: 10
+              maxLength: 15
+            email:
+              type: string
+              minLength: 6
+            description:
+              type: string
+              minLength: 50
+  responses:
+    201:
+      description: Created new company.
+      content:
+        application/json:
+          example:
+            name: facebook
+            linkToWebSite: https://facebook.com
+            linkToLogoImage: /user/admin/server/facebook/images/logo.png
+            phoneNumber: 89997776655
+            email: facebook@meta.com
+            description: many text
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    409:
+      $ref: '../../responses/company/company-with-this-name-already-exists.yaml'
+get:
+  tags:
+    - company
+  summary: Get all company.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - name: limit
+      in: query
+      description: Number of companies received (not required).
+      required: false
+      schema:
+        type: integer
+        default: 15
+        nullable: true
+  responses:
+    200:
+      description: All company received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/company/companies.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No companies found.

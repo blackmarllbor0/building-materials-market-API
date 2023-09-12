@@ -1,0 +1,6 @@
+name: product-name
+in: path
+required: true
+description: Product name.
+schema:
+  type: string

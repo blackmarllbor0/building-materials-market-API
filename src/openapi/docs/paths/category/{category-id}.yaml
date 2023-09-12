@@ -6,7 +6,7 @@ put:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/category/category.yaml'
+    - $ref: './parameters/category/category-id.yaml'
     - name: category-name
       in: query
       description: Updated category name.
@@ -38,7 +38,7 @@ delete:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/category/category.yaml'
+    - $ref: './parameters/category/category-id.yaml'
   responses:
     200:
       description: Category successfully deleted.

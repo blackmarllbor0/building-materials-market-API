@@ -1,0 +1,32 @@
+type: object
+properties:
+  companyId:
+    type: integer
+  categoryId:
+    type: integer
+  quantity:
+    type: integer
+    default: 0
+  price:
+    type: integer
+  rating:
+    type: integer
+    default: 5
+  linkToImages:
+    type: array
+    items:
+      type: string
+  title:
+    type: string
+  description:
+    type: string
+    minLength: 50
+example:
+  companyId: 1
+  categoryId: 1
+  quantity: 17
+  price: 3500
+  rating: 4
+  linkToImages: [ link, link ]
+  title: concrete
+  description: concrete

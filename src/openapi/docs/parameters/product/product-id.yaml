@@ -1,0 +1,6 @@
+name: product-id
+in: path
+required: true
+description: Product id.
+schema:
+  type: integer

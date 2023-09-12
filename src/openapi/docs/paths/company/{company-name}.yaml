@@ -1,0 +1,20 @@
+get:
+  tags:
+    - company
+  summary: Get company by company name.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/company/company-name.yaml'
+  responses:
+    200:
+      description: Company received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/company/company.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../responses/company/company-not-found-by-name.yaml'

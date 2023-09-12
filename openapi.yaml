@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: builder-materials-market
   description: Online store for purchasing various building materials from various
-    companies.
+    companies.yaml.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/api/v1/
@@ -18,6 +18,10 @@ tags:
     description: Manage order statues for administrator.
   - name: category
     description: Manage category for administrator and viewing for user.
+  - name: company
+    description: All information about the company and data management by the administrator.
+  - name: product
+    description: All information about products of different companies and administration.
 components:
   securitySchemes:
     cookie-auth:
@@ -86,7 +90,7 @@ components:
     user:
       type: object
       properties:
-        user-role:
+        userRole:
           type: integer
           default: 2
           nullable: true
@@ -151,6 +155,77 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/category"
+    company:
+      type: object
+      properties:
+        name:
+          type: string
+        linkToWebSite:
+          type: string
+        linkToLogoImage:
+          type: string
+        phoneNumber:
+          type: string
+          minLength: 10
+          maxLength: 15
+        email:
+          type: string
+          minLength: 6
+        description:
+          type: string
+          minLength: 50
+      example:
+        name: facebook
+        linkToWebSite: https://facebook.com
+        linkToLogoImage: /user/admin/server/facebook/images/logo.png
+        phoneNumber: 89997776655
+        email: facebook@meta.com
+        description: many text
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    companies:
+      type: array
+      items:
+        $ref: "#/components/schemas/company"
+    product:
+      type: object
+      properties:
+        companyId:
+          type: integer
+        categoryId:
+          type: integer
+        quantity:
+          type: integer
+          default: 0
+        price:
+          type: integer
+        rating:
+          type: integer
+          default: 5
+        linkToImages:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        description:
+          type: string
+          minLength: 50
+      example:
+        companyId: 1
+        categoryId: 1
+        quantity: 17
+        price: 3500
+        rating: 4
+        linkToImages:
+          - link
+          - link
+        title: concrete
+        description: concrete
+    products:
+      type: array
+      items:
+        $ref: "#/components/schemas/product"
   parameters:
     user-role-id:
       name: user-role-id
@@ -187,6 +262,34 @@ components:
       description: Category id.
       schema:
         type: integer
+    company-id:
+      name: company-id
+      in: path
+      required: true
+      description: Company id.
+      schema:
+        type: integer
+    company-name:
+      name: company-name
+      in: path
+      required: true
+      description: Company id.
+      schema:
+        type: integer
+    product-id:
+      name: product-id
+      in: path
+      required: true
+      description: Product id.
+      schema:
+        type: integer
+    product-name:
+      name: product-name
+      in: path
+      required: true
+      description: Product name.
+      schema:
+        type: string
 paths:
   /user-role:
     post:
@@ -852,9 +955,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/category"
+                $ref: "#/components/schemas/categories"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -911,3 +1012,173 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/paths/~1category~1%7Bcategory-id%7D/put/responses/404"
+  /company:
+    post:
+      summary: Create new company.
+      tags:
+        - company
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      requestBody:
+        description: Company data for added new company.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                linkToWebSite:
+                  type: string
+                linkToLogoImage:
+                  type: string
+                phoneNumber:
+                  type: string
+                  minLength: 10
+                  maxLength: 15
+                email:
+                  type: string
+                  minLength: 6
+                description:
+                  type: string
+                  minLength: 50
+      responses:
+        "201":
+          description: Created new company.
+          content:
+            application/json:
+              example:
+                name: facebook
+                linkToWebSite: https://facebook.com
+                linkToLogoImage: /user/admin/server/facebook/images/logo.png
+                phoneNumber: 89997776655
+                email: facebook@meta.com
+                description: many text
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: Category with this name already exists.
+    get:
+      tags:
+        - company
+      summary: Get all company.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - name: limit
+          in: query
+          description: Number of companies received (not required).
+          required: false
+          schema:
+            type: integer
+            default: 15
+            nullable: true
+      responses:
+        "200":
+          description: All company received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/companies"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No companies found.
+  "/company/{company-id}":
+    get:
+      tags:
+        - company
+      summary: Get company by company id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/company-id"
+      responses:
+        "200":
+          description: Company received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/company"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Company not found by this id.
+    put:
+      tags:
+        - company
+      summary: Update company by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/company-id"
+      requestBody:
+        description: Update company date.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/company"
+      responses:
+        "200":
+          description: Company successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1company~1%7Bcompany-id%7D/get/responses/404"
+        "409":
+          $ref: "#/paths/~1company/post/responses/409"
+    delete:
+      tags:
+        - company
+      summary: Delete company by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/company-id"
+      responses:
+        "200":
+          description: Company successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1company~1%7Bcompany-id%7D/get/responses/404"
+  "/company/{company-name}":
+    get:
+      tags:
+        - company
+      summary: Get company by company name.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/company-name"
+      responses:
+        "200":
+          description: Company received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/company"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Company not found by this name.
