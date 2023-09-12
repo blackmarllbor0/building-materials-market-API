@@ -80,14 +80,18 @@ components:
       $ref: './parameters/order-status/order-status-id.yaml'
     category-id:
       $ref: './parameters/category/category-id.yaml'
+    query-category-id:
+      $ref: './parameters/category/query-category-id.yaml'
     company-id:
       $ref: './parameters/company/company-id.yaml'
     company-name:
       $ref: './parameters/company/company-name.yaml'
+    query-company-id:
+      $ref: './parameters/company/query-company-id.yaml'
     product-id:
       $ref: './parameters/product/product-id.yaml'
     product-name:
-      $ref: './parameters/product/product-name.yaml'
+      $ref: './parameters/product/product-title.yaml'
 
 paths:
   /user-role:
@@ -124,3 +128,17 @@ paths:
     $ref: './paths/company/{company-id}.yaml'
   /company/{company-name}:
     $ref: './paths/company/{company-name}.yaml'
+  /product:
+    $ref: './paths/product/base.yaml'
+  /product/{product-id}:
+    $ref: './paths/product/{product-id}.yaml'
+  /product/{product-title}:
+    $ref: './paths/product/{product-title}.yaml'
+  /product/sort-by/category/{category-id}:
+    $ref: './paths/product/sort/category/{category-id}.yaml'
+  /product/sort-by/company/{company-id}:
+    $ref: './paths/product/sort/company/{company-id}.yaml'
+  /product/sort-by/category-and-company:
+    $ref: './paths/product/sort/category-and-company/base.yaml'
+  /product/sort-by/price:
+    $ref: './paths/product/sort/price/base.yaml'

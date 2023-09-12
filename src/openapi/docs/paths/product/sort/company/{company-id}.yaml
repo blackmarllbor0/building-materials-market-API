@@ -1,0 +1,22 @@
+get:
+  tags:
+    - product
+  summary: Sort products by company.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/company/company-id.yaml'
+  responses:
+    200:
+      description: Product sorted.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product/products.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../../../responses/company/company-not-found-by-id.yaml'

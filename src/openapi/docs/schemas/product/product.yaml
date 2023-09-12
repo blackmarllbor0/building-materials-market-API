@@ -30,3 +30,5 @@ example:
   linkToImages: [ link, link ]
   title: concrete
   description: concrete
+  createDate: 00.11.2222
+  updateDate: 99.88.7777

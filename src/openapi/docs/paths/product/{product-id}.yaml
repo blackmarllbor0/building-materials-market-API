@@ -1,0 +1,96 @@
+get:
+  tags:
+    - product
+  summary: Get product by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/product/product-id.yaml'
+  responses:
+    200:
+      description: Product received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product/product.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/product/product-not-found-by-id.yaml'
+
+put:
+  tags:
+    - product
+  summary: Update product by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/user-role/user-role-id.yaml'
+  requestBody:
+    description: Updated product data.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            companyId:
+              type: integer
+            categoryId:
+              type: integer
+            quantity:
+              type: integer
+              default: 0
+            price:
+              type: integer
+            rating:
+              type: integer
+              default: 5
+            linkToImages:
+              type: array
+              items:
+                type: string
+            title:
+              type: string
+            description:
+              type: string
+              minLength: 50
+  responses:
+    200:
+      description: Product successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product/product.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/product/product-not-found-by-id.yaml'
+    409:
+      $ref: '../../responses/product/product-with-this-name-already-exists.yaml'
+
+delete:
+  tags:
+    - product
+  summary: Delete product by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/product/product-id.yaml'
+  responses:
+    200:
+      description: Product successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/product/product-not-found-by-id.yaml'

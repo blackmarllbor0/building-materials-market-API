@@ -1,0 +1,22 @@
+get:
+  tags:
+    - product
+  summary: Get product by name.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/product/product-title.yaml'
+  responses:
+    200:
+      description: Product received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product/product.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../.././responses/product/product-not-found-by-title.yaml'

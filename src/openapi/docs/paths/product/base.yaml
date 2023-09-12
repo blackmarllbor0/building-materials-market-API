@@ -1,0 +1,78 @@
+post:
+  summary: Create a new product.
+  tags:
+    - product
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  requestBody:
+    description: Product data.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            companyId:
+              type: integer
+            categoryId:
+              type: integer
+            quantity:
+              type: integer
+              default: 0
+            price:
+              type: integer
+            rating:
+              type: integer
+              default: 5
+            linkToImages:
+              type: array
+              items:
+                type: string
+            title:
+              type: string
+            description:
+              type: string
+              minLength: 50
+  responses:
+    201:
+      description: Created new product.
+      content:
+        application/json:
+          example:
+            companyId: 1
+            categoryId: 1
+            quantity: 17
+            price: 3500
+            rating: 4
+            linkToImages: [ link, link ]
+            title: concrete
+            description: concrete
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    409:
+      $ref: '../../responses/product/product-with-this-name-already-exists.yaml'
+
+get:
+  tags:
+    - product
+  summary: Get all products.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  responses:
+    200:
+      description: All product received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product/products.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No products found.
