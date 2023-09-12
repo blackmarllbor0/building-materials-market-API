@@ -12,7 +12,7 @@
     "migrate_down": "npx knex migrate:rollback",
     "lint": "eslint",
     "format": "prettier --write .",
-    "gen:spec": "npx speccy resolve ./src/openapi/docs/openapi.yaml -o ./src/openapi/openapi.yaml"
+    "gen:spec": "npx speccy resolve ./src/openapi/docs/openapi.yaml -o ./openapi.yaml"
   },
   "author": "blackmarllbor0",
   "license": "ISC",
