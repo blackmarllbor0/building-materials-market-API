@@ -431,6 +431,30 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/auth-audit-event"
+    auth-audit:
+      type: object
+      properties:
+        userId:
+          type: integer
+        authAuditEvent:
+          type: integer
+        sessionId:
+          type: integer
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        userid: 1
+        authAuditEventId: 1
+        sessionId: 1
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    auth-audits:
+      type: array
+      items:
+        $ref: "#/components/schemas/auth-audit"
   parameters:
     user-role-id:
       name: user-role-id
@@ -579,11 +603,25 @@ components:
       description: Session id.
       schema:
         type: integer
+    query-session-id:
+      name: session-id
+      in: query
+      required: true
+      description: Session id.
+      schema:
+        type: integer
     auth-audit-event-id:
       name: auth-audit-event-id
       in: path
       required: true
       description: Auth audit event id.
+      schema:
+        type: integer
+    auth-audit-event:
+      name: auth-audit-id
+      in: path
+      required: true
+      description: Auth audit id.
       schema:
         type: integer
 paths:
@@ -2588,3 +2626,67 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: Audit event not found by this id.
+  /auth-audit:
+    get:
+      tags:
+        - auth-audit
+      summary: Get user auth audits.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-user-id"
+      responses:
+        "200":
+          description: All audits.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/auth-audits"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Audits not found.
+  "/auth-audit/{/auth-audit-id}":
+    get:
+      tags:
+        - auth-audit
+      summary: Get user auth audits.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/auth-audit-event"
+      responses:
+        "200":
+          description: Auth audit getting.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/auth-audit"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Audit not found by this id.
+  /auth-audit/sort-by/user-session:
+    get:
+      tags:
+        - auth-audit
+      summary: Get user auth audits by session id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-user-id"
+        - $ref: "#/components/parameters/query-session-id"
+      responses:
+        "200":
+          description: Auth audits getting.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/auth-audits"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Audits not found.

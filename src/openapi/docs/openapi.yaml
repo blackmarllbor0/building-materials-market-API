@@ -115,6 +115,10 @@ components:
       $ref: './schemas/auth-audit-event/auth-audit-event.yaml'
     auth-audit-events:
       $ref: './schemas/auth-audit-event/auth-audit-events.yaml'
+    auth-audit:
+      $ref: './schemas/auth-audit/auth-audit.yaml'
+    auth-audits:
+      $ref: './schemas/auth-audit/auth-audits.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -158,8 +162,12 @@ components:
       $ref: './parameters/delivery/delivery-id.yaml'
     session-id:
       $ref: './parameters/session/session-id.yaml'
+    query-session-id:
+      $ref: './parameters/session/query-session-id.yaml'
     auth-audit-event-id:
       $ref: './parameters/auth-audit-event/auth-audit-event-id.yaml'
+    auth-audit-event:
+      $ref: './parameters/auth-audit/auth-audit-id.yaml'
 
 paths:
   /user-role:
@@ -254,3 +262,9 @@ paths:
     $ref: './paths/auth-audit-event/base.yaml'
   /auth-audit-event/{auth-audit-event-id}:
     $ref: './paths/auth-audit-event/{auth-audit-event-id}.yaml'
+  /auth-audit:
+    $ref: './paths/auth-audit/base.yaml'
+  /auth-audit/{/auth-audit-id}:
+    $ref: './paths/auth-audit/{auth-audit-id}.yaml'
+  /auth-audit/sort-by/user-session:
+    $ref: './paths/auth-audit/sort-by/user-session/base.yaml'

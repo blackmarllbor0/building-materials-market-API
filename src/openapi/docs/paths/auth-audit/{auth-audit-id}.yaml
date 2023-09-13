@@ -1,0 +1,20 @@
+get:
+  tags:
+    - auth-audit
+  summary: Get user auth audits.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/auth-audit/auth-audit-id.yaml'
+  responses:
+    200:
+      description: Auth audit getting.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/auth-audit/auth-audit.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      description: Audit not found by this id.

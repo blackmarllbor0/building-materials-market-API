@@ -1,0 +1,19 @@
+type: object
+properties:
+  userId:
+    type: integer
+  authAuditEvent:
+    type: integer
+  sessionId:
+    type: integer
+  createDate:
+    type: string
+  updateDate:
+    type: string
+example:
+  id: 1
+  userid: 1
+  authAuditEventId: 1
+  sessionId: 1
+  createDate: 00.11.2222
+  updateDate: 99.88.7777
