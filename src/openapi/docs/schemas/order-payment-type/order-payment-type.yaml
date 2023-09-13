@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  createDate:
+    type: string
+  updateDate:
+    type: string
+example:
+  id: 1
+  name: Visa
+  createDate: 00.11.2222
+  updateDate: 99.88.7777

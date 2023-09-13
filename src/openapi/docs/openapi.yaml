@@ -26,6 +26,8 @@ tags:
     description: All information about products of different companies and administration.
   - name: feedback
     description: Product reviews.
+  - name: order-payment-type
+    description: Manage order payment type for administrator.
 
 components:
   securitySchemes:
@@ -75,6 +77,10 @@ components:
       $ref: './schemas/feedback/feedback.yaml'
     feedbacks:
       $ref: './schemas/feedback/feedbacks.yaml'
+    order-payment-type:
+      $ref: './schemas/order-payment-type/order-payment-type.yaml'
+    order-payment-types:
+      $ref: './schemas/order-payment-type/order-payment-types.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -100,6 +106,8 @@ components:
       $ref: './parameters/product/product-title.yaml'
     feedback-id:
       $ref: './parameters/feedback/feedback-id.yaml'
+    order-payment-type-id:
+      $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
 
 paths:
   /user-role:
@@ -160,3 +168,7 @@ paths:
     $ref: './paths/feedback/sort-by/product/{product-id}.yaml'
   /feedback/sort-by/rating/:
     $ref: './paths/feedback/sort-by/rating/base.yaml'
+  /order-payment-type:
+    $ref: './paths/order-payment-type/base.yaml'
+  /order-payment-type/{order-payment-type-id}:
+    $ref: './paths/order-payment-type/{order-payment-type-id}.yaml'

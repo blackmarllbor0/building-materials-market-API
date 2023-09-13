@@ -1,0 +1,50 @@
+put:
+  tags:
+    - order-payment-type
+  summary: Update order payment type name by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
+    - name: order-payment-type-name
+      in: query
+      description: Updated order payment type name.
+      schema:
+        type: string
+  responses:
+    200:
+      description: Order payment type successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-payment-type/order-payment-type.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      $ref: '../../responses/order-payment-type/order-payment-type-not-found-by-id.yaml'
+    409:
+      $ref: '../../responses/order-payment-type/order-payment-type-with-this-name-already-exists.yaml'
+
+delete:
+  tags:
+    - order-payment-type
+  summary: Delete order payment type by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
+  responses:
+    200:
+      description: Order payment type successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: Order payment type not found by this id.

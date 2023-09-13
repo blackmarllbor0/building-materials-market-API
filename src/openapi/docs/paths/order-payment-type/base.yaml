@@ -1,24 +1,24 @@
 post:
-  summary: Create a new category.
+  summary: Create a new order payment type.
   tags:
-    - category
+    - order-payment-type
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - name: category-name
+    - name: order-payment-type-name
       in: query
-      description: Category name.
+      description: Order payment type name.
       schema:
         type: string
   responses:
     201:
-      description: Created new category.
+      description: Created new order payment type.
       content:
         application/json:
           example:
             id: 1
-            name: concrete
+            name: Visa
             createDate: 00.11.2222
     400:
       $ref: './responses/validation/400.yaml'
@@ -27,23 +27,25 @@ post:
     403:
       $ref: './responses/auth/403.yaml'
     409:
-      $ref: '../../responses/category/category-with-this-name-already-exists.yaml'
+      $ref: '../../responses/order-payment-type/order-payment-type-with-this-name-already-exists.yaml'
 
 get:
   tags:
-    - category
-  summary: Get all categories.
+    - order-payment-type
+  summary: Get all order payment types.
   security:
     - cookie-auth: [ ]
-    - customer-role: [ ]
+    - admin-role: [ ]
   responses:
     200:
-      description: All categories received.
+      description: All order payments received.
       content:
         application/json:
           schema:
-            $ref: './schemas/category/categories.yaml'
+            $ref: './schemas/order-payment-type/order-payment-types.yaml'
     401:
       $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
     404:
       description: No categories found.

@@ -24,6 +24,8 @@ tags:
     description: All information about products of different companies and administration.
   - name: feedback
     description: Product reviews.
+  - name: order-payment-type
+    description: Manage order payment type for administrator.
 components:
   securitySchemes:
     cookie-auth:
@@ -261,6 +263,26 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/feedback"
+    order-payment-type:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        name: Visa
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    order-payment-types:
+      type: array
+      items:
+        $ref: "#/components/schemas/order-payment-type"
   parameters:
     user-role-id:
       name: user-role-id
@@ -344,6 +366,13 @@ components:
       in: path
       required: true
       description: Feedback id.
+      schema:
+        type: integer
+    order-payment-type-id:
+      name: order-payment-type-id
+      in: path
+      required: true
+      description: Order-payment type id.
       schema:
         type: integer
 paths:
@@ -1014,8 +1043,6 @@ paths:
                 $ref: "#/components/schemas/categories"
         "401":
           $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
         "404":
           description: No categories found.
   "/category/{category-id}":
@@ -1741,3 +1768,104 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           description: Feedbacks not found.
+  /order-payment-type:
+    post:
+      summary: Create a new order payment type.
+      tags:
+        - order-payment-type
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: order-payment-type-name
+          in: query
+          description: Order payment type name.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Created new order payment type.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Visa
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: Order payment type with this name already exists.
+    get:
+      tags:
+        - order-payment-type
+      summary: Get all order payment types.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      responses:
+        "200":
+          description: All order payments received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-payment-types"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No categories found.
+  "/order-payment-type/{order-payment-type-id}":
+    put:
+      tags:
+        - order-payment-type
+      summary: Update order payment type name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-payment-type-id"
+        - name: order-payment-type-name
+          in: query
+          description: Updated order payment type name.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Order payment type successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-payment-type"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Order payment type not found by this id.
+        "409":
+          $ref: "#/paths/~1order-payment-type/post/responses/409"
+    delete:
+      tags:
+        - order-payment-type
+      summary: Delete order payment type by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-payment-type-id"
+      responses:
+        "200":
+          description: Order payment type successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Order payment type not found by this id.
