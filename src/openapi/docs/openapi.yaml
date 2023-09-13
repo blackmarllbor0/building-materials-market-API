@@ -36,6 +36,8 @@ tags:
     description: View and manage your order history.
   - name: delivery
     description: Custom Delivery Management.
+  - name: auth-audit-event
+    description: Manage audit event for administrator.
 
 components:
   securitySchemes:
@@ -109,6 +111,10 @@ components:
       $ref: './schemas/session/session.yaml'
     sessions:
       $ref: './schemas/session/sessions.yaml'
+    auth-audit-event:
+      $ref: './schemas/auth-audit-event/auth-audit-event.yaml'
+    auth-audit-events:
+      $ref: './schemas/auth-audit-event/auth-audit-events.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -152,6 +158,8 @@ components:
       $ref: './parameters/delivery/delivery-id.yaml'
     session-id:
       $ref: './parameters/session/session-id.yaml'
+    auth-audit-event-id:
+      $ref: './parameters/auth-audit-event/auth-audit-event-id.yaml'
 
 paths:
   /user-role:
@@ -242,3 +250,7 @@ paths:
     $ref: './paths/session/base.yaml'
   /session/{session-id}:
     $ref: './paths/session/{session-id}.yaml'
+  /auth-audit-event:
+    $ref: './paths/auth-audit-event/base.yaml'
+  /auth-audit-event/{auth-audit-event-id}:
+    $ref: './paths/auth-audit-event/{auth-audit-event-id}.yaml'

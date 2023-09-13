@@ -1,0 +1,51 @@
+post:
+  summary: Create a new auth audit event.
+  tags:
+    - auth-audit-event
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - name: auth-event-name
+      in: query
+      description: Auth event name.
+      schema:
+        type: string
+  responses:
+    201:
+      description: Created new auth audit event.
+      content:
+        application/json:
+          example:
+            id: 1
+            name: successfully logging
+            createDate: 00.11.2222
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    409:
+      description: Audit event with this name already exists.
+
+get:
+  tags:
+    - auth-audit-event
+  summary: Get all auth audit events.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  responses:
+    200:
+      description: All audit events received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/auth-audit-event/auth-audit-events.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No audit events found.

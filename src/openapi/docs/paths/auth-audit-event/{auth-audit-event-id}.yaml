@@ -1,0 +1,50 @@
+put:
+  tags:
+    - auth-audit-event
+  summary: Update auth audit event name by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/auth-audit-event/auth-audit-event-id.yaml'
+    - name: auth-audit-event-name
+      in: query
+      description: Updated audit event name.
+      schema:
+        type: string
+  responses:
+    200:
+      description: Audit event name successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/auth-audit-event/auth-audit-event.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: Audit event not found by this id.
+    409:
+      description: Audit event with this name already exists.
+
+delete:
+  tags:
+    - auth-audit-event
+  summary: Delete audit event by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/auth-audit-event/auth-audit-event-id.yaml'
+  responses:
+    200:
+      description: Audit event successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: Audit event not found by this id.

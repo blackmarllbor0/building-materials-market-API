@@ -34,6 +34,8 @@ tags:
     description: View and manage your order history.
   - name: delivery
     description: Custom Delivery Management.
+  - name: auth-audit-event
+    description: Manage audit event for administrator.
 components:
   securitySchemes:
     cookie-auth:
@@ -410,6 +412,25 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/session"
+    auth-audit-event:
+      type: object
+      properties:
+        name:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        userId: 1
+        name: successfully logging
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    auth-audit-events:
+      type: array
+      items:
+        $ref: "#/components/schemas/auth-audit-event"
   parameters:
     user-role-id:
       name: user-role-id
@@ -556,6 +577,13 @@ components:
       in: path
       required: true
       description: Session id.
+      schema:
+        type: integer
+    auth-audit-event-id:
+      name: auth-audit-event-id
+      in: path
+      required: true
+      description: Auth audit event id.
       schema:
         type: integer
 paths:
@@ -2459,3 +2487,104 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: No user session found by this id.
+  /auth-audit-event:
+    post:
+      summary: Create a new auth audit event.
+      tags:
+        - auth-audit-event
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: auth-event-name
+          in: query
+          description: Auth event name.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Created new auth audit event.
+          content:
+            application/json:
+              example:
+                id: 1
+                name: successfully logging
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          description: Audit event with this name already exists.
+    get:
+      tags:
+        - auth-audit-event
+      summary: Get all auth audit events.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      responses:
+        "200":
+          description: All audit events received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/auth-audit-events"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No audit events found.
+  "/auth-audit-event/{auth-audit-event-id}":
+    put:
+      tags:
+        - auth-audit-event
+      summary: Update auth audit event name by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/auth-audit-event-id"
+        - name: auth-audit-event-name
+          in: query
+          description: Updated audit event name.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Audit event name successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/auth-audit-event"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Audit event not found by this id.
+        "409":
+          description: Audit event with this name already exists.
+    delete:
+      tags:
+        - auth-audit-event
+      summary: Delete audit event by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/auth-audit-event-id"
+      responses:
+        "200":
+          description: Audit event successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Audit event not found by this id.
