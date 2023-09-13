@@ -1,0 +1,6 @@
+name: order-payment-type-id
+in: query
+required: true
+description: Order payment type id.
+schema:
+  type: integer

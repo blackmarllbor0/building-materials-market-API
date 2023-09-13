@@ -26,6 +26,8 @@ tags:
     description: Product reviews.
   - name: order-payment-type
     description: Manage order payment type for administrator.
+  - name: order
+    description: Order management
 components:
   securitySchemes:
     cookie-auth:
@@ -283,6 +285,28 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/order-payment-type"
+    order:
+      type: object
+      properties:
+        userId:
+          type: integer
+        orderStatusId:
+          type: integer
+        orderPaymentTypeId:
+          type: integer
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        id: 1
+        orderNumber: 9999
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    orders:
+      type: array
+      items:
+        $ref: "#/components/schemas/order"
   parameters:
     user-role-id:
       name: user-role-id
@@ -305,9 +329,23 @@ components:
       description: User id.
       schema:
         type: integer
+    query-user-id:
+      name: user-id
+      in: query
+      required: true
+      description: User id.
+      schema:
+        type: integer
     order-status-id:
       name: order-status-id
       in: path
+      required: true
+      description: Order status id.
+      schema:
+        type: integer
+    query-order-status-id:
+      name: order-status-id
+      in: query
       required: true
       description: Order status id.
       schema:
@@ -373,6 +411,20 @@ components:
       in: path
       required: true
       description: Order-payment type id.
+      schema:
+        type: integer
+    query-order-payment-type-id:
+      name: order-payment-type-id
+      in: query
+      required: true
+      description: Order payment type id.
+      schema:
+        type: integer
+    order-id:
+      name: order-id
+      in: path
+      required: true
+      description: Order id.
       schema:
         type: integer
 paths:
@@ -1869,3 +1921,159 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: Order payment type not found by this id.
+  /order:
+    post:
+      summary: Create a new order.
+      tags:
+        - order
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-user-id"
+        - $ref: "#/components/parameters/query-order-status-id"
+        - $ref: "#/components/parameters/query-order-payment-type-id"
+      responses:
+        "201":
+          description: Created new order.
+          content:
+            application/json:
+              example:
+                id: 1
+                orderNumber: 9999
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+  "/order/{order-id}":
+    get:
+      tags:
+        - order
+      summary: Get order by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Order received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Order by this id not found.
+    delete:
+      tags:
+        - order
+      summary: Delete order by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Feedback successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+  "/order/cancel/{order-id}":
+    put:
+      tags:
+        - order
+      summary: Cancel the order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Order successfully canceled.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+  "/order/set-payment-type/{order-id}":
+    put:
+      tags:
+        - order
+      summary: Set payment type.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+        - $ref: "#/components/parameters/query-order-payment-type-id"
+      responses:
+        "200":
+          description: Payment method successfully changed.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+  "/order/payment/{order-id}":
+    put:
+      tags:
+        - order
+      summary: Pay the order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Order has been paid.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+  "/order/sort-by/user/{user-id}":
+    get:
+      tags:
+        - order
+      summary: Get all user orders.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          description: Order sorted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orders"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+  "/order/sort-by/user/status/{status-id}":
+    get:
+      tags:
+        - order
+      summary: Sort orders by status.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-status-id"
+      responses:
+        "200":
+          description: Orders sorted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Orders not found.

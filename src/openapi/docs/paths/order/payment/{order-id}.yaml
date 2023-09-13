@@ -1,0 +1,16 @@
+put:
+  tags:
+    - order
+  summary: Pay the order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Order has been paid.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../../responses/order/order-not-found-by-id.yaml'

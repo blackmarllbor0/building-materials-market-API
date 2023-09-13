@@ -1,0 +1,16 @@
+put:
+  tags:
+    - order
+  summary: Cancel the order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Order successfully canceled.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../../responses/order/order-not-found-by-id.yaml'

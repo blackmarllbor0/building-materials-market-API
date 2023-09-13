@@ -1,0 +1,17 @@
+put:
+  tags:
+    - order
+  summary: Set payment type.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+    - $ref: './parameters/order-payment-type/query-order-payment-type-id.yaml'
+  responses:
+    200:
+      description: Payment method successfully changed.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../../responses/order/order-not-found-by-id.yaml'

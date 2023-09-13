@@ -28,6 +28,8 @@ tags:
     description: Product reviews.
   - name: order-payment-type
     description: Manage order payment type for administrator.
+  - name: order
+    description: Order management
 
 components:
   securitySchemes:
@@ -81,6 +83,10 @@ components:
       $ref: './schemas/order-payment-type/order-payment-type.yaml'
     order-payment-types:
       $ref: './schemas/order-payment-type/order-payment-types.yaml'
+    order:
+      $ref: './schemas/order/order.yaml'
+    orders:
+      $ref: './schemas/order/orders.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -88,8 +94,12 @@ components:
       $ref: './parameters/user-status/user-status-id.yaml'
     user-id:
       $ref: './parameters/user/user-id.yaml'
+    query-user-id:
+      $ref: './parameters/user/query-user-id.yaml'
     order-status-id:
       $ref: './parameters/order-status/order-status-id.yaml'
+    query-order-status-id:
+      $ref: './parameters/order-status/query-order-status-id.yaml'
     category-id:
       $ref: './parameters/category/category-id.yaml'
     query-category-id:
@@ -108,6 +118,10 @@ components:
       $ref: './parameters/feedback/feedback-id.yaml'
     order-payment-type-id:
       $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
+    query-order-payment-type-id:
+      $ref: './parameters/order-payment-type/query-order-payment-type-id.yaml'
+    order-id:
+      $ref: './parameters/order/order-id.yaml'
 
 paths:
   /user-role:
@@ -172,3 +186,17 @@ paths:
     $ref: './paths/order-payment-type/base.yaml'
   /order-payment-type/{order-payment-type-id}:
     $ref: './paths/order-payment-type/{order-payment-type-id}.yaml'
+  /order:
+    $ref: './paths/order/base.yaml'
+  /order/{order-id}:
+    $ref: './paths/order/{order-id}.yaml'
+  /order/cancel/{order-id}:
+    $ref: './paths/order/cancel/{order-id}.yaml'
+  /order/set-payment-type/{order-id}:
+    $ref: './paths/order/set-payment-type/{order-id}.yaml'
+  /order/payment/{order-id}:
+    $ref: './paths/order/payment/{order-id}.yaml'
+  /order/sort-by/user/{user-id}:
+    $ref: './paths/order/sort-by/user/{user-id}.yaml'
+  /order/sort-by/user/status/{status-id}:
+    $ref: './paths/order/sort-by/user/status/{status-id}.yaml'

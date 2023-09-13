@@ -1,0 +1,37 @@
+get:
+  tags:
+    - order
+  summary: Get order by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Order received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order/order.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../responses/order/order-not-found-by-id.yaml'
+
+delete:
+  tags:
+    - order
+  summary: Delete order by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Feedback successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../responses/order/order-not-found-by-id.yaml'
