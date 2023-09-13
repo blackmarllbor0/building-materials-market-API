@@ -1,0 +1,44 @@
+post:
+  tags:
+    - order-history
+  summary: Create a new order screenshot.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/query-order-id.yaml'
+    - $ref: './parameters/order-status/query-order-status-id.yaml'
+  responses:
+    200:
+      description: Created new order history screenshot.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-history/order-history.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+
+get:
+  tags:
+    - order-history
+  summary: Get order all history.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/query-order-id.yaml'
+  responses:
+    200:
+      description: Full order history.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-history/order-histories.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      description: The order does not exist or has no history yet.

@@ -32,6 +32,8 @@ tags:
     description: Order management
   - name: order-detail
     description: Management of each item of a specific order.
+  - name: order-history
+    description: View and manage your order history.
 
 components:
   securitySchemes:
@@ -93,6 +95,10 @@ components:
       $ref: './schemas/order-detail/order-detail.yaml'
     order-details:
       $ref: './schemas/order-detail/order-details.yaml'
+    order-history:
+      $ref: './schemas/order-history/order-history.yaml'
+    order-histories:
+      $ref: './schemas/order-history/order-histories.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -132,8 +138,6 @@ components:
       $ref: './parameters/order/order-id.yaml'
     query-order-id:
       $ref: './parameters/order/query-order-id.yaml'
-    order-detail-id:
-      $ref: './parameters/order-detail/order-detail-id.yaml'
 
 paths:
   /user-role:
@@ -214,3 +218,5 @@ paths:
     $ref: './paths/order/sort-by/user/status/{status-id}.yaml'
   /order-detail:
     $ref: './paths/order-detail/base.yaml'
+  /order-history:
+    $ref: './paths/order-history/base.yaml'

@@ -1,0 +1,19 @@
+type: object
+properties:
+  orderStatusId:
+    type: integer
+  orderId:
+    type: integer
+  totalQuantity:
+    type: integer
+  totalCost:
+    type: number
+  createDate:
+    type: string
+  updateDate:
+    type: string
+example:
+  orderStatusId: 1
+  orderId: 1
+  totalQuantity: 10
+  totalCost: 150000

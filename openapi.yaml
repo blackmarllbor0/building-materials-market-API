@@ -30,6 +30,8 @@ tags:
     description: Order management
   - name: order-detail
     description: Management of each item of a specific order.
+  - name: order-history
+    description: View and manage your order history.
 components:
   securitySchemes:
     cookie-auth:
@@ -330,6 +332,30 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/order-detail"
+    order-history:
+      type: object
+      properties:
+        orderStatusId:
+          type: integer
+        orderId:
+          type: integer
+        totalQuantity:
+          type: integer
+        totalCost:
+          type: number
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        orderStatusId: 1
+        orderId: 1
+        totalQuantity: 10
+        totalCost: 150000
+    order-histories:
+      type: array
+      items:
+        $ref: "#/components/schemas/order-history"
   parameters:
     user-role-id:
       name: user-role-id
@@ -462,13 +488,6 @@ components:
       in: query
       required: true
       description: Order id.
-      schema:
-        type: integer
-    order-detail-id:
-      name: order-detail-id
-      in: path
-      required: true
-      description: Order detail id.
       schema:
         type: integer
 paths:
@@ -2182,3 +2201,47 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           description: Not found.
+  /order-history:
+    post:
+      tags:
+        - order-history
+      summary: Create a new order screenshot.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-id"
+        - $ref: "#/components/parameters/query-order-status-id"
+      responses:
+        "200":
+          description: Created new order history screenshot.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-history"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+    get:
+      tags:
+        - order-history
+      summary: Get order all history.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-id"
+      responses:
+        "200":
+          description: Full order history.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-histories"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: The order does not exist or has no history yet.
