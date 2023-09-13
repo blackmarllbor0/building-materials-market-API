@@ -28,6 +28,8 @@ tags:
     description: Manage order payment type for administrator.
   - name: order
     description: Order management
+  - name: order-detail
+    description: Management of each item of a specific order.
 components:
   securitySchemes:
     cookie-auth:
@@ -307,6 +309,27 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/order"
+    order-detail:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        productId:
+          type: integer
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        orderId: 1
+        productId: 1
+        isDeleted: false
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    order-details:
+      type: array
+      items:
+        $ref: "#/components/schemas/order-detail"
   parameters:
     user-role-id:
       name: user-role-id
@@ -399,6 +422,13 @@ components:
       description: Product name.
       schema:
         type: string
+    query-product-id:
+      name: product-id
+      in: query
+      required: true
+      description: Product id.
+      schema:
+        type: integer
     feedback-id:
       name: feedback-id
       in: path
@@ -425,6 +455,20 @@ components:
       in: path
       required: true
       description: Order id.
+      schema:
+        type: integer
+    query-order-id:
+      name: order-id
+      in: query
+      required: true
+      description: Order id.
+      schema:
+        type: integer
+    order-detail-id:
+      name: order-detail-id
+      in: path
+      required: true
+      description: Order detail id.
       schema:
         type: integer
 paths:
@@ -2077,3 +2121,64 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           description: Orders not found.
+  /order-detail:
+    post:
+      tags:
+        - order-detail
+      summary: Add new item to order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-id"
+        - $ref: "#/components/parameters/query-product-id"
+      responses:
+        "200":
+          description: Created new order detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-detail"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+    get:
+      tags:
+        - order-detail
+      summary: Receive all products of the order
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-id"
+      responses:
+        "200":
+          description: All order items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-details"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+    put:
+      tags:
+        - order-detail
+      summary: Add new item to order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-order-id"
+        - $ref: "#/components/parameters/query-product-id"
+      responses:
+        "200":
+          description: Feedback successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Not found.

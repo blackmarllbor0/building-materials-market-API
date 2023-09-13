@@ -1,0 +1,62 @@
+post:
+  tags:
+    - order-detail
+  summary: Add new item to order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/query-order-id.yaml'
+    - $ref: './parameters/product/query-product-id.yaml'
+  responses:
+    200:
+      description: Created new order detail.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-detail/order-detail.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+
+get:
+  tags:
+    - order-detail
+  summary: Receive all products of the order
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/query-order-id.yaml'
+  responses:
+    200:
+      description: All order items
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-detail/order-details.yaml'
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      $ref: '../../responses/order/order-not-found-by-id.yaml'
+
+put:
+  tags:
+    - order-detail
+  summary: Add new item to order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/query-order-id.yaml'
+    - $ref: './parameters/product/query-product-id.yaml'
+  responses:
+    200:
+      description: Feedback successfully deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      description: Not found.

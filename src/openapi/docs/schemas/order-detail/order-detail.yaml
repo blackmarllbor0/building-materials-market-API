@@ -1,0 +1,16 @@
+type: object
+properties:
+  orderId:
+    type: integer
+  productId:
+    type: integer
+  createDate:
+    type: string
+  updateDate:
+    type: string
+example:
+  orderId: 1
+  productId: 1
+  isDeleted: false
+  createDate: 00.11.2222
+  updateDate: 99.88.7777

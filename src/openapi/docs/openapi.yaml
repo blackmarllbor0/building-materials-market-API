@@ -30,6 +30,8 @@ tags:
     description: Manage order payment type for administrator.
   - name: order
     description: Order management
+  - name: order-detail
+    description: Management of each item of a specific order.
 
 components:
   securitySchemes:
@@ -87,6 +89,10 @@ components:
       $ref: './schemas/order/order.yaml'
     orders:
       $ref: './schemas/order/orders.yaml'
+    order-detail:
+      $ref: './schemas/order-detail/order-detail.yaml'
+    order-details:
+      $ref: './schemas/order-detail/order-details.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -114,6 +120,8 @@ components:
       $ref: './parameters/product/product-id.yaml'
     product-name:
       $ref: './parameters/product/product-title.yaml'
+    query-product-id:
+      $ref: './parameters/product/query-product-id.yaml'
     feedback-id:
       $ref: './parameters/feedback/feedback-id.yaml'
     order-payment-type-id:
@@ -122,6 +130,10 @@ components:
       $ref: './parameters/order-payment-type/query-order-payment-type-id.yaml'
     order-id:
       $ref: './parameters/order/order-id.yaml'
+    query-order-id:
+      $ref: './parameters/order/query-order-id.yaml'
+    order-detail-id:
+      $ref: './parameters/order-detail/order-detail-id.yaml'
 
 paths:
   /user-role:
@@ -200,3 +212,5 @@ paths:
     $ref: './paths/order/sort-by/user/{user-id}.yaml'
   /order/sort-by/user/status/{status-id}:
     $ref: './paths/order/sort-by/user/status/{status-id}.yaml'
+  /order-detail:
+    $ref: './paths/order-detail/base.yaml'
