@@ -1,0 +1,40 @@
+get:
+  tags:
+    - session
+  summary: Get user session.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/session/session-id.yaml'
+  responses:
+    200:
+      description: Sessions received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/session/session.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No user session found by this id.
+delete:
+  tags:
+    - session
+  summary: Delete user session.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/session/session-id.yaml '
+  responses:
+    200:
+      description: Sessions deleted.
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: No user session found by this id.

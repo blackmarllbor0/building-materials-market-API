@@ -34,6 +34,8 @@ tags:
     description: Management of each item of a specific order.
   - name: order-history
     description: View and manage your order history.
+  - name: delivery
+    description: Custom Delivery Management.
 
 components:
   securitySchemes:
@@ -99,6 +101,14 @@ components:
       $ref: './schemas/order-history/order-history.yaml'
     order-histories:
       $ref: './schemas/order-history/order-histories.yaml'
+    delivery:
+      $ref: './schemas/delivery/delivery.yaml'
+    deliveries:
+      $ref: './schemas/delivery/deliveries.yaml'
+    session:
+      $ref: './schemas/session/session.yaml'
+    sessions:
+      $ref: './schemas/session/sessions.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -138,6 +148,10 @@ components:
       $ref: './parameters/order/order-id.yaml'
     query-order-id:
       $ref: './parameters/order/query-order-id.yaml'
+    delivery-id:
+      $ref: './parameters/delivery/delivery-id.yaml'
+    session-id:
+      $ref: './parameters/session/session-id.yaml'
 
 paths:
   /user-role:
@@ -220,3 +234,11 @@ paths:
     $ref: './paths/order-detail/base.yaml'
   /order-history:
     $ref: './paths/order-history/base.yaml'
+  /delivery:
+    $ref: './paths/delivery/base.yaml'
+  /delivery/{delivery-id}:
+    $ref: './paths/delivery/{delivery-id}.yaml'
+  /session:
+    $ref: './paths/session/base.yaml'
+  /session/{session-id}:
+    $ref: './paths/session/{session-id}.yaml'

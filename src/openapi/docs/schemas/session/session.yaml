@@ -1,0 +1,18 @@
+type: object
+properties:
+  userId:
+    type: integer
+  token:
+    type: string
+  liveTime:
+    type: string
+  createDate:
+    type: string
+  updateDate:
+    type: string
+example:
+  userId: 1
+  token: token
+  liveTime: 66.55.4444-33:33
+  createDate: 00.11.2222
+  updateDate: 99.88.7777

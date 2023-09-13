@@ -1,0 +1,41 @@
+post:
+  summary: Create new user delivery.
+  tags:
+    - delivery
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderId:
+              type: integer
+            amount:
+              type: number
+            addressFrom:
+              type: string
+            addressTo:
+              type: string
+            approximateDate:
+              type: string
+            createDate:
+              type: string
+  responses:
+    200:
+      description: Delivery created.
+      content:
+        application/json:
+          example:
+            orderId: 1
+            amount: 1500
+            addressFrom: Almaty
+            addressTo: Moscow
+            approximateDate: 55.55.4444
+            createDate: 00.11.2222
+    400:
+      $ref: './responses/validation/400.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'

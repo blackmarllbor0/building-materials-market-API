@@ -1,0 +1,40 @@
+get:
+  tags:
+    - delivery
+  summary: View delivery information
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/delivery/delivery-id.yaml'
+  responses:
+    200:
+      description: Delivery info.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/delivery/delivery.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    404:
+      description: Delivery not found.
+
+delete:
+  tags:
+    - delivery
+  summary: Delete delivery.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/delivery/delivery-id.yaml'
+  responses:
+    200:
+      description: Delivery deleted.
+      $ref: './responses/auth/401.yaml'
+    401:
+      $ref: './responses/auth/401.yaml'
+    403:
+      $ref: './responses/auth/403.yaml'
+    404:
+      description: Delivery not found.

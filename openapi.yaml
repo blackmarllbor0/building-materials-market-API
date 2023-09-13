@@ -32,6 +32,8 @@ tags:
     description: Management of each item of a specific order.
   - name: order-history
     description: View and manage your order history.
+  - name: delivery
+    description: Custom Delivery Management.
 components:
   securitySchemes:
     cookie-auth:
@@ -356,6 +358,58 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/order-history"
+    delivery:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        amount:
+          type: number
+        addressFrom:
+          type: string
+        addressTo:
+          type: string
+        approximateDate:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        orderId: 1
+        amount: 1500
+        addressFrom: Almaty
+        addressTo: Moscow
+        approximateDate: 55.55.4444
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    deliveries:
+      type: array
+      items:
+        $ref: "#/components/schemas/delivery"
+    session:
+      type: object
+      properties:
+        userId:
+          type: integer
+        token:
+          type: string
+        liveTime:
+          type: string
+        createDate:
+          type: string
+        updateDate:
+          type: string
+      example:
+        userId: 1
+        token: token
+        liveTime: 66.55.4444-33:33
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
+    sessions:
+      type: array
+      items:
+        $ref: "#/components/schemas/session"
   parameters:
     user-role-id:
       name: user-role-id
@@ -488,6 +542,20 @@ components:
       in: query
       required: true
       description: Order id.
+      schema:
+        type: integer
+    delivery-id:
+      name: delivery-id
+      in: path
+      required: true
+      description: Delivery id.
+      schema:
+        type: integer
+    session-id:
+      name: session-id
+      in: path
+      required: true
+      description: Session id.
       schema:
         type: integer
 paths:
@@ -2245,3 +2313,149 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           description: The order does not exist or has no history yet.
+  /delivery:
+    post:
+      summary: Create new user delivery.
+      tags:
+        - delivery
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                amount:
+                  type: number
+                addressFrom:
+                  type: string
+                addressTo:
+                  type: string
+                approximateDate:
+                  type: string
+                createDate:
+                  type: string
+      responses:
+        "200":
+          description: Delivery created.
+          content:
+            application/json:
+              example:
+                orderId: 1
+                amount: 1500
+                addressFrom: Almaty
+                addressTo: Moscow
+                approximateDate: 55.55.4444
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+  "/delivery/{delivery-id}":
+    get:
+      tags:
+        - delivery
+      summary: View delivery information
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/delivery-id"
+      responses:
+        "200":
+          description: Delivery info.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Delivery not found.
+    delete:
+      tags:
+        - delivery
+      summary: Delete delivery.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/delivery-id"
+      responses:
+        "200":
+          description: Delivery deleted.
+          $ref: "#/components/responses/401"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Delivery not found.
+  /session:
+    get:
+      tags:
+        - session
+      summary: Get all user sessions.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/query-user-id"
+      responses:
+        "200":
+          description: All sessions received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sessions"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No user sessions found.
+  "/session/{session-id}":
+    get:
+      tags:
+        - session
+      summary: Get user session.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/session-id"
+      responses:
+        "200":
+          description: Sessions received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/session"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No user session found by this id.
+    delete:
+      tags:
+        - session
+      summary: Delete user session.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/session-id"
+      responses:
+        "200":
+          description: Sessions deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: No user session found by this id.
