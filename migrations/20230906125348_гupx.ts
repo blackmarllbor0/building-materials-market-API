@@ -140,6 +140,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.orderPaymentType)
         .onDelete(CASCADE);
+      table.boolean('isCanceled').defaultTo(false);
       table.integer('number').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
