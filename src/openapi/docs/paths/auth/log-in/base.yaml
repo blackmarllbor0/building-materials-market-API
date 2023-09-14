@@ -1,0 +1,37 @@
+post:
+  summary: Sign in.
+  tags:
+    - auth
+  requestBody:
+    description: User data for sign in. You can specify either email or phone.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              minLength: 6
+            phoneNumber:
+              type: string
+              maxLength: 15
+              minLength: 10
+            password:
+              type: string
+              minLength: 8
+  responses:
+    201:
+      description: The user is authorized.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/user.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

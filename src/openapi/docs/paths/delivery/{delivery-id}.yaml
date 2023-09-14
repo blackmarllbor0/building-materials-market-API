@@ -30,6 +30,7 @@ put:
     - $ref: './parameters/delivery/delivery-id.yaml'
   requestBody:
     description: Order history.
+    required: true
     content:
       application/json:
         schema:

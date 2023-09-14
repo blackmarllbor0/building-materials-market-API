@@ -25,6 +25,7 @@ put:
     - $ref: './parameters/user-role/user-role-id.yaml'
   requestBody:
     description: Updated product data.
+    required: true
     content:
       application/json:
         schema:

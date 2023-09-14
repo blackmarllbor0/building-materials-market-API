@@ -1,51 +1,3 @@
-post:
-  summary: Create new user.
-  tags:
-    - user
-  requestBody:
-    description: User data for creating new user.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            user-role:
-              type: integer
-              default: 2
-              nullable: true
-            name:
-              type: string
-              minLength: 2
-            email:
-              type: string
-              minLength: 6
-            phoneNumber:
-              type: string
-              maxLength: 15
-              minLength: 10
-            password:
-              type: string
-              minLength: 8
-  responses:
-    201:
-      description: Created new user status.
-      content:
-        application/json:
-          example:
-            id: 1
-            name: Harry Potter
-            email: potter@hogwarts.com
-            createDate: 00.11.2222
-    400:
-      $ref: './responses/400.yaml'
-    401:
-      $ref: './responses/401.yaml'
-    403:
-      $ref: './responses/403.yaml'
-    409:
-      $ref: './responses/409.yaml'
-
 get:
   tags:
     - user
@@ -71,9 +23,5 @@ get:
             type: array
             items:
               $ref: './schemas/user.yaml'
-    401:
-      $ref: './responses/401.yaml'
-    403:
-      $ref: './responses/403.yaml'
     404:
       $ref: './responses/404.yaml'

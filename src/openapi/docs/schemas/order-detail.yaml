@@ -4,11 +4,8 @@ properties:
     type: integer
   productId:
     type: integer
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
+  id: 1
   orderId: 1
   productId: 1
   isDeleted: false

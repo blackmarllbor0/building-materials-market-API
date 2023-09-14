@@ -9,6 +9,7 @@ post:
     - name: category-name
       in: query
       description: Category name.
+      required: true
       schema:
         type: string
   responses:

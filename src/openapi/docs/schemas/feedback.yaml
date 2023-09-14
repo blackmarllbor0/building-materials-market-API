@@ -19,6 +19,9 @@ properties:
     minLength: 50
 example:
   id: 1
+  userId: 1
+  productId: 1
+  companyId: 1
   rating: 5
   title: the very very good!
   message: text

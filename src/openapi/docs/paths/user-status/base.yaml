@@ -9,6 +9,7 @@ post:
     - name: user-status-name
       in: query
       description: New user status name.
+      required: true
       schema:
         type: string
   responses:

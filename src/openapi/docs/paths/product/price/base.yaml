@@ -16,7 +16,12 @@ get:
       required: true
       schema:
         type: integer
-    - $ref: './parameters/category/query-category-id.yaml'
+    - name: category-id
+      in: query
+      required: false
+      description: Category id.
+      schema:
+        type: integer
     - name: company-id
       in: query
       required: false

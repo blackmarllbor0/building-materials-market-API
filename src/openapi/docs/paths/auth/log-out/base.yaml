@@ -1,0 +1,22 @@
+get:
+  summary: Sign out.
+  tags:
+    - auth
+  parameters:
+    - name: user-id
+      in: cookie
+      description: User id in token.
+      required: true
+      schema:
+        type: integer
+  responses:
+    201:
+      description: The session has ended..
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

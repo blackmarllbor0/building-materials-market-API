@@ -16,11 +16,8 @@ properties:
   description:
     type: string
     minLength: 50
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
+  id: 1
   name: facebook
   linkToWebSite: https://facebook.com
   linkToLogoImage: /user/admin/server/facebook/images/logo.png

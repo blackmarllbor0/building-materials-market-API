@@ -10,6 +10,7 @@ put:
     - name: payment-type
       in: query
       description: New order payment type name.
+      required: true
       schema:
         type: string
   responses:

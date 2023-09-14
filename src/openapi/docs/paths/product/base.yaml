@@ -7,6 +7,7 @@ post:
     - admin-role: [ ]
   requestBody:
     description: Product data.
+    required: true
     content:
       application/json:
         schema:

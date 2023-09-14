@@ -10,11 +10,8 @@ properties:
     type: string
   approximateDate:
     type: string
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
+  id: 1
   orderId: 1
   amount: 1500
   addressFrom: Almaty

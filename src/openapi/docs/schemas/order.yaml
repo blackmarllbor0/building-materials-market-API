@@ -6,12 +6,11 @@ properties:
     type: integer
   orderPaymentTypeId:
     type: integer
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
   id: 1
+  userId: 1
+  orderStatusId: 1
+  orderPaymentTypeId: 1
   orderNumber: 9999
   createDate: 00.11.2222
   updateDate: 99.88.7777

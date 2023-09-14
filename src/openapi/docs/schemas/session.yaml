@@ -6,11 +6,8 @@ properties:
     type: string
   liveTime:
     type: string
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
+  id: 1
   userId: 1
   token: token
   liveTime: 66.55.4444-33:33

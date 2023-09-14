@@ -4,6 +4,7 @@ get:
   summary: Get company products by category.
   security:
   parameters:
+    - $ref: './parameters/company/company-id.yaml'
     - $ref: './parameters/category/category-id.yaml'
   responses:
     200:

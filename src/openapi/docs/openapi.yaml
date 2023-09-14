@@ -38,6 +38,8 @@ tags:
     description: Custom Delivery Management.
   - name: auth-audit-event
     description: Manage audit event for administrator.
+  - name: auth
+    description: Login management methods.
 
 components:
   securitySchemes:
@@ -144,6 +146,14 @@ components:
       $ref: './parameters/auth-audit/auth-audit-id.yaml'
 
 paths:
+  # AUTH
+  /auth/register:
+    $ref: './paths/auth/register/base.yaml'
+  /auth/log-in:
+    $ref: './paths/auth/log-in/base.yaml'
+  /auth/log-out/:
+    $ref: './paths/auth/log-out/base.yaml'
+
   # USER-ROLE
   /user-role:
     $ref: './paths/user-role/base.yaml'

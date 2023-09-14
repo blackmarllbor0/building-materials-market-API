@@ -9,6 +9,7 @@ post:
     - name: user-role-name
       in: query
       description: New user role name.
+      required: true
       schema:
         type: string
   responses:

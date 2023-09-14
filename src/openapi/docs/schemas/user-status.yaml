@@ -1,12 +1,6 @@
 type: object
 properties:
-  id:
-    type: integer
   name:
-    type: string
-  createDate:
-    type: string
-  updateDate:
     type: string
 example:
   id: 1

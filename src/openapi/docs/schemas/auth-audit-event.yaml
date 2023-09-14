@@ -2,13 +2,8 @@ type: object
 properties:
   name:
     type: string
-  createDate:
-    type: string
-  updateDate:
-    type: string
 example:
   id: 1
-  userId: 1
   name: successfully logging
   createDate: 00.11.2222
   updateDate: 99.88.7777

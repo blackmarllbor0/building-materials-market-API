@@ -22,6 +22,7 @@ properties:
     type: string
     minLength: 50
 example:
+  id: 1
   companyId: 1
   categoryId: 1
   quantity: 17

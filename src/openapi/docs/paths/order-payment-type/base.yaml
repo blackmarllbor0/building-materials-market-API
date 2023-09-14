@@ -9,6 +9,7 @@ post:
     - name: order-payment-type-name
       in: query
       description: Order payment type name.
+      required: true
       schema:
         type: string
   responses:

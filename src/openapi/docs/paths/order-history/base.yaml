@@ -5,9 +5,16 @@ post:
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
-  parameters:
-    - $ref: './parameters/order/query-order-id.yaml'
-    - $ref: './parameters/order-status/query-order-status-id.yaml'
+  requestBody:
+    description: Feedback data for creating new feedback.
+    required: true
+    content:
+      application/json:
+        schema:
+          orderId:
+            type: integer
+          orderStatusId:
+            type: integer
   responses:
     200:
       description: Created new order history screenshot.

@@ -5,10 +5,18 @@ post:
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
-  parameters:
-    - $ref: './parameters/user/query-user-id.yaml'
-    - $ref: './parameters/order-status/query-order-status-id.yaml'
-    - $ref: './parameters/order-payment-type/query-order-payment-type-id.yaml'
+  requestBody:
+    description: Feedback data for creating new feedback.
+    required: true
+    content:
+      application/json:
+        schema:
+          userId:
+            type: integer
+          orderStatusId:
+            type: integer
+          orderPaymentTypeId:
+            type: integer
   responses:
     201:
       description: Created new order.
@@ -16,6 +24,9 @@ post:
         application/json:
           example:
             id: 1
+            userId: 1
+            orderStatusId: 1
+            orderPaymentTypeId: 1
             orderNumber: 9999
             createDate: 00.11.2222
     400:

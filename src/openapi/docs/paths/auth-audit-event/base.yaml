@@ -9,6 +9,7 @@ post:
     - name: auth-event-name
       in: query
       description: Auth event name.
+      required: true
       schema:
         type: string
   responses:

@@ -6,6 +6,8 @@ post:
     - cookie-auth: [ ]
     - customer-role: [ ]
   requestBody:
+    description: Delivery details.
+    required: true
     content:
       application/json:
         schema:

@@ -36,6 +36,8 @@ tags:
     description: Custom Delivery Management.
   - name: auth-audit-event
     description: Manage audit event for administrator.
+  - name: auth
+    description: Login management methods.
 components:
   securitySchemes:
     cookie-auth:
@@ -68,13 +70,7 @@ components:
     user-role:
       type: object
       properties:
-        id:
-          type: integer
         name:
-          type: string
-        createDate:
-          type: string
-        updateDate:
           type: string
       example:
         id: 1
@@ -84,13 +80,7 @@ components:
     user-status:
       type: object
       properties:
-        id:
-          type: integer
         name:
-          type: string
-        createDate:
-          type: string
-        updateDate:
           type: string
       example:
         id: 1
@@ -100,7 +90,7 @@ components:
     user:
       type: object
       properties:
-        userRole:
+        userRoleId:
           type: integer
           default: 2
           nullable: true
@@ -118,6 +108,8 @@ components:
           type: string
       example:
         id: 1
+        userRoleId: 1
+        userStatusId: 1
         name: Harry Potter
         email: potter@hogwarts.com
         createDate: 00.11.2222
@@ -140,13 +132,7 @@ components:
     category:
       type: object
       properties:
-        id:
-          type: integer
         name:
-          type: string
-        createDate:
-          type: string
-        updateDate:
           type: string
       example:
         id: 1
@@ -172,11 +158,8 @@ components:
         description:
           type: string
           minLength: 50
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
+        id: 1
         name: facebook
         linkToWebSite: https://facebook.com
         linkToLogoImage: /user/admin/server/facebook/images/logo.png
@@ -210,6 +193,7 @@ components:
           type: string
           minLength: 50
       example:
+        id: 1
         companyId: 1
         categoryId: 1
         quantity: 17
@@ -244,6 +228,9 @@ components:
           minLength: 50
       example:
         id: 1
+        userId: 1
+        productId: 1
+        companyId: 1
         rating: 5
         title: the very very good!
         message: text
@@ -252,13 +239,7 @@ components:
     order-payment-type:
       type: object
       properties:
-        id:
-          type: integer
         name:
-          type: string
-        createDate:
-          type: string
-        updateDate:
           type: string
       example:
         id: 1
@@ -274,12 +255,11 @@ components:
           type: integer
         orderPaymentTypeId:
           type: integer
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
         id: 1
+        userId: 1
+        orderStatusId: 1
+        orderPaymentTypeId: 1
         orderNumber: 9999
         createDate: 00.11.2222
         updateDate: 99.88.7777
@@ -290,11 +270,8 @@ components:
           type: integer
         productId:
           type: integer
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
+        id: 1
         orderId: 1
         productId: 1
         isDeleted: false
@@ -311,15 +288,14 @@ components:
           type: integer
         totalCost:
           type: number
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
+        id: 1
         orderStatusId: 1
         orderId: 1
         totalQuantity: 10
         totalCost: 150000
+        createDate: 00.11.2222
+        updateDate: 99.88.7777
     delivery:
       type: object
       properties:
@@ -333,11 +309,8 @@ components:
           type: string
         approximateDate:
           type: string
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
+        id: 1
         orderId: 1
         amount: 1500
         addressFrom: Almaty
@@ -354,11 +327,8 @@ components:
           type: string
         liveTime:
           type: string
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
+        id: 1
         userId: 1
         token: token
         liveTime: 66.55.4444-33:33
@@ -369,13 +339,8 @@ components:
       properties:
         name:
           type: string
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
         id: 1
-        userId: 1
         name: successfully logging
         createDate: 00.11.2222
         updateDate: 99.88.7777
@@ -384,14 +349,10 @@ components:
       properties:
         userId:
           type: integer
-        authAuditEvent:
+        authAuditEventId:
           type: integer
         sessionId:
           type: integer
-        createDate:
-          type: string
-        updateDate:
-          type: string
       example:
         id: 1
         userid: 1
@@ -569,6 +530,117 @@ components:
       schema:
         type: integer
 paths:
+  /auth/register:
+    post:
+      summary: Register new user.
+      tags:
+        - auth
+      requestBody:
+        description: User data for register new user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user-role:
+                  type: integer
+                  default: 2
+                  nullable: true
+                name:
+                  type: string
+                  minLength: 2
+                email:
+                  type: string
+                  minLength: 6
+                phoneNumber:
+                  type: string
+                  maxLength: 15
+                  minLength: 10
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        "201":
+          description: Created new user status.
+          content:
+            application/json:
+              example:
+                id: 1
+                userRoleId: 1
+                userStatusId: 1
+                name: Harry Potter
+                email: potter@hogwarts.com
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          $ref: "#/components/responses/409"
+  /auth/log-in:
+    post:
+      summary: Sign in.
+      tags:
+        - auth
+      requestBody:
+        description: User data for sign in. You can specify either email or phone.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 6
+                phoneNumber:
+                  type: string
+                  maxLength: 15
+                  minLength: 10
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        "201":
+          description: The user is authorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+  /auth/log-out/:
+    get:
+      summary: Sign out.
+      tags:
+        - auth
+      parameters:
+        - name: user-id
+          in: cookie
+          description: User id in token.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: The session has ended..
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
   /user-role:
     post:
       summary: Create a new user role.
@@ -581,6 +653,7 @@ paths:
         - name: user-role-name
           in: query
           description: New user role name.
+          required: true
           schema:
             type: string
       responses:
@@ -635,6 +708,7 @@ paths:
         - name: user-role-name
           in: query
           description: Updated user role name.
+          required: true
           schema:
             type: string
       responses:
@@ -684,6 +758,7 @@ paths:
         - name: user-status-name
           in: query
           description: New user status name.
+          required: true
           schema:
             type: string
       responses:
@@ -777,53 +852,6 @@ paths:
         "404":
           $ref: "#/components/responses/404"
   /user:
-    post:
-      summary: Create new user.
-      tags:
-        - user
-      requestBody:
-        description: User data for creating new user.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user-role:
-                  type: integer
-                  default: 2
-                  nullable: true
-                name:
-                  type: string
-                  minLength: 2
-                email:
-                  type: string
-                  minLength: 6
-                phoneNumber:
-                  type: string
-                  maxLength: 15
-                  minLength: 10
-                password:
-                  type: string
-                  minLength: 8
-      responses:
-        "201":
-          description: Created new user status.
-          content:
-            application/json:
-              example:
-                id: 1
-                name: Harry Potter
-                email: potter@hogwarts.com
-                createDate: 00.11.2222
-        "400":
-          $ref: "#/components/responses/400"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "409":
-          $ref: "#/components/responses/409"
     get:
       tags:
         - user
@@ -849,10 +877,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/user"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
   "/user/{user-id}":
@@ -1144,6 +1168,7 @@ paths:
         - name: category-name
           in: query
           description: Category name.
+          required: true
           schema:
             type: string
       responses:
@@ -1196,6 +1221,7 @@ paths:
         - name: category-name
           in: query
           description: Updated category name.
+          required: true
           schema:
             type: string
       responses:
@@ -1435,6 +1461,7 @@ paths:
         - admin-role: []
       requestBody:
         description: Product data.
+        required: true
         content:
           application/json:
             schema:
@@ -1527,6 +1554,7 @@ paths:
         - $ref: "#/components/parameters/user-role-id"
       requestBody:
         description: Updated product data.
+        required: true
         content:
           application/json:
             schema:
@@ -1657,6 +1685,7 @@ paths:
       summary: Get company products by category.
       security: null
       parameters:
+        - $ref: "#/components/parameters/company-id"
         - $ref: "#/components/parameters/category-id"
       responses:
         "200":
@@ -1692,7 +1721,12 @@ paths:
           required: true
           schema:
             type: integer
-        - $ref: "#/components/parameters/query-category-id"
+        - name: category-id
+          in: query
+          required: false
+          description: Category id.
+          schema:
+            type: integer
         - name: company-id
           in: query
           required: false
@@ -1790,6 +1824,7 @@ paths:
         - $ref: "#/components/parameters/feedback-id"
       requestBody:
         description: Updated feedback data.
+        required: true
         content:
           application/json:
             schema:
@@ -1921,6 +1956,7 @@ paths:
         - name: order-payment-type-name
           in: query
           description: Order payment type name.
+          required: true
           schema:
             type: string
       responses:
@@ -1975,6 +2011,7 @@ paths:
         - name: payment-type
           in: query
           description: New order payment type name.
+          required: true
           schema:
             type: string
       responses:
@@ -2020,10 +2057,18 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/query-user-id"
-        - $ref: "#/components/parameters/query-order-status-id"
-        - $ref: "#/components/parameters/query-order-payment-type-id"
+      requestBody:
+        description: Feedback data for creating new feedback.
+        required: true
+        content:
+          application/json:
+            schema:
+              userId:
+                type: integer
+              orderStatusId:
+                type: integer
+              orderPaymentTypeId:
+                type: integer
       responses:
         "201":
           description: Created new order.
@@ -2031,6 +2076,9 @@ paths:
             application/json:
               example:
                 id: 1
+                userId: 1
+                orderStatusId: 1
+                orderPaymentTypeId: 1
                 orderNumber: 9999
                 createDate: 00.11.2222
         "400":
@@ -2179,9 +2227,16 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/query-order-id"
-        - $ref: "#/components/parameters/query-product-id"
+      requestBody:
+        description: Feedback data for creating new feedback.
+        required: true
+        content:
+          application/json:
+            schema:
+              orderId:
+                type: integer
+              productId:
+                type: integer
       responses:
         "200":
           description: Created new order detail.
@@ -2262,9 +2317,16 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/query-order-id"
-        - $ref: "#/components/parameters/query-order-status-id"
+      requestBody:
+        description: Feedback data for creating new feedback.
+        required: true
+        content:
+          application/json:
+            schema:
+              orderId:
+                type: integer
+              orderStatusId:
+                type: integer
       responses:
         "200":
           description: Created new order history screenshot.
@@ -2328,6 +2390,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       requestBody:
+        description: Delivery details.
+        required: true
         content:
           application/json:
             schema:
@@ -2388,6 +2452,7 @@ paths:
         - $ref: "#/components/parameters/delivery-id"
       requestBody:
         description: Order history.
+        required: true
         content:
           application/json:
             schema:
@@ -2504,6 +2569,7 @@ paths:
         - name: auth-event-name
           in: query
           description: Auth event name.
+          required: true
           schema:
             type: string
       responses:
@@ -2558,6 +2624,7 @@ paths:
         - name: auth-audit-event-name
           in: query
           description: Updated audit event name.
+          required: true
           schema:
             type: string
       responses:
