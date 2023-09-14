@@ -57,13 +57,7 @@ get:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
-    - name: limit
-      in: query
-      description: Number of companies received (not required).
-      required: false
-      schema:
-        type: integer
-        default: 15
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All company received.

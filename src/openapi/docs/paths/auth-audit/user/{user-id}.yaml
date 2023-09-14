@@ -7,6 +7,7 @@ get:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/user/user-id.yaml'
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All audits.

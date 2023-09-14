@@ -5,13 +5,16 @@ post:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
-  parameters:
-    - name: category-name
-      in: query
-      description: Category name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New category name.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            categoryName:
+              type: string
   responses:
     201:
       description: The new category has been successfully created.
@@ -37,6 +40,8 @@ get:
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All categories received.

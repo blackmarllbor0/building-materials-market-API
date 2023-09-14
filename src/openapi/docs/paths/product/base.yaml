@@ -61,6 +61,8 @@ get:
   tags:
     - product
   summary: Get all products.
+  parameters:
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All product received.

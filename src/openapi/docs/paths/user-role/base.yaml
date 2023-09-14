@@ -5,13 +5,16 @@ post:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
-  parameters:
-    - name: user-role-name
-      in: query
-      description: New user role name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New user role.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            userRoleName:
+              type: string
   responses:
     201:
       description: Created new user role.
@@ -37,6 +40,8 @@ get:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All user role received.

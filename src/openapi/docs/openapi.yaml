@@ -96,6 +96,8 @@ components:
     auth-audit:
       $ref: './schemas/auth-audit.yaml'
   parameters:
+    limit:
+      $ref: './parameters/limit.yaml'
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
     user-status-id:
@@ -270,6 +272,8 @@ paths:
     $ref: './paths/delivery/base.yaml'
   /delivery/{delivery-id}:
     $ref: './paths/delivery/{delivery-id}.yaml'
+  /delivery/order/{order-id}:
+    $ref: './paths/delivery/order/{order-id}.yaml'
 
   # SESSION
   /session/{session-id}:

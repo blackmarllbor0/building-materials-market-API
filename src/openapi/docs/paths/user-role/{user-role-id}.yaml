@@ -7,12 +7,16 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/user-role/user-role-id.yaml'
-    - name: user-role-name
-      in: query
-      description: Updated user role name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New user role.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            userRoleName:
+              type: string
   responses:
     200:
       description: User role successfully updated.

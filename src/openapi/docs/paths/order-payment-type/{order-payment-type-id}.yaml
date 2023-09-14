@@ -7,12 +7,16 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
-    - name: payment-type
-      in: query
-      description: New order payment type name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New order payment type.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderPaymentTypeName:
+              type: string
   responses:
     200:
       description: Order payment type successfully updated.

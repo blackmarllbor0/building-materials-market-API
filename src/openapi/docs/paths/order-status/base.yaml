@@ -45,6 +45,8 @@ get:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All order-status received.

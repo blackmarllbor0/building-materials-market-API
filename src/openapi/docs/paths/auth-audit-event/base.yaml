@@ -5,13 +5,16 @@ post:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
-  parameters:
-    - name: auth-event-name
-      in: query
-      description: Auth event name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New audit event name.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            authEventName:
+              type: string
   responses:
     201:
       description: Created new auth audit event.
@@ -37,6 +40,8 @@ get:
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All audit events received.

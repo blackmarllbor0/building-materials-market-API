@@ -7,12 +7,16 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/user-status/user-status-id.yaml'
-    - name: user-status-name
-      in: query
-      required: true
-      description: Updated user status name.
-      schema:
-        type: string
+  requestBody:
+    description: New user status.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            userStatusName:
+              type: string
   responses:
     200:
       description: User status successfully updated.

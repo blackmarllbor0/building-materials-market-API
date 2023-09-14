@@ -4,6 +4,7 @@ get:
   summary: Sort products by price.
   security:
   parameters:
+    - $ref: './parameters/limit.yaml'
     - name: min
       in: query
       description: Min price.

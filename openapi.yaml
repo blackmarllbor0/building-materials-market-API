@@ -361,6 +361,15 @@ components:
         createDate: 00.11.2222
         updateDate: 99.88.7777
   parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of users received (not required).
+      required: false
+      schema:
+        type: integer
+        default: 15
+        nullable: true
     user-role-id:
       name: user-role-id
       in: path
@@ -649,13 +658,16 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      parameters:
-        - name: user-role-name
-          in: query
-          description: New user role name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New user role.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userRoleName:
+                  type: string
       responses:
         "201":
           description: Created new user role.
@@ -680,6 +692,8 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All user role received.
@@ -705,12 +719,16 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/user-role-id"
-        - name: user-role-name
-          in: query
-          description: Updated user role name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New user role.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userRoleName:
+                  type: string
       responses:
         "200":
           description: User role successfully updated.
@@ -754,13 +772,16 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      parameters:
-        - name: user-status-name
-          in: query
-          description: New user status name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New user status.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userStatusName:
+                  type: string
       responses:
         "201":
           description: Created new user status.
@@ -785,6 +806,8 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All user status received.
@@ -810,12 +833,16 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/user-status-id"
-        - name: user-status-name
-          in: query
-          required: true
-          description: Updated user status name.
-          schema:
-            type: string
+      requestBody:
+        description: New user status.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userStatusName:
+                  type: string
       responses:
         "200":
           description: User status successfully updated.
@@ -860,14 +887,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - name: limit
-          in: query
-          description: Number of users received (not required).
-          required: false
-          schema:
-            type: integer
-            default: 15
-            nullable: true
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All user received.
@@ -1083,6 +1103,8 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All order-status received.
@@ -1164,13 +1186,16 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      parameters:
-        - name: category-name
-          in: query
-          description: Category name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New category name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
       responses:
         "201":
           description: The new category has been successfully created.
@@ -1195,6 +1220,8 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All categories received.
@@ -1218,12 +1245,16 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/category-id"
-        - name: category-name
-          in: query
-          description: Updated category name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New category name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
       responses:
         "200":
           description: Category name successfully updated.
@@ -1319,13 +1350,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - name: limit
-          in: query
-          description: Number of companies received (not required).
-          required: false
-          schema:
-            type: integer
-            default: 15
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All company received.
@@ -1516,6 +1541,8 @@ paths:
       tags:
         - product
       summary: Get all products.
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All product received.
@@ -1640,6 +1667,7 @@ paths:
       security: null
       parameters:
         - $ref: "#/components/parameters/category-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Product sorted.
@@ -1663,6 +1691,7 @@ paths:
       security: null
       parameters:
         - $ref: "#/components/parameters/company-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Product sorted.
@@ -1687,6 +1716,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/company-id"
         - $ref: "#/components/parameters/category-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Product sorted.
@@ -1709,6 +1739,7 @@ paths:
       summary: Sort products by price.
       security: null
       parameters:
+        - $ref: "#/components/parameters/limit"
         - name: min
           in: query
           description: Min price.
@@ -1880,6 +1911,7 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/user-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Feedback sorted.
@@ -1903,6 +1935,7 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/product-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All product feedbacks
@@ -1931,6 +1964,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Reviews by ascending/descending rating.
@@ -1952,13 +1986,16 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      parameters:
-        - name: order-payment-type-name
-          in: query
-          description: Order payment type name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New order payment type.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderPaymentTypeName:
+                  type: string
       responses:
         "201":
           description: Created new order payment type.
@@ -1983,6 +2020,8 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All order payments received.
@@ -2008,12 +2047,16 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/order-payment-type-id"
-        - name: payment-type
-          in: query
-          description: New order payment type name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New order payment type.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderPaymentTypeName:
+                  type: string
       responses:
         "200":
           description: Order payment type successfully updated.
@@ -2184,6 +2227,7 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/user-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Order sorted.
@@ -2208,13 +2252,16 @@ paths:
       parameters:
         - $ref: "#/components/parameters/user-id"
         - $ref: "#/components/parameters/query-order-status-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Orders sorted.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/order"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order"
         "401":
           $ref: "#/components/responses/401"
         "404":
@@ -2258,6 +2305,7 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/order-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All order items.
@@ -2348,6 +2396,7 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/order-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: Full order history.
@@ -2491,6 +2540,27 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
+  "/delivery/order/{order-id}":
+    get:
+      tags:
+        - delivery
+      summary: Get delivery information for your order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Delivery information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Delivery not found.
   "/session/{session-id}":
     get:
       tags:
@@ -2542,6 +2612,7 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/user-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All user sessions received.
@@ -2565,13 +2636,16 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
-      parameters:
-        - name: auth-event-name
-          in: query
-          description: Auth event name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New audit event name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authEventName:
+                  type: string
       responses:
         "201":
           description: Created new auth audit event.
@@ -2596,6 +2670,8 @@ paths:
       security:
         - cookie-auth: []
         - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All audit events received.
@@ -2621,12 +2697,16 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/auth-audit-event-id"
-        - name: auth-audit-event-name
-          in: query
-          description: Updated audit event name.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: New audit event name.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authEventName:
+                  type: string
       responses:
         "200":
           description: Audit event name successfully updated.
@@ -2695,6 +2775,7 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/user-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All audits.
@@ -2721,6 +2802,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/user-id"
         - $ref: "#/components/parameters/session-id"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           description: All audits received.

@@ -5,6 +5,7 @@ get:
   security:
   parameters:
     - $ref: './parameters/company/company-id.yaml'
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: Product sorted.

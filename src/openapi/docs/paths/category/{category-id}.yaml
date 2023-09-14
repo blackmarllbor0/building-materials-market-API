@@ -7,12 +7,16 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/category/category-id.yaml'
-    - name: category-name
-      in: query
-      description: Updated category name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New category name.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            categoryName:
+              type: string
   responses:
     200:
       description: Category name successfully updated.

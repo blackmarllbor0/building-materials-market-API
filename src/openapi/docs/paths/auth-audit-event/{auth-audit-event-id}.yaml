@@ -7,12 +7,16 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/auth-audit-event/auth-audit-event-id.yaml'
-    - name: auth-audit-event-name
-      in: query
-      description: Updated audit event name.
-      required: true
-      schema:
-        type: string
+  requestBody:
+    description: New audit event name.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            authEventName:
+              type: string
   responses:
     200:
       description: Audit event name successfully updated.

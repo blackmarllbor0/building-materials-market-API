@@ -7,6 +7,7 @@ get:
     - customer-role: [ ]
   parameters:
     - $ref: './parameters/product/product-id.yaml'
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: All product feedbacks

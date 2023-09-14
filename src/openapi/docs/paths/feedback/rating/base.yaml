@@ -12,6 +12,7 @@ get:
       required: true
       schema:
         type: string
+    - $ref: './parameters/limit.yaml'
   responses:
     200:
       description: Reviews by ascending/descending rating.
