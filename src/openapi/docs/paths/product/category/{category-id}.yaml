@@ -1,0 +1,22 @@
+get:
+  tags:
+    - product
+  summary: Get products by category.
+  security:
+  parameters:
+    - $ref: './parameters/category/category-id.yaml'
+  responses:
+    200:
+      description: Product sorted.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

@@ -1,0 +1,22 @@
+get:
+  tags:
+    - feedback
+  summary: Get all user reviews by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/user-id.yaml'
+  responses:
+    200:
+      description: Feedback sorted.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/feedback.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

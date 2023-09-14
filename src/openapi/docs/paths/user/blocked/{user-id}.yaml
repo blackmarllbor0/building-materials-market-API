@@ -11,8 +11,8 @@ put:
     200:
       description: User successfully blocked.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../../.././responses/user/user-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

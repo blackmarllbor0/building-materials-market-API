@@ -1,26 +1,3 @@
-get:
-  tags:
-    - order-status
-  summary: Get order status by order status id.
-  security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
-  parameters:
-    - $ref: './parameters/order-status/order-status-id.yaml'
-  responses:
-    200:
-      description: Order status received.
-      content:
-        application/json:
-          schema:
-            $ref: './schemas/order-status/order-status.yaml'
-    401:
-      $ref: './responses/auth/401.yaml'
-    403:
-      $ref: './responses/auth/403.yaml'
-    404:
-      $ref: '../../responses/order-status/order-status-not-found-by-id.yaml'
-
 put:
   tags:
     - order-status
@@ -51,15 +28,15 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/order-status/order-status.yaml'
+            $ref: './schemas/order-status.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/order-status/order-status-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
 
 delete:
   tags:
@@ -74,8 +51,8 @@ delete:
     200:
       description: Order status successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/order-status/order-status-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

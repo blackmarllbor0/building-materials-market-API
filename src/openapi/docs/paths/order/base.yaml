@@ -1,5 +1,5 @@
 post:
-  summary: Create a new order.
+  summary: Create a new user order.
   tags:
     - order
   security:
@@ -19,6 +19,6 @@ post:
             orderNumber: 9999
             createDate: 00.11.2222
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'

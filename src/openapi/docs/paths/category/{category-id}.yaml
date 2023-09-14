@@ -14,21 +14,21 @@ put:
         type: string
   responses:
     200:
-      description: Category successfully updated.
+      description: Category name successfully updated.
       content:
         application/json:
           schema:
-            $ref: './schemas/category/category.yaml'
+            $ref: './schemas/category.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../../responses/category/category-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
     409:
-      $ref: '../../responses/category/category-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -43,8 +43,8 @@ delete:
     200:
       description: Category successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../../responses/category/category-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

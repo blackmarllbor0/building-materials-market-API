@@ -35,13 +35,9 @@ post:
       description: Created new user feedback.
       content:
         application/json:
-          example:
-            id: 1
-            rating: 5
-            title: the very very good!
-            message: text
-            createDate: 00.11.2222
+          schema:
+            $ref: './schemas/feedback.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'

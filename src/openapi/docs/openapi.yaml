@@ -48,77 +48,51 @@ components:
     customer-role:
       $ref: './security/customer-role.yaml'
   responses:
-    401:
-      $ref: './responses/auth/401.yaml'
-    403:
-      $ref: './responses/auth/403.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'
+
+
   schemas:
     user-role:
-      $ref: './schemas/user-role/user-role.yaml'
-    user-roles:
-      $ref: './schemas/user-role/user-roles.yaml'
+      $ref: './schemas/user-role.yaml'
     user-status:
-      $ref: './schemas/user-status/user-status.yaml'
-    user-statuses:
-      $ref: './schemas/user-status/user-statuses.yaml'
+      $ref: './schemas/user-status.yaml'
     user:
-      $ref: './schemas/user/user.yaml'
-    users:
-      $ref: './schemas/user/users.yaml'
+      $ref: './schemas/user.yaml'
     order-status:
-      $ref: './schemas/order-status/order-status.yaml'
-    order-statuses:
-      $ref: './schemas/order-status/order-statuses.yaml'
+      $ref: './schemas/order-status.yaml'
     category:
-      $ref: './schemas/category/category.yaml'
-    categories:
-      $ref: './schemas/category/categories.yaml'
+      $ref: './schemas/category.yaml'
     company:
-      $ref: './schemas/company/company.yaml'
-    companies:
-      $ref: './schemas/company/companies.yaml'
+      $ref: './schemas/company.yaml'
     product:
-      $ref: './schemas/product/product.yaml'
-    products:
-      $ref: './schemas/product/products.yaml'
+      $ref: './schemas/product.yaml'
     feedback:
-      $ref: './schemas/feedback/feedback.yaml'
-    feedbacks:
-      $ref: './schemas/feedback/feedbacks.yaml'
+      $ref: './schemas/feedback.yaml'
     order-payment-type:
-      $ref: './schemas/order-payment-type/order-payment-type.yaml'
-    order-payment-types:
-      $ref: './schemas/order-payment-type/order-payment-types.yaml'
+      $ref: './schemas/order-payment-type.yaml'
     order:
-      $ref: './schemas/order/order.yaml'
-    orders:
-      $ref: './schemas/order/orders.yaml'
+      $ref: './schemas/order.yaml'
     order-detail:
-      $ref: './schemas/order-detail/order-detail.yaml'
-    order-details:
-      $ref: './schemas/order-detail/order-details.yaml'
+      $ref: './schemas/order-detail.yaml'
     order-history:
-      $ref: './schemas/order-history/order-history.yaml'
-    order-histories:
-      $ref: './schemas/order-history/order-histories.yaml'
+      $ref: './schemas/order-history.yaml'
     delivery:
-      $ref: './schemas/delivery/delivery.yaml'
-    deliveries:
-      $ref: './schemas/delivery/deliveries.yaml'
+      $ref: './schemas/delivery.yaml'
     session:
-      $ref: './schemas/session/session.yaml'
-    sessions:
-      $ref: './schemas/session/sessions.yaml'
+      $ref: './schemas/session.yaml'
     auth-audit-event:
-      $ref: './schemas/auth-audit-event/auth-audit-event.yaml'
-    auth-audit-events:
-      $ref: './schemas/auth-audit-event/auth-audit-events.yaml'
+      $ref: './schemas/auth-audit-event.yaml'
     auth-audit:
-      $ref: './schemas/auth-audit/auth-audit.yaml'
-    auth-audits:
-      $ref: './schemas/auth-audit/auth-audits.yaml'
+      $ref: './schemas/auth-audit.yaml'
   parameters:
     user-role-id:
       $ref: './parameters/user-role/user-role-id.yaml'
@@ -170,101 +144,139 @@ components:
       $ref: './parameters/auth-audit/auth-audit-id.yaml'
 
 paths:
+  # USER-ROLE
   /user-role:
     $ref: './paths/user-role/base.yaml'
   /user-role/{user-role-id}:
     $ref: './paths/user-role/{user-role-id}.yaml'
+
+  # USER-STATUS
   /user-status:
     $ref: './paths/user-status/base.yaml'
   /user-status/{user-status-id}:
     $ref: './paths/user-status/{user-status-id}.yaml'
+
+  # USER
   /user:
     $ref: './paths/user/base.yaml'
   /user/{user-id}:
     $ref: './paths/user/{user-id}.yaml'
-  /user/blocked/{user-id}:
+  /user/{user-id}/blocked:
     $ref: './paths/user/blocked/{user-id}.yaml'
-  /user/unblocked/{user-id}:
+  /user/{user-id}/unblocked:
     $ref: './paths/user/unblocked/{user-id}.yaml'
-  /user/deleted/{user-id}:
+  /user/{user-id}/deleted:
     $ref: './paths/user/deleted/{user-id}.yaml'
-  /user/undeleted/{user-id}:
+  /user/{user-id}/undeleted:
     $ref: './paths/user/undeleted/{user-id}.yaml'
+
+
+  # ORDER-STATUS
   /order-status:
     $ref: './paths/order-status/base.yaml'
   /order-status/{order-status-id}:
     $ref: './paths/order-status/{order-status-id}.yaml'
+
+  # CATEGORY
   /category:
     $ref: './paths/category/base.yaml'
   /category/{category-id}:
     $ref: './paths/category/{category-id}.yaml'
+
+  # COMPANY
   /company:
     $ref: './paths/company/base.yaml'
   /company/{company-id}:
     $ref: './paths/company/{company-id}.yaml'
   /company/{company-name}:
     $ref: './paths/company/{company-name}.yaml'
+
+  # PRODUCT
   /product:
     $ref: './paths/product/base.yaml'
   /product/{product-id}:
     $ref: './paths/product/{product-id}.yaml'
   /product/{product-title}:
     $ref: './paths/product/{product-title}.yaml'
-  /product/sort-by/category/{category-id}:
-    $ref: './paths/product/sort-by/category/{category-id}.yaml'
-  /product/sort-by/company/{company-id}:
-    $ref: './paths/product/sort-by/company/{company-id}.yaml'
-  /product/sort-by/category-and-company:
-    $ref: './paths/product/sort-by/category-and-company/base.yaml'
-  /product/sort-by/price:
-    $ref: './paths/product/sort-by/price/base.yaml'
+  /product/category/{category-id}:
+    $ref: './paths/product/category/{category-id}.yaml'
+  /product/company/{company-id}:
+    $ref: './paths/product/company/{company-id}.yaml'
+  /product/company/{company-id}/category/{category-id}:
+    $ref: './paths/product/company/category/{category-id}.yaml'
+  /product/price:
+    $ref: './paths/product/price/base.yaml'
+
+  # FEEDBACK
   /feedback:
     $ref: './paths/feedback/base.yaml'
   /feedback/{feedback-id}:
     $ref: './paths/feedback/{feedback-id}.yaml'
-  /feedback/sort-by/user/{user-id}:
-    $ref: './paths/feedback/sort-by/user/{user-id}.yaml'
-  /feedback/sort-by/product/{product-id}:
-    $ref: './paths/feedback/sort-by/product/{product-id}.yaml'
-  /feedback/sort-by/rating/:
-    $ref: './paths/feedback/sort-by/rating/base.yaml'
+  /feedback/user/{user-id}:
+    $ref: './paths/feedback/user/{user-id}.yaml'
+  /feedback/product/{product-id}:
+    $ref: './paths/feedback/product/{product-id}.yaml'
+  /feedback/rating/:
+    $ref: './paths/feedback/rating/base.yaml'
+
+  # ORDER-PAYMENT-TYPE
   /order-payment-type:
     $ref: './paths/order-payment-type/base.yaml'
   /order-payment-type/{order-payment-type-id}:
     $ref: './paths/order-payment-type/{order-payment-type-id}.yaml'
+
+  # ORDER
   /order:
     $ref: './paths/order/base.yaml'
   /order/{order-id}:
     $ref: './paths/order/{order-id}.yaml'
-  /order/cancel/{order-id}:
+  /order/{order-id}/cancel:
     $ref: './paths/order/cancel/{order-id}.yaml'
-  /order/set-payment-type/{order-id}:
+  /order/{order-id}/set-payment-type:
     $ref: './paths/order/set-payment-type/{order-id}.yaml'
-  /order/payment/{order-id}:
+  /order/{order-id}/payment:
     $ref: './paths/order/payment/{order-id}.yaml'
-  /order/sort-by/user/{user-id}:
-    $ref: './paths/order/sort-by/user/{user-id}.yaml'
-  /order/sort-by/user/status/{status-id}:
-    $ref: './paths/order/sort-by/user/status/{status-id}.yaml'
+  /order/user/{user-id}:
+    $ref: './paths/order/user/{user-id}.yaml'
+  /order/user/{user-id  }/status/{status-id}:
+    $ref: './paths/order/user/status/{status-id}.yaml'
+
+  # ORDER-DETAIL
   /order-detail:
     $ref: './paths/order-detail/base.yaml'
+  /order-detail/order/{order-id}:
+    $ref: './paths/order-detail/order/{order-id}.yaml'
+  /order-detail/order/{order-id}/product/{prodct-id}/:
+    $ref: './paths/order-detail/order/product/{product-id}.yaml'
+
+  # ORDER-HISTORY
   /order-history:
     $ref: './paths/order-history/base.yaml'
+  /order-history/order/{order-id}:
+    $ref: './paths/order-history/order/{order-id}.yaml'
+
+  # DELIVERY
   /delivery:
     $ref: './paths/delivery/base.yaml'
   /delivery/{delivery-id}:
     $ref: './paths/delivery/{delivery-id}.yaml'
-  /session:
-    $ref: './paths/session/base.yaml'
+
+  # SESSION
   /session/{session-id}:
     $ref: './paths/session/{session-id}.yaml'
+  /session/user/{user-id}:
+    $ref: './paths/session/user/{user-id}.yaml'
+
+  # AUTH-AUDIT-EVENT
   /auth-audit-event:
     $ref: './paths/auth-audit-event/base.yaml'
   /auth-audit-event/{auth-audit-event-id}:
     $ref: './paths/auth-audit-event/{auth-audit-event-id}.yaml'
-  /auth-audit:
-    $ref: './paths/auth-audit/base.yaml'
-  /auth-audit/{/auth-audit-id}:
+
+  # AUTH-AUDIT
+  /auth-audit/{auth-audit-id}:
     $ref: './paths/auth-audit/{auth-audit-id}.yaml'
-  /auth-audit/sort-by/user-session:
-    $ref: './paths/auth-audit/sort-by/user-session/base.yaml'
+  /auth-audit/user/{user-id}:
+    $ref: './paths/auth-audit/user/{user-id}.yaml'
+  /auth-audit/user/{user-id}/session/{session-id}:
+    $ref: './paths/auth-audit/user/session/{session-id}.yaml'

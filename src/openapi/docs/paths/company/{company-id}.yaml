@@ -1,7 +1,7 @@
 get:
   tags:
     - company
-  summary: Get company by company id.
+  summary: Get company by  id.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
@@ -13,11 +13,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/company/company.yaml'
+            $ref: './schemas/company.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../responses/company/company-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
 
 put:
   tags:
@@ -34,22 +34,41 @@ put:
     content:
       application/json:
         schema:
-          $ref: './schemas/company/company.yaml'
+          type: object
+          properties:
+            name:
+              type: string
+            linkToWebSite:
+              type: string
+            linkToLogoImage:
+              type: string
+            phoneNumber:
+              type: string
+              minLength: 10
+              maxLength: 15
+            email:
+              type: string
+              minLength: 6
+            description:
+              type: string
+              minLength: 50
   responses:
     200:
       description: Company successfully updated.
       content:
         application/json:
           schema:
-            $ref: './schemas/user/user.yaml'
+            $ref: './schemas/user.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/company/company-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
     409:
-      $ref: '../../responses/company/company-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -64,6 +83,8 @@ delete:
     200:
       description: Company successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/company/company-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

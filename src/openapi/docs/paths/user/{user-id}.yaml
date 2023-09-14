@@ -13,11 +13,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/user/user.yaml'
+            $ref: './schemas/user.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../responses/user/user-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
 
 put:
   tags:
@@ -58,15 +58,15 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/user/user.yaml'
+            $ref: './schemas/user.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../.././responses/user/user-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
     409:
-      $ref: '../../responses/user/user-with-this-email-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -81,6 +81,6 @@ delete:
     200:
       description: User successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../.././responses/user/user-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

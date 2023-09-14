@@ -6,7 +6,7 @@ post:
     - cookie-auth: [ ]
     - admin-role: [ ]
   requestBody:
-    description: Company data for added new company.
+    description: Company information.
     required: true
     content:
       application/json:
@@ -42,17 +42,17 @@ post:
             email: facebook@meta.com
             description: many text
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     409:
-      $ref: '../../responses/company/company-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 get:
   tags:
     - company
-  summary: Get all company.
+  summary: Get all companies.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
@@ -64,17 +64,18 @@ get:
       schema:
         type: integer
         default: 15
-        nullable: true
   responses:
     200:
       description: All company received.
       content:
         application/json:
           schema:
-            $ref: './schemas/company/companies.yaml'
+            type: array
+            items:
+              $ref: './schemas/company.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      description: No companies found.
+      $ref: './responses/404.yaml'

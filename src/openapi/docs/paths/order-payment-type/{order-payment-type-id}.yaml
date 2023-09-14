@@ -7,9 +7,9 @@ put:
     - admin-role: [ ]
   parameters:
     - $ref: './parameters/order-payment-type/order-payment-type-id.yaml'
-    - name: order-payment-type-name
+    - name: payment-type
       in: query
-      description: Updated order payment type name.
+      description: New order payment type name.
       schema:
         type: string
   responses:
@@ -18,17 +18,17 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/order-payment-type/order-payment-type.yaml'
+            $ref: './schemas/order-payment-type.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../../responses/order-payment-type/order-payment-type-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
     409:
-      $ref: '../../responses/order-payment-type/order-payment-type-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -43,8 +43,8 @@ delete:
     200:
       description: Order payment type successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      description: Order payment type not found by this id.
+      $ref: './responses/404.yaml'

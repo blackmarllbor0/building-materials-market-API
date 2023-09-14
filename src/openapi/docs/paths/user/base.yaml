@@ -38,13 +38,13 @@ post:
             email: potter@hogwarts.com
             createDate: 00.11.2222
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     409:
-      $ref: '../../responses/user/user-with-this-email-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 get:
   tags:
@@ -68,10 +68,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/user/users.yaml'
+            type: array
+            items:
+              $ref: './schemas/user.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      description: No users found.
+      $ref: './responses/404.yaml'

@@ -21,13 +21,13 @@ post:
             name: Visa
             createDate: 00.11.2222
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
-    409:
-      $ref: '../../responses/order-payment-type/order-payment-type-with-this-name-already-exists.yaml'
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'
 
 get:
   tags:
@@ -42,10 +42,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/order-payment-type/order-payment-types.yaml'
+            type: array
+            items:
+              $ref: './schemas/order-payment-type.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      description: No categories found.
+      $ref: './responses/404.yaml'

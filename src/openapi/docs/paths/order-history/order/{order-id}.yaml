@@ -1,0 +1,43 @@
+get:
+  tags:
+    - order-history
+  summary: Get all order history by id.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Full order history.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/order-history.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+delete:
+  tags:
+    - order-history
+  summary: Delete all order history by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Order history deleted.
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

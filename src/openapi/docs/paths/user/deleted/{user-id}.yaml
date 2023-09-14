@@ -11,6 +11,6 @@ put:
     200:
       description: User account successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../.././responses/user/user-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

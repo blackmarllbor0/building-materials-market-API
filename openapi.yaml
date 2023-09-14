@@ -60,6 +60,10 @@ components:
       description: User is not authenticate.
     "403":
       description: User is not administrator.
+    "404":
+      description: No entities could be found based on the argument or arguments passed.
+    "409":
+      description: An entity with the same name already exists.
   schemas:
     user-role:
       type: object
@@ -77,10 +81,6 @@ components:
         name: admin
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    user-roles:
-      type: array
-      items:
-        $ref: "#/components/schemas/user-role"
     user-status:
       type: object
       properties:
@@ -97,10 +97,6 @@ components:
         name: online
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    user-statuses:
-      type: array
-      items:
-        $ref: "#/components/schemas/user-status"
     user:
       type: object
       properties:
@@ -126,10 +122,6 @@ components:
         email: potter@hogwarts.com
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    users:
-      type: array
-      items:
-        $ref: "#/components/schemas/user"
     order-status:
       type: object
       properties:
@@ -145,10 +137,6 @@ components:
         name: paid
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    order-statuses:
-      type: array
-      items:
-        $ref: "#/components/schemas/order-status"
     category:
       type: object
       properties:
@@ -165,10 +153,6 @@ components:
         name: concrete
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    categories:
-      type: array
-      items:
-        $ref: "#/components/schemas/category"
     company:
       type: object
       properties:
@@ -188,6 +172,10 @@ components:
         description:
           type: string
           minLength: 50
+        createDate:
+          type: string
+        updateDate:
+          type: string
       example:
         name: facebook
         linkToWebSite: https://facebook.com
@@ -197,10 +185,6 @@ components:
         description: many text
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    companies:
-      type: array
-      items:
-        $ref: "#/components/schemas/company"
     product:
       type: object
       properties:
@@ -238,10 +222,6 @@ components:
         description: concrete
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    products:
-      type: array
-      items:
-        $ref: "#/components/schemas/product"
     feedback:
       type: object
       properties:
@@ -269,10 +249,6 @@ components:
         message: text
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    feedbacks:
-      type: array
-      items:
-        $ref: "#/components/schemas/feedback"
     order-payment-type:
       type: object
       properties:
@@ -289,10 +265,6 @@ components:
         name: Visa
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    order-payment-types:
-      type: array
-      items:
-        $ref: "#/components/schemas/order-payment-type"
     order:
       type: object
       properties:
@@ -311,10 +283,6 @@ components:
         orderNumber: 9999
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    orders:
-      type: array
-      items:
-        $ref: "#/components/schemas/order"
     order-detail:
       type: object
       properties:
@@ -332,10 +300,6 @@ components:
         isDeleted: false
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    order-details:
-      type: array
-      items:
-        $ref: "#/components/schemas/order-detail"
     order-history:
       type: object
       properties:
@@ -356,10 +320,6 @@ components:
         orderId: 1
         totalQuantity: 10
         totalCost: 150000
-    order-histories:
-      type: array
-      items:
-        $ref: "#/components/schemas/order-history"
     delivery:
       type: object
       properties:
@@ -385,10 +345,6 @@ components:
         approximateDate: 55.55.4444
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    deliveries:
-      type: array
-      items:
-        $ref: "#/components/schemas/delivery"
     session:
       type: object
       properties:
@@ -408,10 +364,6 @@ components:
         liveTime: 66.55.4444-33:33
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    sessions:
-      type: array
-      items:
-        $ref: "#/components/schemas/session"
     auth-audit-event:
       type: object
       properties:
@@ -427,10 +379,6 @@ components:
         name: successfully logging
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    auth-audit-events:
-      type: array
-      items:
-        $ref: "#/components/schemas/auth-audit-event"
     auth-audit:
       type: object
       properties:
@@ -451,10 +399,6 @@ components:
         sessionId: 1
         createDate: 00.11.2222
         updateDate: 99.88.7777
-    auth-audits:
-      type: array
-      items:
-        $ref: "#/components/schemas/auth-audit"
   parameters:
     user-role-id:
       name: user-role-id
@@ -655,7 +599,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: User role with this name already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - user-role
@@ -669,36 +613,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user-roles"
+                type: array
+                items:
+                  $ref: "#/components/schemas/user-role"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No user role found.
+          $ref: "#/components/responses/404"
   "/user-role/{user-role-id}":
-    get:
-      tags:
-        - user-role
-      summary: Get user role by user role id.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/user-role-id"
-      responses:
-        "200":
-          description: User role received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user-role"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          description: Not found user role with this id.
     put:
       tags:
         - user-role
@@ -727,9 +651,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1user-role/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - user-role
@@ -747,7 +671,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user-role~1%7Buser-role-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   /user-status:
     post:
       summary: Create a new user status.
@@ -778,7 +702,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: User status with this name already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - user-status
@@ -792,36 +716,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user-statuses"
+                type: array
+                items:
+                  $ref: "#/components/schemas/user-status"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No user status found.
+          $ref: "#/components/responses/404"
   "/user-status/{user-status-id}":
-    get:
-      tags:
-        - user-status
-      summary: Get user statues by user status id.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/user-status-id"
-      responses:
-        "200":
-          description: User status received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user-status"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          description: Not found user status with this id.
     put:
       tags:
         - user-status
@@ -833,6 +737,7 @@ paths:
         - $ref: "#/components/parameters/user-status-id"
         - name: user-status-name
           in: query
+          required: true
           description: Updated user status name.
           schema:
             type: string
@@ -850,9 +755,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1user-status/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - user-status
@@ -870,7 +775,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user-status~1%7Buser-status-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   /user:
     post:
       summary: Create new user.
@@ -918,7 +823,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: User with this email already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - user
@@ -941,13 +846,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/users"
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No users found.
+          $ref: "#/components/responses/404"
   "/user/{user-id}":
     get:
       tags:
@@ -968,7 +875,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Not found user with this id.
+          $ref: "#/components/responses/404"
     put:
       tags:
         - user
@@ -1014,9 +921,9 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1user/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - user
@@ -1032,8 +939,8 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/user/blocked/{user-id}":
+          $ref: "#/components/responses/404"
+  "/user/{user-id}/blocked":
     put:
       tags:
         - user
@@ -1051,8 +958,8 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/user/unblocked/{user-id}":
+          $ref: "#/components/responses/404"
+  "/user/{user-id}/unblocked":
     put:
       tags:
         - user
@@ -1070,8 +977,8 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/user/deleted/{user-id}":
+          $ref: "#/components/responses/404"
+  "/user/{user-id}/deleted":
     put:
       tags:
         - user
@@ -1087,8 +994,8 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/user/undeleted/{user-id}":
+          $ref: "#/components/responses/404"
+  "/user/{user-id}/undeleted":
     put:
       tags:
         - user
@@ -1104,7 +1011,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   /order-status:
     post:
       summary: Create a new order status.
@@ -1143,12 +1050,12 @@ paths:
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
-        "409":
-          description: Order status with this name already exists.
+        "404":
+          $ref: "#/components/responses/409"
     get:
       tags:
         - order-status
-      summary: Get all order-statuses.
+      summary: Get all order statuses.
       security:
         - cookie-auth: []
         - admin-role: []
@@ -1158,36 +1065,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/order-statuses"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order-status"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No order-status found.
+          $ref: "#/components/responses/404"
   "/order-status/{order-status-id}":
-    get:
-      tags:
-        - order-status
-      summary: Get order status by order status id.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/order-status-id"
-      responses:
-        "200":
-          description: Order status received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order-status"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          description: Order status with this id not found.
     put:
       tags:
         - order-status
@@ -1226,7 +1113,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1order-status~1%7Border-status-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
     delete:
       tags:
         - order-status
@@ -1244,7 +1131,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1order-status~1%7Border-status-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   /category:
     post:
       summary: Create a new category.
@@ -1261,7 +1148,7 @@ paths:
             type: string
       responses:
         "201":
-          description: Created new category.
+          description: The new category has been successfully created.
           content:
             application/json:
               example:
@@ -1275,7 +1162,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: Category with this name already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - category
@@ -1289,11 +1176,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/categories"
+                type: array
+                items:
+                  $ref: "#/components/schemas/category"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: No categories found.
+          $ref: "#/components/responses/404"
   "/category/{category-id}":
     put:
       tags:
@@ -1311,7 +1200,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Category successfully updated.
+          description: Category name successfully updated.
           content:
             application/json:
               schema:
@@ -1323,9 +1212,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: Category not found by this id.
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1category/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - category
@@ -1343,7 +1232,7 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1category~1%7Bcategory-id%7D/put/responses/404"
+          $ref: "#/components/responses/404"
   /company:
     post:
       summary: Create new company.
@@ -1353,7 +1242,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       requestBody:
-        description: Company data for added new company.
+        description: Company information.
         required: true
         content:
           application/json:
@@ -1395,11 +1284,11 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: Category with this name already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - company
-      summary: Get all company.
+      summary: Get all companies.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -1411,25 +1300,26 @@ paths:
           schema:
             type: integer
             default: 15
-            nullable: true
       responses:
         "200":
           description: All company received.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/companies"
+                type: array
+                items:
+                  $ref: "#/components/schemas/company"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No companies found.
+          $ref: "#/components/responses/404"
   "/company/{company-id}":
     get:
       tags:
         - company
-      summary: Get company by company id.
+      summary: Get company by  id.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -1445,7 +1335,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Company not found by this id.
+          $ref: "#/components/responses/404"
     put:
       tags:
         - company
@@ -1461,7 +1351,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/company"
+              type: object
+              properties:
+                name:
+                  type: string
+                linkToWebSite:
+                  type: string
+                linkToLogoImage:
+                  type: string
+                phoneNumber:
+                  type: string
+                  minLength: 10
+                  maxLength: 15
+                email:
+                  type: string
+                  minLength: 6
+                description:
+                  type: string
+                  minLength: 50
       responses:
         "200":
           description: Company successfully updated.
@@ -1473,10 +1380,12 @@ paths:
           $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1company~1%7Bcompany-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1company/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - company
@@ -1491,8 +1400,10 @@ paths:
           description: Company successfully deleted.
         "401":
           $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1company~1%7Bcompany-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   "/company/{company-name}":
     get:
       tags:
@@ -1513,7 +1424,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Company not found by this name.
+          $ref: "#/components/responses/404"
   /product:
     post:
       summary: Create a new product.
@@ -1572,36 +1483,28 @@ paths:
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
-        "409":
-          description: Product with this name already exists.
+        "404":
+          $ref: "#/components/responses/404"
     get:
       tags:
         - product
       summary: Get all products.
-      security:
-        - cookie-auth: []
-        - customer-role: []
       responses:
         "200":
           description: All product received.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/products"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
         "404":
-          description: No products found.
+          $ref: "#/components/responses/404"
   "/product/{product-id}":
     get:
       tags:
         - product
       summary: Get product by id.
-      security:
-        - cookie-auth: []
-        - customer-role: []
       parameters:
         - $ref: "#/components/parameters/product-id"
       responses:
@@ -1611,12 +1514,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/product"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
         "404":
-          description: Product not found by this id.
+          $ref: "#/components/responses/409"
     put:
       tags:
         - product
@@ -1668,9 +1567,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1product~1%7Bproduct-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1product/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - product
@@ -1688,15 +1587,12 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1product~1%7Bproduct-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
   "/product/{product-title}":
     get:
       tags:
         - product
-      summary: Get product by name.
-      security:
-        - cookie-auth: []
-        - customer-role: []
+      summary: Get product by title.
       parameters:
         - $ref: "#/components/parameters/product-name"
       responses:
@@ -1706,20 +1602,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/product"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
         "404":
-          description: Product not found by this title.
-  "/product/sort-by/category/{category-id}":
+          $ref: "#/components/responses/404"
+  "/product/category/{category-id}":
     get:
       tags:
         - product
-      summary: Sort products by category.
-      security:
-        - cookie-auth: []
-        - customer-role: []
+      summary: Get products by category.
+      security: null
       parameters:
         - $ref: "#/components/parameters/category-id"
       responses:
@@ -1728,21 +1618,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/products"
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1category~1%7Bcategory-id%7D/put/responses/404"
-  "/product/sort-by/company/{company-id}":
+          $ref: "#/components/responses/404"
+  "/product/company/{company-id}":
     get:
       tags:
         - product
-      summary: Sort products by company.
-      security:
-        - cookie-auth: []
-        - customer-role: []
+      summary: Get all the company's products.
+      security: null
       parameters:
         - $ref: "#/components/parameters/company-id"
       responses:
@@ -1751,45 +1641,44 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/products"
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1company~1%7Bcompany-id%7D/get/responses/404"
-  /product/sort-by/category-and-company:
+          $ref: "#/components/responses/404"
+  "/product/company/{company-id}/category/{category-id}":
     get:
       tags:
         - product
-      summary: Sort products by category and company.
-      security:
-        - cookie-auth: []
-        - customer-role: []
+      summary: Get company products by category.
+      security: null
       parameters:
-        - $ref: "#/components/parameters/query-category-id"
-        - $ref: "#/components/parameters/query-company-id"
+        - $ref: "#/components/parameters/category-id"
       responses:
         "200":
           description: Product sorted.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/products"
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No products found.
-  /product/sort-by/price:
+          $ref: "#/components/responses/404"
+  /product/price:
     get:
       tags:
         - product
       summary: Sort products by price.
-      security:
-        - cookie-auth: []
-        - customer-role: []
+      security: null
       parameters:
         - name: min
           in: query
@@ -1816,13 +1705,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/products"
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          $ref: "#/paths/~1product~1sort-by~1category-and-company/get/responses/404"
+          $ref: "#/components/responses/404"
   /feedback:
     post:
       summary: Create new feedback.
@@ -1861,12 +1752,8 @@ paths:
           description: Created new user feedback.
           content:
             application/json:
-              example:
-                id: 1
-                rating: 5
-                title: the very very good!
-                message: text
-                createDate: 00.11.2222
+              schema:
+                $ref: "#/components/schemas/feedback"
         "400":
           $ref: "#/components/responses/400"
         "401":
@@ -1891,7 +1778,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Feedback not found by this id.
+          $ref: "#/components/responses/404"
     put:
       tags:
         - feedback
@@ -1931,7 +1818,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1feedback~1%7Bfeedback-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
     delete:
       tags:
         - feedback
@@ -1947,12 +1834,12 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1feedback~1%7Bfeedback-id%7D/get/responses/404"
-  "/feedback/sort-by/user/{user-id}":
+          $ref: "#/components/responses/404"
+  "/feedback/user/{user-id}":
     get:
       tags:
         - feedback
-      summary: Sort feedback by user-id.
+      summary: Get all user reviews by id.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -1964,59 +1851,64 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/feedbacks"
+                type: array
+                items:
+                  $ref: "#/components/schemas/feedback"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/feedback/sort-by/product/{product-id}":
+          $ref: "#/components/responses/404"
+  "/feedback/product/{product-id}":
     get:
       tags:
         - feedback
-      summary: Sort feedback by product-id.
+      summary: Get reviews for the product.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/product-id"
-        - $ref: "#/components/parameters/query-company-id"
       responses:
         "200":
-          description: Feedback sorted.
+          description: All product feedbacks
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/feedbacks"
+                type: array
+                items:
+                  $ref: "#/components/schemas/feedback"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1product~1%7Bproduct-id%7D/get/responses/404"
-  /feedback/sort-by/rating/:
+          $ref: "#/components/responses/404"
+  /feedback/rating/:
     get:
       tags:
         - feedback
-      summary: Sort feedback by rating.
+      summary: Sort reviews by rating.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
         - name: to
           in: query
-          description: From maximum to minimum and vice versa.
+          description: From maximum to minimum and vice versa (max/min).
           required: true
           schema:
             type: string
       responses:
         "200":
-          description: Feedback sorted.
+          description: Reviews by ascending/descending rating.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/feedbacks"
+                type: array
+                items:
+                  $ref: "#/components/schemas/feedback"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Feedbacks not found.
+          $ref: "#/components/responses/404"
   /order-payment-type:
     post:
       summary: Create a new order payment type.
@@ -2046,8 +1938,8 @@ paths:
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
-        "409":
-          description: Order payment type with this name already exists.
+        "404":
+          $ref: "#/components/responses/404"
     get:
       tags:
         - order-payment-type
@@ -2061,13 +1953,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/order-payment-types"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order-payment-type"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: No categories found.
+          $ref: "#/components/responses/404"
   "/order-payment-type/{order-payment-type-id}":
     put:
       tags:
@@ -2078,9 +1972,9 @@ paths:
         - admin-role: []
       parameters:
         - $ref: "#/components/parameters/order-payment-type-id"
-        - name: order-payment-type-name
+        - name: payment-type
           in: query
-          description: Updated order payment type name.
+          description: New order payment type name.
           schema:
             type: string
       responses:
@@ -2097,9 +1991,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: Order payment type not found by this id.
+          $ref: "#/components/responses/404"
         "409":
-          $ref: "#/paths/~1order-payment-type/post/responses/409"
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - order-payment-type
@@ -2117,10 +2011,10 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: Order payment type not found by this id.
+          $ref: "#/components/responses/404"
   /order:
     post:
-      summary: Create a new order.
+      summary: Create a new user order.
       tags:
         - order
       security:
@@ -2163,7 +2057,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Order by this id not found.
+          $ref: "#/components/responses/404"
     delete:
       tags:
         - order
@@ -2179,12 +2073,12 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
-  "/order/cancel/{order-id}":
+          $ref: "#/components/responses/404"
+  "/order/{order-id}/cancel":
     put:
       tags:
         - order
-      summary: Cancel the order.
+      summary: Cancel the order by id.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -2196,12 +2090,12 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
-  "/order/set-payment-type/{order-id}":
+          $ref: "#/components/responses/404"
+  "/order/{order-id}/set-payment-type":
     put:
       tags:
         - order
-      summary: Set payment type.
+      summary: Set payment type by id.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -2214,12 +2108,12 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
-  "/order/payment/{order-id}":
+          $ref: "#/components/responses/404"
+  "/order/{order-id}/payment":
     put:
       tags:
         - order
-      summary: Pay the order.
+      summary: Pay the order by id.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -2231,8 +2125,8 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
-  "/order/sort-by/user/{user-id}":
+          $ref: "#/components/responses/404"
+  "/order/user/{user-id}":
     get:
       tags:
         - order
@@ -2248,20 +2142,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/orders"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1user~1%7Buser-id%7D/get/responses/404"
-  "/order/sort-by/user/status/{status-id}":
+          $ref: "#/components/responses/404"
+  "/order/user/{user-id  }/status/{status-id}":
     get:
       tags:
         - order
-      summary: Sort orders by status.
+      summary: All user orders by status.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
+        - $ref: "#/components/parameters/user-id"
         - $ref: "#/components/parameters/query-order-status-id"
       responses:
         "200":
@@ -2273,7 +2170,7 @@ paths:
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Orders not found.
+          $ref: "#/components/responses/404"
   /order-detail:
     post:
       tags:
@@ -2296,45 +2193,67 @@ paths:
           $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
+  "/order-detail/order/{order-id}":
     get:
       tags:
         - order-detail
-      summary: Receive all products of the order
+      summary: Receive all products of the order.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/query-order-id"
+        - $ref: "#/components/parameters/order-id"
       responses:
         "200":
-          description: All order items
+          description: All order items.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/order-details"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order-detail"
         "400":
           $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          $ref: "#/paths/~1order~1%7Border-id%7D/get/responses/404"
+          $ref: "#/components/responses/404"
+    delete:
+      tags:
+        - order-detail
+      summary: Deletes all details associated with the order by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Order details successfully deleted.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+  "/order-detail/order/{order-id}/product/{prodct-id}/":
     put:
       tags:
         - order-detail
-      summary: Add new item to order.
+      summary: Delete product from order by id.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/query-order-id"
-        - $ref: "#/components/parameters/query-product-id"
+        - $ref: "#/components/parameters/order-id"
+        - $ref: "#/components/parameters/product-id"
       responses:
         "200":
-          description: Feedback successfully deleted.
+          description: Product successfully deleted.
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: Not found.
+          $ref: "#/components/responses/404"
   /order-history:
     post:
       tags:
@@ -2357,28 +2276,49 @@ paths:
           $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
+  "/order-history/order/{order-id}":
     get:
       tags:
         - order-history
-      summary: Get order all history.
+      summary: Get all order history by id.
       security:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/query-order-id"
+        - $ref: "#/components/parameters/order-id"
       responses:
         "200":
           description: Full order history.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/order-histories"
+                type: array
+                items:
+                  $ref: "#/components/schemas/order-history"
         "400":
           $ref: "#/components/responses/400"
         "401":
           $ref: "#/components/responses/401"
         "404":
-          description: The order does not exist or has no history yet.
+          $ref: "#/components/responses/404"
+    delete:
+      tags:
+        - order-history
+      summary: Delete all order history by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/order-id"
+      responses:
+        "200":
+          description: Order history deleted.
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
   /delivery:
     post:
       summary: Create new user delivery.
@@ -2410,13 +2350,8 @@ paths:
           description: Delivery created.
           content:
             application/json:
-              example:
-                orderId: 1
-                amount: 1500
-                addressFrom: Almaty
-                addressTo: Moscow
-                approximateDate: 55.55.4444
-                createDate: 00.11.2222
+              schema:
+                $ref: "#/components/schemas/delivery"
         "400":
           $ref: "#/components/responses/400"
         "401":
@@ -2425,7 +2360,7 @@ paths:
     get:
       tags:
         - delivery
-      summary: View delivery information
+      summary: View delivery information.
       security:
         - cookie-auth: []
         - customer-role: []
@@ -2433,7 +2368,38 @@ paths:
         - $ref: "#/components/parameters/delivery-id"
       responses:
         "200":
-          description: Delivery info.
+          description: Delivery information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Delivery not found.
+    put:
+      tags:
+        - delivery
+      summary: Set delivery information.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/delivery-id"
+      requestBody:
+        description: Order history.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressFrom:
+                  type: string
+                addressTo:
+                  type: string
+      responses:
+        "200":
+          description: Delivery information.
           content:
             application/json:
               schema:
@@ -2454,41 +2420,17 @@ paths:
       responses:
         "200":
           description: Delivery deleted.
-          $ref: "#/components/responses/401"
         "401":
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: Delivery not found.
-  /session:
-    get:
-      tags:
-        - session
-      summary: Get all user sessions.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/query-user-id"
-      responses:
-        "200":
-          description: All sessions received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/sessions"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          description: No user sessions found.
+          $ref: "#/components/responses/404"
   "/session/{session-id}":
     get:
       tags:
         - session
-      summary: Get user session.
+      summary: Get session by id.
       security:
         - cookie-auth: []
         - admin-role: []
@@ -2525,9 +2467,34 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: No user session found by this id.
+  "/session/user/{user-id}":
+    get:
+      tags:
+        - session
+      summary: Get all user sessions.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          description: All user sessions received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/session"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
   /auth-audit-event:
     post:
-      summary: Create a new auth audit event.
+      summary: Create a new authentication event.
       tags:
         - auth-audit-event
       security:
@@ -2555,11 +2522,11 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "409":
-          description: Audit event with this name already exists.
+          $ref: "#/components/responses/409"
     get:
       tags:
         - auth-audit-event
-      summary: Get all auth audit events.
+      summary: Get all a auth audit events.
       security:
         - cookie-auth: []
         - admin-role: []
@@ -2569,7 +2536,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/auth-audit-events"
+                type: array
+                items:
+                  $ref: "#/components/schemas/auth-audit-event"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -2605,9 +2574,9 @@ paths:
         "403":
           $ref: "#/components/responses/403"
         "404":
-          description: Audit event not found by this id.
+          $ref: "#/components/responses/404"
         "409":
-          description: Audit event with this name already exists.
+          $ref: "#/components/responses/409"
     delete:
       tags:
         - auth-audit-event
@@ -2626,32 +2595,11 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           description: Audit event not found by this id.
-  /auth-audit:
+  "/auth-audit/{auth-audit-id}":
     get:
       tags:
         - auth-audit
-      summary: Get user auth audits.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/query-user-id"
-      responses:
-        "200":
-          description: All audits.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/auth-audits"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          description: Audits not found.
-  "/auth-audit/{/auth-audit-id}":
-    get:
-      tags:
-        - auth-audit
-      summary: Get user auth audits.
+      summary: Get audit by id.
       security:
         - cookie-auth: []
         - admin-role: []
@@ -2666,9 +2614,36 @@ paths:
                 $ref: "#/components/schemas/auth-audit"
         "401":
           $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
         "404":
-          description: Audit not found by this id.
-  /auth-audit/sort-by/user-session:
+          $ref: "#/components/responses/404"
+  "/auth-audit/user/{user-id}":
+    get:
+      tags:
+        - auth-audit
+      summary: Get all user audits.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          description: All audits.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/auth-audit"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+  "/auth-audit/user/{user-id}/session/{session-id}":
     get:
       tags:
         - auth-audit
@@ -2677,16 +2652,20 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/query-user-id"
-        - $ref: "#/components/parameters/query-session-id"
+        - $ref: "#/components/parameters/user-id"
+        - $ref: "#/components/parameters/session-id"
       responses:
         "200":
-          description: Auth audits getting.
+          description: All audits received.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/auth-audits"
+                type: array
+                items:
+                  $ref: "#/components/schemas/auth-audit"
         "401":
           $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
         "404":
-          description: Audits not found.
+          $ref: "#/components/responses/404"

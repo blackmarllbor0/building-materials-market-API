@@ -1,0 +1,43 @@
+get:
+  tags:
+    - order-detail
+  summary: Receive all products of the order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: All order items.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/order-detail.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+delete:
+  tags:
+    - order-detail
+  summary: Deletes all details associated with the order by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order/order-id.yaml'
+  responses:
+    200:
+      description: Order details successfully deleted.
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

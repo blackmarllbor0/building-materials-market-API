@@ -13,7 +13,7 @@ post:
         type: string
   responses:
     201:
-      description: Created new category.
+      description: The new category has been successfully created.
       content:
         application/json:
           example:
@@ -21,13 +21,13 @@ post:
             name: concrete
             createDate: 00.11.2222
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     409:
-      $ref: '../../responses/category/category-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 get:
   tags:
@@ -42,8 +42,10 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/category/categories.yaml'
+            type: array
+            items:
+              $ref: './schemas/category.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      description: No categories found.
+      $ref: './responses/404.yaml'

@@ -1,0 +1,27 @@
+get:
+  tags:
+    - feedback
+  summary: Sort reviews by rating.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - name: to
+      in: query
+      description: From maximum to minimum and vice versa (max/min).
+      required: true
+      schema:
+        type: string
+  responses:
+    200:
+      description: Reviews by ascending/descending rating.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/feedback.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

@@ -13,8 +13,8 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/company/company.yaml'
+            $ref: './schemas/company.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../responses/company/company-not-found-by-name.yaml'
+      $ref: './responses/404.yaml'

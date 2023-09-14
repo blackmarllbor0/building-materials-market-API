@@ -18,17 +18,17 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/auth-audit-event/auth-audit-event.yaml'
+            $ref: './schemas/auth-audit-event.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      description: Audit event not found by this id.
+      $ref: './responses/404.yaml'
     409:
-      description: Audit event with this name already exists.
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -43,8 +43,8 @@ delete:
     200:
       description: Audit event successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
       description: Audit event not found by this id.

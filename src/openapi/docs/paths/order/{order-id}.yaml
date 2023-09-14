@@ -13,11 +13,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/order/order.yaml'
+            $ref: './schemas/order.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../responses/order/order-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
 
 delete:
   tags:
@@ -32,6 +32,6 @@ delete:
     200:
       description: Feedback successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     404:
-      $ref: '../../responses/order/order-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

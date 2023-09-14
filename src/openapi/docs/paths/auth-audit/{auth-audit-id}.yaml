@@ -1,7 +1,7 @@
 get:
   tags:
     - auth-audit
-  summary: Get user auth audits.
+  summary: Get audit by id.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -13,8 +13,10 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/auth-audit/auth-audit.yaml'
+            $ref: './schemas/auth-audit.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
     404:
-      description: Audit not found by this id.
+      $ref: './responses/404.yaml'

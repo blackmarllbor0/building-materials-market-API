@@ -1,0 +1,25 @@
+get:
+  tags:
+    - auth-audit
+  summary: Get user auth audits by session id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/user/user-id.yaml'
+    - $ref: './parameters/session/session-id.yaml'
+  responses:
+    200:
+      description: All audits received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/auth-audit.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

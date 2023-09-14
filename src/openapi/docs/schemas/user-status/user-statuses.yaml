@@ -1,3 +1,0 @@
-type: array
-items:
-  $ref: './schemas/user-status/user-status.yaml'

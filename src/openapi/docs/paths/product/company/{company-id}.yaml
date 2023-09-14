@@ -1,0 +1,22 @@
+get:
+  tags:
+    - product
+  summary: Get all the company's products.
+  security:
+  parameters:
+    - $ref: './parameters/company/company-id.yaml'
+  responses:
+    200:
+      description: Product sorted.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

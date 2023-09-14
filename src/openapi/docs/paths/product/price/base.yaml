@@ -1,0 +1,40 @@
+get:
+  tags:
+    - product
+  summary: Sort products by price.
+  security:
+  parameters:
+    - name: min
+      in: query
+      description: Min price.
+      required: true
+      schema:
+        type: integer
+    - name: max
+      in: query
+      description: Max price.
+      required: true
+      schema:
+        type: integer
+    - $ref: './parameters/category/query-category-id.yaml'
+    - name: company-id
+      in: query
+      required: false
+      description: Company id.
+      schema:
+        type: integer
+  responses:
+    200:
+      description: Product sorted.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

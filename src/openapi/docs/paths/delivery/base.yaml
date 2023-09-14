@@ -28,14 +28,9 @@ post:
       description: Delivery created.
       content:
         application/json:
-          example:
-            orderId: 1
-            amount: 1500
-            addressFrom: Almaty
-            addressTo: Moscow
-            approximateDate: 55.55.4444
-            createDate: 00.11.2222
+          schema:
+            $ref: './schemas/delivery.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'

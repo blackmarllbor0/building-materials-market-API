@@ -2,9 +2,6 @@ get:
   tags:
     - product
   summary: Get product by id.
-  security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
   parameters:
     - $ref: './parameters/product/product-id.yaml'
   responses:
@@ -13,13 +10,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/product/product.yaml'
-    401:
-      $ref: './responses/auth/401.yaml'
-    403:
-      $ref: './responses/auth/403.yaml'
+            $ref: './schemas/product.yaml'
     404:
-      $ref: '../.././responses/product/product-not-found-by-id.yaml'
+      $ref: './responses/409.yaml'
 
 put:
   tags:
@@ -64,17 +57,17 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/product/product.yaml'
+            $ref: './schemas/product.yaml'
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/product/product-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'
     409:
-      $ref: '../../responses/product/product-with-this-name-already-exists.yaml'
+      $ref: './responses/409.yaml'
 
 delete:
   tags:
@@ -89,8 +82,8 @@ delete:
     200:
       description: Product successfully deleted.
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
+      $ref: './responses/403.yaml'
     404:
-      $ref: '../.././responses/product/product-not-found-by-id.yaml'
+      $ref: './responses/404.yaml'

@@ -48,31 +48,26 @@ post:
             title: concrete
             description: concrete
     400:
-      $ref: './responses/validation/400.yaml'
+      $ref: './responses/400.yaml'
     401:
-      $ref: './responses/auth/401.yaml'
+      $ref: './responses/401.yaml'
     403:
-      $ref: './responses/auth/403.yaml'
-    409:
-      $ref: '../../responses/product/product-with-this-name-already-exists.yaml'
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'
 
 get:
   tags:
     - product
   summary: Get all products.
-  security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
   responses:
     200:
       description: All product received.
       content:
         application/json:
           schema:
-            $ref: './schemas/product/products.yaml'
-    401:
-      $ref: './responses/auth/401.yaml'
-    403:
-      $ref: './responses/auth/403.yaml'
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
     404:
-      description: No products found.
+      $ref: './responses/404.yaml'
