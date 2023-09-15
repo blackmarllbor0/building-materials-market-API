@@ -1,0 +1,20 @@
+get:
+  tags:
+    - company
+    - no-auth
+  summary: Get all company categories.
+  parameters:
+    - $ref: './parameters/company/companyId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: All categories received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/category.yaml'
+    404:
+      $ref: './responses/404.yaml'

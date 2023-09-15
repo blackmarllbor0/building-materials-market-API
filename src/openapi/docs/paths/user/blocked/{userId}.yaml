@@ -1,0 +1,19 @@
+patch:
+  tags:
+    - user
+    - admin
+  summary: Block user by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+  responses:
+    200:
+      description: User successfully blocked.
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

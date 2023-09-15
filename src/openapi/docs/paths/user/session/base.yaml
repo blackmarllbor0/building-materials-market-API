@@ -1,0 +1,27 @@
+get:
+  tags:
+    - user
+    - admin
+  summary: Get user sessions.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: User sessions received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/session.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

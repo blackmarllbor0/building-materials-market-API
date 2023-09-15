@@ -1,11 +1,12 @@
-import * as process from 'process';
 import { App } from './app/app';
 import { OpenapiService } from './openapi/openapi.service';
 import { UserRoleService } from './user-role/user-role.service';
 import { UserRoleController } from './user-role/user-role.controller';
+import { ConfigService } from './config/config.service';
 
 function main(): void {
-  const PORT = +process.env.SERVER_PORT || 8080;
+  const configService = new ConfigService('.env');
+  const PORT = configService.number('SERVER_PORT');
 
   const userRoleService = new UserRoleService();
   const openapiService = new OpenapiService();

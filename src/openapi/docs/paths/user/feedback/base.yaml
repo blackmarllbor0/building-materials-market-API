@@ -1,0 +1,78 @@
+post:
+  tags:
+    - user
+    - customer
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  requestBody:
+    description: New feedback data.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            userId:
+              type: integer
+            productId:
+              type: integer
+            companyId:
+              type: integer
+            rating:
+              type: integer
+              minimum: 1
+              maximum: 5
+              default: 5
+            title:
+              type: string
+              minLength: 15
+            message:
+              type: string
+              minLength: 50
+  responses:
+    200:
+      description: User feedback created.
+      content:
+        application/json:
+          example:
+            id: 1
+            userId: 1
+            productId: 1
+            companyId: 1
+            rating: 5
+            title: the very very good!
+            message: text
+            createDate: 00.11.2222
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    409:
+      $ref: './responses/409.yaml'
+
+get:
+  tags:
+    - user
+    - customer
+  summary: Get user feedbacks.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: User feedback received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/feedback.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

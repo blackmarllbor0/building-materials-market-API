@@ -188,6 +188,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('link_to_logo_image').notNullable().unique();
         table.string('email').notNullable().unique();
         table.text('description').notNullable();
+        table.boolean('isDeleted').defaultTo(false);
         table.timestamp('create_date').defaultTo(knex.fn.now());
         table.timestamp('update_date');
       },
@@ -244,6 +245,7 @@ export async function up(knex: Knex): Promise<void> {
       table.decimal('rating').notNullable().defaultTo(5);
       table.string('title').notNullable();
       table.text('message').notNullable();
+      table.boolean('isDeleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })

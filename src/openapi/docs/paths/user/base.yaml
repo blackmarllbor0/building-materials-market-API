@@ -1,12 +1,14 @@
 get:
   tags:
     - user
+    - customer
   summary: Get all users.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All user received.
@@ -16,5 +18,7 @@ get:
             type: array
             items:
               $ref: './schemas/user.yaml'
+    401:
+      $ref: './responses/401.yaml'
     404:
       $ref: './responses/404.yaml'

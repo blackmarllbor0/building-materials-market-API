@@ -1,6 +1,0 @@
-name: delivery-id
-in: path
-required: true
-description: Delivery id.
-schema:
-  type: integer

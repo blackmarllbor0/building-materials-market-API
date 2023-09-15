@@ -1,0 +1,6 @@
+name: orderId
+in: query
+required: true
+description: Order id.
+schema:
+  type: integer

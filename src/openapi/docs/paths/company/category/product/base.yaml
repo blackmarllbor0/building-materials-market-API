@@ -1,0 +1,21 @@
+get:
+  tags:
+    - company
+    - no-auth
+  summary: Get all company products by category.
+  parameters:
+    - $ref: './parameters/company/companyId.yaml'
+    - $ref: './parameters/category/categoryId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: All products received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
+    404:
+      $ref: './responses/404.yaml'

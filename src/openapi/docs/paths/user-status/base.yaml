@@ -2,6 +2,7 @@ post:
   summary: Create a new user status.
   tags:
     - user-status
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -36,12 +37,14 @@ post:
 get:
   tags:
     - user-status
+    - admin
   summary: Get all user status.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All user status received.

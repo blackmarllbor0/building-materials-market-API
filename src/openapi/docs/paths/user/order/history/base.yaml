@@ -1,0 +1,26 @@
+get:
+  tags:
+    - user
+    - customer
+  summary: Get user order history.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: User order history received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/order-history.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

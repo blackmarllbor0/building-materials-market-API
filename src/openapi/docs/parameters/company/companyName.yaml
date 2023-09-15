@@ -1,0 +1,6 @@
+name: companyName
+in: path
+required: true
+description: Company id.
+schema:
+  type: integer

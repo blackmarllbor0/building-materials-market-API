@@ -1,0 +1,6 @@
+name: sessionId
+in: query
+required: true
+description: Session id.
+schema:
+  type: integer

@@ -1,6 +1,0 @@
-name: order-status-id
-in: query
-required: true
-description: Order status id.
-schema:
-  type: integer

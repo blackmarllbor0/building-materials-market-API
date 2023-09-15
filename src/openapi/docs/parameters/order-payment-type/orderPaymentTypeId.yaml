@@ -1,0 +1,6 @@
+name: orderPaymentTypeId
+in: path
+required: true
+description: Order-payment type id.
+schema:
+  type: integer

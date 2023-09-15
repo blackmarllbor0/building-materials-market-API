@@ -1,0 +1,6 @@
+name: orderId
+in: path
+required: true
+description: Order id.
+schema:
+  type: integer

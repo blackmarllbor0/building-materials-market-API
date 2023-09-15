@@ -1,0 +1,82 @@
+post:
+  summary: Create new user order delivery.
+  tags:
+    - user
+    - customer
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  requestBody:
+    description: Delivery details.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderId:
+              type: integer
+            addressFrom:
+              type: string
+            addressTo:
+              type: string
+  responses:
+    200:
+      description: Delivery created.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/delivery.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+
+get:
+  tags:
+    - user
+    - customer
+  summary: Get user order delivery.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  responses:
+    200:
+      description: User order delivery received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/delivery.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+patch:
+  tags:
+    - user
+    - customer
+  summary: Set user order delivery.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  responses:
+    200:
+      description: User order delivery received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/delivery.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

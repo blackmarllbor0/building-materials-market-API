@@ -2,6 +2,7 @@ post:
   summary: Create a new product.
   tags:
     - product
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -26,9 +27,7 @@ post:
               type: integer
               default: 5
             linkToImages:
-              type: array
-              items:
-                type: string
+              type: string
             title:
               type: string
             description:
@@ -40,12 +39,13 @@ post:
       content:
         application/json:
           example:
+            id: 1
             companyId: 1
             categoryId: 1
             quantity: 17
             price: 3500
             rating: 4
-            linkToImages: [ link, link ]
+            linkToImages: linkToImages
             title: concrete
             description: concrete
     400:
@@ -54,15 +54,17 @@ post:
       $ref: './responses/401.yaml'
     403:
       $ref: './responses/403.yaml'
-    404:
-      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'
 
 get:
   tags:
     - product
+    - no-auth
   summary: Get all products.
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All product received.

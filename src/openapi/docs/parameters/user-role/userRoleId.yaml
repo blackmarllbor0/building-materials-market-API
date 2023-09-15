@@ -1,0 +1,6 @@
+name: userRoleId
+in: path
+required: true
+description: User role id.
+schema:
+  type: integer

@@ -1,6 +1,0 @@
-name: auth-audit-id
-in: path
-required: true
-description: Auth audit id.
-schema:
-  type: integer

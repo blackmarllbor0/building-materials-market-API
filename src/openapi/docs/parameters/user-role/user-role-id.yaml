@@ -1,6 +1,0 @@
-name: user-role-id
-in: path
-required: true
-description: User role id.
-schema:
-  type: integer

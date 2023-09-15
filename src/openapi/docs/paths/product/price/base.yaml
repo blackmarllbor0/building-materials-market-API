@@ -4,7 +4,8 @@ get:
   summary: Sort products by price.
   security:
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
     - name: min
       in: query
       description: Min price.
@@ -17,13 +18,13 @@ get:
       required: true
       schema:
         type: integer
-    - name: category-id
+    - name: categoryId
       in: query
       required: false
       description: Category id.
       schema:
         type: integer
-    - name: company-id
+    - name: companyId
       in: query
       required: false
       description: Company id.

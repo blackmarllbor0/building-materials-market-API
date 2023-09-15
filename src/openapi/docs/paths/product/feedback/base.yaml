@@ -1,0 +1,20 @@
+get:
+  tags:
+    - product
+    - no-auth
+  summary: Get all product feedback.
+  parameters:
+    - $ref: './parameters/product/productId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: All product feedback received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/feedback.yaml'
+    404:
+      $ref: './responses/404.yaml'

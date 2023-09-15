@@ -1,0 +1,6 @@
+name: authAuditEventId
+in: path
+required: true
+description: Auth audit event id.
+schema:
+  type: integer

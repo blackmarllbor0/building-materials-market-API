@@ -2,6 +2,7 @@ post:
   summary: Create a new authentication event.
   tags:
     - auth-audit-event
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -36,12 +37,14 @@ post:
 get:
   tags:
     - auth-audit-event
+    - admin
   summary: Get all a auth audit events.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All audit events received.
@@ -56,4 +59,4 @@ get:
     403:
       $ref: './responses/403.yaml'
     404:
-      description: No audit events found.
+      $ref: './responses/404.yaml'

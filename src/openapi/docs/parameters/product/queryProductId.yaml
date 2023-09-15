@@ -1,0 +1,6 @@
+name: productId
+in: query
+required: true
+description: Product id.
+schema:
+  type: integer

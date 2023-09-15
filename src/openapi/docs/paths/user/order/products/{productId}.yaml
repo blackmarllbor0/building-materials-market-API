@@ -1,0 +1,59 @@
+post:
+  tags:
+    - user
+    - customer
+  summary: Add new item to user order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/product/productId.yaml'
+  requestBody:
+    description: New product.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderId:
+              type: integer
+            productId:
+              type: integer
+  responses:
+    200:
+      description: Created new user order product.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-detail.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+delete:
+  tags:
+    - user
+    - customer
+  summary: Delete product from user order.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/product/productId.yaml'
+  responses:
+    200:
+      description: Successfully deleted product.
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'

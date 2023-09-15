@@ -1,8 +1,0 @@
-name: limit
-in: query
-description: Number of users received (not required).
-required: false
-schema:
-  type: integer
-  default: 15
-  nullable: true

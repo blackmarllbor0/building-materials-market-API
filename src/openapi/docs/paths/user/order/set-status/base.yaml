@@ -1,0 +1,53 @@
+get:
+  tags:
+    - user
+    - customer
+  summary: Get user order status.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  responses:
+    200:
+      description: User order status received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-status.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+patch:
+  tags:
+    - user
+    - customer
+  summary: Set user order status.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  requestBody:
+    description: New user order status
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderStatusId: integer
+  responses:
+    200:
+      description: Successfully updated user order status.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

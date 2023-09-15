@@ -2,6 +2,7 @@ post:
   summary: Create new company.
   tags:
     - company
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -35,6 +36,7 @@ post:
       content:
         application/json:
           example:
+            id: 1
             name: facebook
             linkToWebSite: https://facebook.com
             linkToLogoImage: /user/admin/server/facebook/images/logo.png
@@ -52,12 +54,11 @@ post:
 get:
   tags:
     - company
+    - no-auth
   summary: Get all companies.
-  security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All company received.
@@ -67,9 +68,5 @@ get:
             type: array
             items:
               $ref: './schemas/company.yaml'
-    401:
-      $ref: './responses/401.yaml'
-    403:
-      $ref: './responses/403.yaml'
     404:
       $ref: './responses/404.yaml'

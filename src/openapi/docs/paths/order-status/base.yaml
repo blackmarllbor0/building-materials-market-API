@@ -2,6 +2,7 @@ post:
   summary: Create a new order status.
   tags:
     - order-status
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -35,18 +36,20 @@ post:
       $ref: './responses/401.yaml'
     403:
       $ref: './responses/403.yaml'
-    404:
+    409:
       $ref: './responses/409.yaml'
 
 get:
   tags:
     - order-status
+    - admin
   summary: Get all order statuses.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All order-status received.

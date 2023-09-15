@@ -6,9 +6,10 @@ get:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/user/user-id.yaml'
-    - $ref: './parameters/session/session-id.yaml'
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/session/sessionId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All audits received.

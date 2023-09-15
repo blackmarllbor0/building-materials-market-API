@@ -1,0 +1,73 @@
+get:
+  tags:
+    - product
+    - no-auth
+  summary: Get product by id.
+  parameters:
+    - $ref: './parameters/product/productId.yaml'
+  responses:
+    200:
+      description: Product received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product.yaml'
+    404:
+      $ref: './responses/409.yaml'
+
+patch:
+  tags:
+    - product
+    - admin
+  summary: Update product by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/product/productId.yaml'
+  requestBody:
+    description: Updated product data.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            companyId:
+              type: integer
+            categoryId:
+              type: integer
+            quantity:
+              type: integer
+              default: 0
+            price:
+              type: integer
+            rating:
+              type: integer
+              default: 5
+            linkToImages:
+              type: array
+              items:
+                type: string
+            title:
+              type: string
+            description:
+              type: string
+              minLength: 50
+  responses:
+    200:
+      description: Product successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/product.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'

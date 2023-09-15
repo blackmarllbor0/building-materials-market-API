@@ -1,0 +1,43 @@
+patch:
+  tags:
+    - order-status
+    - admin
+  summary: Update order status name by id.
+  security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
+  parameters:
+    - $ref: './parameters/order-status/orderStatusId.yaml'
+  requestBody:
+    description: New code or/and name order status.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            code:
+              type: integer
+              nullable: true
+              minLength: 3
+              maxLength: 3
+            name:
+              type: string
+              nullable: true
+  responses:
+    200:
+      description: Order status successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-status.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
+    404:
+      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'

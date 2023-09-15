@@ -4,8 +4,9 @@ get:
   summary: Get products by category.
   security:
   parameters:
-    - $ref: './parameters/category/category-id.yaml'
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/category/categoryId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: Product sorted.

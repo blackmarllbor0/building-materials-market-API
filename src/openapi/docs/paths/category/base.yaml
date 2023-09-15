@@ -2,6 +2,7 @@ post:
   summary: Create a new category.
   tags:
     - category
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -36,12 +37,11 @@ post:
 get:
   tags:
     - category
+    - no-auth
   summary: Get all categories.
-  security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All categories received.
@@ -51,7 +51,5 @@ get:
             type: array
             items:
               $ref: './schemas/category.yaml'
-    401:
-      $ref: './responses/401.yaml'
     404:
       $ref: './responses/404.yaml'

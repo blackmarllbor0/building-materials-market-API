@@ -2,6 +2,7 @@ post:
   summary: Register new user.
   tags:
     - auth
+    - no-auth
   requestBody:
     description: User data for register new user.
     required: true

@@ -2,6 +2,7 @@ post:
   summary: Sign in.
   tags:
     - auth
+    - no-auth
   requestBody:
     description: User data for sign in. You can specify either email or phone.
     required: true

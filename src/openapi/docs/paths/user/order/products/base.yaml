@@ -1,0 +1,26 @@
+get:
+  tags:
+    - user
+    - customer
+  summary: Get all user order products.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
+  responses:
+    200:
+      description: All products received.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: './schemas/product.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

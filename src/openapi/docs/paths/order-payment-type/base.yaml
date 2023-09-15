@@ -2,6 +2,7 @@ post:
   summary: Create a new order payment type.
   tags:
     - order-payment-type
+    - admin
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
@@ -30,18 +31,20 @@ post:
       $ref: './responses/401.yaml'
     403:
       $ref: './responses/403.yaml'
-    404:
-      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'
 
 get:
   tags:
     - order-payment-type
+    - admin
   summary: Get all order payment types.
   security:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
-    - $ref: './parameters/limit.yaml'
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
   responses:
     200:
       description: All order payments received.

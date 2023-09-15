@@ -1,0 +1,6 @@
+name: userStatusId
+in: path
+required: true
+description: User status id.
+schema:
+  type: integer

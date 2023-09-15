@@ -1,6 +1,0 @@
-name: category-id
-in: query
-required: true
-description: Category id.
-schema:
-  type: integer

@@ -1,0 +1,8 @@
+name: item-from
+in: query
+description: Starting from number.
+required: false
+schema:
+  type: integer
+  default: 1
+  nullable: true

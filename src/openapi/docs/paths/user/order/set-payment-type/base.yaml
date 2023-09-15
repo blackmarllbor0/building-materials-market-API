@@ -1,0 +1,45 @@
+get:
+  tags:
+    - user
+    - customer
+  summary: Get user order payment type.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  responses:
+    200:
+      description: User order payment type received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-payment-type.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+patch:
+  tags:
+    - user
+    - customer
+  summary: Set user order payment type.
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  responses:
+    200:
+      description: User order payment type successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'

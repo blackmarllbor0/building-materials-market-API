@@ -2,8 +2,12 @@ get:
   summary: Sign out.
   tags:
     - auth
+    - customer
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - name: user-id
+    - name: userId
       in: cookie
       description: User id in token.
       required: true

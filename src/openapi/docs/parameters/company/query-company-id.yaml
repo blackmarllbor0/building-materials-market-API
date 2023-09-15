@@ -1,6 +1,0 @@
-name: company-id
-in: query
-required: true
-description: Company id.
-schema:
-  type: integer

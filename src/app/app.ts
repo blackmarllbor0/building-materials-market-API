@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import { IOpenapi } from '../openapi/openapi.interface';
 
 export class App {
-  public app: express.Application;
+  private app: express.Application;
 
   constructor(
     controllers: any[],
