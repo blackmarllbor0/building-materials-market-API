@@ -1,8 +1,8 @@
-import { IConfig } from './config.interface';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
+import { IConfigService } from './config.interface';
 
-export class ConfigService implements IConfig {
+export class ConfigService implements IConfigService {
   constructor(path: string) {
     dotenv.config({ path, encoding: 'utf8' });
   }

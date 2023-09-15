@@ -32,7 +32,7 @@ export class App {
     } else console.log('there is no handler');
   }
 
-  public listen(): void {
+  public async listen(): Promise<void> {
     this.app.listen(this.port, () => {
       console.log(`App listening on the port ${this.port}`);
     });
