@@ -1,11 +1,11 @@
 get:
   tags:
-    - user
+    - session
     - admin
   summary: Get user session by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/session/sessionId.yaml'

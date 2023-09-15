@@ -4,8 +4,8 @@ post:
     - order-status
     - admin
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   requestBody:
     description: Name and code for order status.
     required: true
@@ -45,8 +45,8 @@ get:
     - admin
   summary: Get all order statuses.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'

@@ -34,6 +34,16 @@ tags:
     description: Manage audit event for administrator.
   - name: auth
     description: Login management methods.
+  - name: order
+    description: User order management methods.
+  - name: feedback
+    description: User feedback management methods.
+  - name: order-detail
+    description: User order detail management methods.
+  - name: session
+    description: User session management methods.
+  - name: delivery
+    description: User order delivery management methods.
 components:
   securitySchemes:
     cookie-auth:
@@ -262,11 +272,15 @@ components:
           type: integer
         productId:
           type: integer
+        quantity:
+          type: integer
+          default: 1
       example:
         id: 1
         orderId: 1
         productId: 1
         isDeleted: false
+        quantity: 1
         createDate: 00.11.2222
         updateDate: 99.88.7777
     order-history:
@@ -434,13 +448,6 @@ components:
       description: Company id.
       schema:
         type: integer
-    companyName:
-      name: companyName
-      in: path
-      required: true
-      description: Company id.
-      schema:
-        type: integer
     query-companyId:
       name: companyId
       in: query
@@ -455,13 +462,6 @@ components:
       description: Product id.
       schema:
         type: integer
-    productTitle:
-      name: productTitle
-      in: path
-      required: true
-      description: Product name.
-      schema:
-        type: string
     queryProductId:
       name: productId
       in: query
@@ -523,6 +523,13 @@ components:
       in: path
       required: true
       description: Auth audit event id.
+      schema:
+        type: integer
+    orderDetailId:
+      name: orderDetailId
+      in: path
+      required: true
+      description: Order detail id
       schema:
         type: integer
 paths:
@@ -1037,57 +1044,6 @@ paths:
           $ref: "#/components/responses/404"
         "409":
           $ref: "#/components/responses/409"
-  /auth/register:
-    post:
-      summary: Register new user.
-      tags:
-        - auth
-        - no-auth
-      requestBody:
-        description: User data for register new user.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user-role:
-                  type: integer
-                  default: 2
-                  nullable: true
-                name:
-                  type: string
-                  minLength: 2
-                email:
-                  type: string
-                  minLength: 6
-                phoneNumber:
-                  type: string
-                  maxLength: 15
-                  minLength: 10
-                password:
-                  type: string
-                  minLength: 8
-      responses:
-        "201":
-          description: Created new user status.
-          content:
-            application/json:
-              example:
-                id: 1
-                userRoleId: 1
-                userStatusId: 1
-                name: Harry Potter
-                email: potter@hogwarts.com
-                createDate: 00.11.2222
-        "400":
-          $ref: "#/components/responses/400"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "409":
-          $ref: "#/components/responses/409"
   /auth/log-in:
     post:
       summary: Sign in.
@@ -1247,27 +1203,6 @@ paths:
           $ref: "#/components/responses/404"
         "409":
           $ref: "#/components/responses/409"
-  "/categories/{categoryId}/products/":
-    get:
-      tags:
-        - category
-        - no-auth
-      summary: Get all products by category.
-      parameters:
-        - $ref: "#/components/parameters/categoryId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/product"
-        "404":
-          $ref: "#/components/responses/404"
   /companies:
     post:
       summary: Create new company.
@@ -1330,6 +1265,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
+        - name: company-title
+          in: query
+          description: Company tile.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: All company received.
@@ -1409,87 +1350,6 @@ paths:
           $ref: "#/components/responses/404"
         "409":
           $ref: "#/components/responses/409"
-  "/companies/{companyName}":
-    get:
-      tags:
-        - company
-        - no-auth
-      summary: Get company by company name.
-      parameters:
-        - $ref: "#/components/parameters/companyName"
-      responses:
-        "200":
-          description: Company received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/company"
-        "404":
-          $ref: "#/components/responses/404"
-  "/companies/{companyId}/products/":
-    get:
-      tags:
-        - company
-        - no-auth
-      summary: Get all company products.
-      parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/product"
-        "404":
-          $ref: "#/components/responses/404"
-  "/companies/{companyId}/categories":
-    get:
-      tags:
-        - company
-        - no-auth
-      summary: Get all company categories.
-      parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All categories received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/category"
-        "404":
-          $ref: "#/components/responses/404"
-  "/companies/{companyId}/categories/{categoryId}/products/":
-    get:
-      tags:
-        - company
-        - no-auth
-      summary: Get all company products by category.
-      parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/categoryId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/product"
-        "404":
-          $ref: "#/components/responses/404"
   /products:
     post:
       summary: Create a new product.
@@ -1557,6 +1417,24 @@ paths:
       parameters:
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
+        - name: product-title
+          in: query
+          description: Product title.
+          required: false
+          schema:
+            type: string
+        - name: category-name
+          in: query
+          description: Category name
+          required: false
+          schema:
+            type: string
+        - name: company-name
+          in: query
+          description: Company name
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: All product received.
@@ -1616,9 +1494,7 @@ paths:
                   type: integer
                   default: 5
                 linkToImages:
-                  type: array
-                  items:
-                    type: string
+                  type: string
                 title:
                   type: string
                 description:
@@ -1641,63 +1517,57 @@ paths:
           $ref: "#/components/responses/404"
         "409":
           $ref: "#/components/responses/409"
-  "/products/{productTitle}":
-    get:
-      tags:
-        - product
-        - no-auth
-      summary: Get product by title.
-      parameters:
-        - $ref: "#/components/parameters/productTitle"
-      responses:
-        "200":
-          description: Product received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/product"
-        "404":
-          $ref: "#/components/responses/404"
-  "/products/{productId}/feedbacks/":
-    get:
-      tags:
-        - product
-        - no-auth
-      summary: Get all product feedback.
-      parameters:
-        - $ref: "#/components/parameters/productId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All product feedback received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/feedback"
-        "404":
-          $ref: "#/components/responses/404"
-  "/products/{productId}/feedbacks/{feedbackId}":
-    get:
-      tags:
-        - product
-        - no-auth
-      summary: Get product feedback.
-      parameters:
-        - $ref: "#/components/parameters/productId"
-        - $ref: "#/components/parameters/feedbackId"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/feedback"
-        "404":
-          $ref: "#/components/responses/404"
   /users/:
+    post:
+      summary: Register new user.
+      tags:
+        - user
+        - no-auth
+      requestBody:
+        description: User data for register new user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user-role:
+                  type: integer
+                  default: 2
+                  nullable: true
+                name:
+                  type: string
+                  minLength: 2
+                email:
+                  type: string
+                  minLength: 6
+                phoneNumber:
+                  type: string
+                  maxLength: 15
+                  minLength: 10
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        "201":
+          description: Created new user status.
+          content:
+            application/json:
+              example:
+                id: 1
+                userRoleId: 1
+                userStatusId: 1
+                name: Harry Potter
+                email: potter@hogwarts.com
+                createDate: 00.11.2222
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "409":
+          $ref: "#/components/responses/409"
     get:
       tags:
         - user
@@ -1850,10 +1720,40 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
+  /order:
+    get:
+      tags:
+        - order
+        - admin
+      summary: Get all orders.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: order-status-id
+          in: query
+          description: Order status id.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: All orders received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/order"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
   "/users/{userId}/orders":
     post:
       tags:
-        - user
+        - order
         - customer
       security:
         - cookie-auth: []
@@ -1868,7 +1768,7 @@ paths:
             schema:
               type: object
               properties:
-                userId:
+                orderPaymentTypeId:
                   type: integer
       responses:
         "201":
@@ -1892,7 +1792,7 @@ paths:
           $ref: "#/components/responses/409"
     get:
       tags:
-        - user
+        - order
         - customer
       summary: Get all user orders.
       security:
@@ -1918,7 +1818,7 @@ paths:
   "/users/{userId}/orders/{orderId}":
     get:
       tags:
-        - user
+        - order
         - customer
       summary: Get all user orders.
       security:
@@ -1938,9 +1838,43 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
+    patch:
+      tags:
+        - order
+        - customer
+      summary: Set user order status.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      requestBody:
+        description: New user order status
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderStatusId:
+                  type: integer
+                orderPaymentTypeId:
+                  type: integer
+      responses:
+        "200":
+          description: Successfully updated user order status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
     delete:
       tags:
-        - user
+        - order
         - customer
       summary: Delete user order by id.
       security:
@@ -1956,275 +1890,10 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/statuses":
-    get:
-      tags:
-        - user
-        - customer
-      summary: Get user order status.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      responses:
-        "200":
-          description: User order status received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order-status"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-    patch:
-      tags:
-        - user
-        - customer
-      summary: Set user order status.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      requestBody:
-        description: New user order status
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                orderStatusId: integer
-      responses:
-        "200":
-          description: Successfully updated user order status.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId/orders/{orderId}/payment-types":
-    get:
-      tags:
-        - user
-        - customer
-      summary: Get user order payment type.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      responses:
-        "200":
-          description: User order payment type received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order-payment-type"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-    patch:
-      tags:
-        - user
-        - customer
-      summary: Set user order payment type.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      responses:
-        "200":
-          description: User order payment type successfully updated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/products":
-    get:
-      tags:
-        - user
-        - customer
-      summary: Get all user order products.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/product"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/ordres/{orderId}/products/{productId}":
-    post:
-      tags:
-        - user
-        - customer
-      summary: Add new item to user order.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-        - $ref: "#/components/parameters/productId"
-      requestBody:
-        description: New product.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                orderId:
-                  type: integer
-                productId:
-                  type: integer
-      responses:
-        "200":
-          description: Created new user order product.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/order-detail"
-        "400":
-          $ref: "#/components/responses/400"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-    delete:
-      tags:
-        - user
-        - customer
-      summary: Delete product from user order.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-        - $ref: "#/components/parameters/productId"
-      responses:
-        "200":
-          description: Successfully deleted product.
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/delivery":
-    post:
-      summary: Create new user order delivery.
-      tags:
-        - user
-        - customer
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      requestBody:
-        description: Delivery details.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                orderId:
-                  type: integer
-                addressFrom:
-                  type: string
-                addressTo:
-                  type: string
-      responses:
-        "200":
-          description: Delivery created.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/delivery"
-        "400":
-          $ref: "#/components/responses/400"
-        "401":
-          $ref: "#/components/responses/401"
-    get:
-      tags:
-        - user
-        - customer
-      summary: Get user order delivery.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      responses:
-        "200":
-          description: User order delivery received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/delivery"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
-    patch:
-      tags:
-        - user
-        - customer
-      summary: Set user order delivery.
-      security:
-        - cookie-auth: []
-        - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
-      responses:
-        "200":
-          description: User order delivery received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/delivery"
-        "401":
-          $ref: "#/components/responses/401"
-        "404":
-          $ref: "#/components/responses/404"
   "/users/{userId}/orders/{orderId}/history":
     get:
       tags:
-        - user
+        - order
         - customer
       summary: Get user order history.
       security:
@@ -2248,14 +1917,251 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/feedbacks":
+  "/users/{userId}/orders/{orderId}/delivery":
     post:
+      summary: Create new user order delivery.
       tags:
-        - user
+        - delivery
         - customer
       security:
         - cookie-auth: []
         - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      requestBody:
+        description: Delivery details.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressFrom:
+                  type: string
+                addressTo:
+                  type: string
+      responses:
+        "200":
+          description: Delivery created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+    get:
+      tags:
+        - delivery
+        - customer
+      summary: Get user order delivery.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      responses:
+        "200":
+          description: User order delivery received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+    patch:
+      tags:
+        - delivery
+        - customer
+      summary: Set user order delivery.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      requestBody:
+        description: New user order status
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressFrom:
+                  type: string
+                addressTo:
+                  type: string
+      responses:
+        "200":
+          description: User order delivery received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+    delete:
+      tags:
+        - delivery
+        - customer
+      summary: Cancel user order delivery.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      responses:
+        "200":
+          description: User order delivery canceled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/delivery"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+  "/users/{userId}/orders/{orderId}/order-details":
+    post:
+      tags:
+        - order-detail
+        - customer
+      summary: Add new item to user order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+      requestBody:
+        description: New product.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: integer
+                quantity:
+                  type: integer
+                  default: 1
+      responses:
+        "200":
+          description: Created new user order product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-detail"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+    get:
+      tags:
+        - order-detail
+        - customer
+      summary: Get all user order products.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/page-from"
+        - $ref: "#/components/parameters/page-to"
+      responses:
+        "200":
+          description: All products received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/order-detail"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+  "/users/{userId}/orders/{orderId}/order-details/{orderDetailId}":
+    patch:
+      tags:
+        - order-detail
+        - customer
+      summary: Reduce quantity of product.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/orderDetailId"
+      requestBody:
+        description: UUpdated quantity.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Product quantity changed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-detail"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+    delete:
+      tags:
+        - order-detail
+        - customer
+      summary: Delete product from user order.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/orderDetailId"
+      responses:
+        "200":
+          description: Successfully deleted product.
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+  "/users/{userId}/feedbacks":
+    post:
+      tags:
+        - feedback
+        - customer
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      summary: Create new user feedback.
+      parameters:
+        - $ref: "#/components/parameters/userId"
       requestBody:
         description: New feedback data.
         required: true
@@ -2264,8 +2170,6 @@ paths:
             schema:
               type: object
               properties:
-                userId:
-                  type: integer
                 productId:
                   type: integer
                 companyId:
@@ -2303,7 +2207,7 @@ paths:
           $ref: "#/components/responses/409"
     get:
       tags:
-        - user
+        - feedback
         - customer
       summary: Get user feedbacks.
       security:
@@ -2329,7 +2233,7 @@ paths:
   "/users/{userId}/feedbacks/{feedbackId}":
     get:
       tags:
-        - user
+        - feedback
         - customer
       summary: Get user feedback by id.
       security:
@@ -2351,7 +2255,7 @@ paths:
           $ref: "#/components/responses/404"
     patch:
       tags:
-        - user
+        - feedback
         - customer
       summary: Set user feedback by id.
       security:
@@ -2364,7 +2268,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/feedback"
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  default: 5
+                title:
+                  type: string
+                  minLength: 15
+                message:
+                  type: string
+                  minLength: 50
       responses:
         "200":
           description: User feedback chanced.
@@ -2378,7 +2294,7 @@ paths:
           $ref: "#/components/responses/404"
     delete:
       tags:
-        - user
+        - feedback
         - customer
       summary: Delete user feedback by id.
       security:
@@ -2394,10 +2310,49 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
+  "/products/{productId}/feedbacks/":
+    get:
+      tags:
+        - feedback
+        - no-auth
+      summary: Get all product feedback.
+      parameters:
+        - $ref: "#/components/parameters/productId"
+        - $ref: "#/components/parameters/page-from"
+        - $ref: "#/components/parameters/page-to"
+      responses:
+        "200":
+          description: All product feedback received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/feedback"
+        "404":
+          $ref: "#/components/responses/404"
+  "/products/{productId}/feedbacks/{feedbackId}":
+    get:
+      tags:
+        - feedback
+        - no-auth
+      summary: Get product feedback.
+      parameters:
+        - $ref: "#/components/parameters/productId"
+        - $ref: "#/components/parameters/feedbackId"
+      responses:
+        "200":
+          description: All products received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedback"
+        "404":
+          $ref: "#/components/responses/404"
   "/users/{userId}/sessions":
     get:
       tags:
-        - user
+        - session
         - admin
       summary: Get user sessions.
       security:
@@ -2425,7 +2380,7 @@ paths:
   "/users/{userId}/sessions/{sessionId}":
     get:
       tags:
-        - user
+        - session
         - admin
       summary: Get user session by id.
       security:
@@ -2450,7 +2405,7 @@ paths:
   "/users/{userId}/sessions/{sessionId}/auth-audits":
     get:
       tags:
-        - user
+        - session
         - admin
       summary: Get user session auth audits.
       security:

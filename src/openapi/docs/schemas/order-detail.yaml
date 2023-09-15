@@ -4,10 +4,14 @@ properties:
     type: integer
   productId:
     type: integer
+  quantity:
+    type: integer
+    default: 1
 example:
   id: 1
   orderId: 1
   productId: 1
   isDeleted: false
+  quantity: 1
   createDate: 00.11.2222
   updateDate: 99.88.7777

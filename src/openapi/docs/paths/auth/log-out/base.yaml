@@ -4,8 +4,8 @@ get:
     - auth
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - name: userId
       in: cookie

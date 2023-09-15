@@ -3,8 +3,8 @@ get:
     - auth-audit
   summary: Get audit by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/auth-audit/auth-audit-id.yaml'
   responses:

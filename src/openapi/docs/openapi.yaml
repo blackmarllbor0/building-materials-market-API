@@ -36,6 +36,16 @@ tags:
     description: Manage audit event for administrator.
   - name: auth
     description: Login management methods.
+  - name: order
+    description: User order management methods.
+  - name: feedback
+    description: User feedback management methods.
+  - name: order-detail
+    description: User order detail management methods.
+  - name: session
+    description: User session management methods.
+  - name: delivery
+    description: User order delivery management methods.
 
 components:
   securitySchemes:
@@ -112,14 +122,10 @@ components:
       $ref: './parameters/category/queryCategoryId.yaml'
     companyId:
       $ref: './parameters/company/companyId.yaml'
-    companyName:
-      $ref: './parameters/company/companyName.yaml'
     query-companyId:
       $ref: './parameters/company/queryCompanyId.yaml'
     productId:
       $ref: './parameters/product/productId.yaml'
-    productTitle:
-      $ref: './parameters/product/productTitle.yaml'
     queryProductId:
       $ref: './parameters/product/queryProductId.yaml'
     feedbackId:
@@ -138,6 +144,8 @@ components:
       $ref: './parameters/session/querySessionId.yaml'
     authAuditEventId:
       $ref: './parameters/auth-audit-event/authAuditEventId.yaml'
+    orderDetailId:
+      $ref: './parameters/order-detail/orderDetailId.yaml'
 
 paths:
   # USER-ROLES
@@ -158,18 +166,19 @@ paths:
   /order-statuses/{orderStatusId}:
     $ref: './paths/order-status/{orderStatusId}.yaml'
 
+  # ORDER-PAYMENT-TYPES
   /order-payment-types:
     $ref: './paths/order-payment-type/base.yaml'
   /order-payment-types/{orderPaymentTypeId}:
     $ref: './paths/order-payment-type/{orderPaymentTypeId}.yaml'
 
+  # AUTH-AUDIT-EVENTS
   /auth-audit-events:
     $ref: './paths/auth-audit-event/base.yaml'
   /auth-audit-events/{authAuditEventId}:
     $ref: './paths/auth-audit-event/{authAuditEventId}.yaml'
 
-  /auth/register:
-    $ref: './paths/auth/register/base.yaml'
+  # AUTH
   /auth/log-in:
     $ref: './paths/auth/log-in/base.yaml'
   /auth/log-out:
@@ -180,34 +189,26 @@ paths:
     $ref: './paths/category/base.yaml'
   /categories/{categoryId}:
     $ref: './paths/category/{categoryId}.yaml'
-  /categories/{categoryId}/products/:
-    $ref: './paths/category/products/base.yaml'
+  #  /companies/{companyId}/categories:
+  #    $ref: './paths/company/category/base.yaml'
 
   # COMPANY
   /companies:
     $ref: './paths/company/base.yaml'
   /companies/{companyId}:
     $ref: './paths/company/{companyId}.yaml'
-  /companies/{companyName}:
-    $ref: './paths/company/{companyName}.yaml'
-  /companies/{companyId}/products/:
-    $ref: './paths/company/products/base.yaml'
-  /companies/{companyId}/categories:
-    $ref: './paths/company/category/base.yaml'
-  /companies/{companyId}/categories/{categoryId}/products/:
-    $ref: './paths/company/category/product/base.yaml'
 
   # PRODUCTS
   /products:
     $ref: './paths/product/base.yaml'
   /products/{productId}:
     $ref: './paths/product/{productId}.yaml'
-  /products/{productTitle}:
-    $ref: './paths/product/{productTitle}.yaml'
-  /products/{productId}/feedbacks/:
-    $ref: './paths/product/feedback/base.yaml'
-  /products/{productId}/feedbacks/{feedbackId}:
-    $ref: './paths/product/feedback/{feedbackId}.yaml'
+  #  /categories/{categoryId}/products/:
+  #    $ref: './paths/category/products/base.yaml'
+  #  /companies/{companyId}/products/:
+  #    $ref: './paths/company/products/base.yaml'
+  #  /companies/{companyId}/categories/{categoryId}/products/:
+  #    $ref: './paths/company/category/product/base.yaml'
 
   # USERS
   /users/:
@@ -218,26 +219,38 @@ paths:
     $ref: './paths/user/blocked/{userId}.yaml'
   /users/{userId}/unblock:
     $ref: './paths/user/unblocked/{userId}.yaml'
+
+  # ORDERS
+  /order:
+    $ref: './paths/order/base.yaml'
   /users/{userId}/orders:
     $ref: './paths/user/order/base.yaml'
   /users/{userId}/orders/{orderId}:
     $ref: './paths/user/order/{orderId}.yaml'
-  /users/{userId}/orders/{orderId}/statuses:
-    $ref: './paths/user/order/set-status/base.yaml'
-  /users/{userId/orders/{orderId}/payment-types:
-    $ref: './paths/user/order/set-payment-type/base.yaml'
-  /users/{userId}/orders/{orderId}/products:
-    $ref: './paths/user/order/products/base.yaml'
-  /users/{userId}/ordres/{orderId}/products/{productId}:
-    $ref: './paths/user/order/products/{productId}.yaml'
-  /users/{userId}/orders/{orderId}/delivery:
-    $ref: './paths/user/order/delivery/base.yaml'
   /users/{userId}/orders/{orderId}/history:
     $ref: './paths/user/order/history/base.yaml'
+
+  # DELIVERY
+  /users/{userId}/orders/{orderId}/delivery:
+    $ref: './paths/user/order/delivery/base.yaml'
+
+  # ORDER-DETAILS
+  /users/{userId}/orders/{orderId}/order-details:
+    $ref: './paths/user/order/products/base.yaml'
+  /users/{userId}/orders/{orderId}/order-details/{orderDetailId}:
+    $ref: './paths/user/order/products/{productId}.yaml'
+
+  # FEEDBACK
   /users/{userId}/feedbacks:
     $ref: './paths/user/feedback/base.yaml'
   /users/{userId}/feedbacks/{feedbackId}:
     $ref: './paths/user/feedback/{feedbackId}.yaml'
+  /products/{productId}/feedbacks/:
+    $ref: './paths/product/feedback/base.yaml'
+  /products/{productId}/feedbacks/{feedbackId}:
+    $ref: './paths/product/feedback/{feedbackId}.yaml'
+
+  # SESSIONS
   /users/{userId}/sessions:
     $ref: './paths/user/session/base.yaml'
   /users/{userId}/sessions/{sessionId}:

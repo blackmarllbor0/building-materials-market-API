@@ -4,8 +4,8 @@ put:
     - admin
   summary: Update user status name by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/user-status/userStatusId.yaml'
   requestBody:

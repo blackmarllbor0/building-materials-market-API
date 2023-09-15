@@ -1,0 +1,6 @@
+name: orderDetailId
+in: path
+required: true
+description: Order detail id
+schema:
+  type: integer

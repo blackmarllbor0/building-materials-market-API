@@ -1,6 +1,6 @@
 get:
   tags:
-    - company
+    - category
     - no-auth
   summary: Get all company categories.
   parameters:

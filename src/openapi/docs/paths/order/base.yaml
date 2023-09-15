@@ -1,21 +1,26 @@
 get:
   tags:
-    - product
-  summary: Get all the company's products.
+    - order
+    - admin
+  summary: Get all orders.
   security:
+    - cookie-auth: [ ]
+    - admin-role: [ ]
   parameters:
-    - $ref: './parameters/company/companyId.yaml'
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - name: order-status-id
+      in: query
+      description: Order status id.
+      schema:
+        type: string
   responses:
     200:
-      description: Product sorted.
+      description: All orders received.
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: './schemas/product.yaml'
+              $ref: './schemas/order.yaml'
     401:
       $ref: './responses/401.yaml'
     403:

@@ -4,8 +4,8 @@ patch:
     - admin
   summary: Block user by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
   responses:

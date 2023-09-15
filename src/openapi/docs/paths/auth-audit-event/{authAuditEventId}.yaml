@@ -4,8 +4,8 @@ put:
     - admin
   summary: Update auth audit event name by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/auth-audit-event/authAuditEventId.yaml'
   requestBody:

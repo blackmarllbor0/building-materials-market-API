@@ -1,6 +1,6 @@
 get:
   tags:
-    - category
+    - product
     - no-auth
   summary: Get all products by category.
   parameters:

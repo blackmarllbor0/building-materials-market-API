@@ -4,8 +4,8 @@ get:
     - customer
   summary: Get user by user id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
   responses:
@@ -26,8 +26,8 @@ patch:
     - customer
   summary: Update user by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
   requestBody:
@@ -76,8 +76,8 @@ delete:
     - customer
   summary: Delete user account user by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
   responses:

@@ -1,11 +1,11 @@
 get:
   tags:
-    - user
+    - order
     - customer
   summary: Get user order status.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -23,23 +23,25 @@ get:
 
 patch:
   tags:
-    - user
+    - order
     - customer
   summary: Set user order status.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
   requestBody:
     description: New user order status
+    required: true
     content:
       application/json:
         schema:
           type: object
           properties:
-            orderStatusId: integer
+            orderStatusId:
+              type: integer
   responses:
     200:
       description: Successfully updated user order status.

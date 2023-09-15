@@ -21,8 +21,8 @@ patch:
     - admin
   summary: Update company by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/company/companyId.yaml'
   requestBody:

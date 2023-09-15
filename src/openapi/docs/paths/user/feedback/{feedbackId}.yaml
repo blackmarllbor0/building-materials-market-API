@@ -1,11 +1,11 @@
 get:
   tags:
-    - user
+    - feedback
     - customer
   summary: Get user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/feedback/feedbackId.yaml'
@@ -23,12 +23,12 @@ get:
 
 patch:
   tags:
-    - user
+    - feedback
     - customer
   summary: Set user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/feedback/feedbackId.yaml'
@@ -36,7 +36,19 @@ patch:
     content:
       application/json:
         schema:
-          $ref: './schemas/feedback.yaml'
+          type: object
+          properties:
+            rating:
+              type: integer
+              minimum: 1
+              maximum: 5
+              default: 5
+            title:
+              type: string
+              minLength: 15
+            message:
+              type: string
+              minLength: 50
   responses:
     200:
       description: User feedback chanced.
@@ -51,12 +63,12 @@ patch:
 
 delete:
   tags:
-    - user
+    - feedback
     - customer
   summary: Delete user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/feedback/feedbackId.yaml'

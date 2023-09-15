@@ -3,8 +3,8 @@ get:
     - session
   summary: Get session by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/session/sessionId.yaml'
   responses:

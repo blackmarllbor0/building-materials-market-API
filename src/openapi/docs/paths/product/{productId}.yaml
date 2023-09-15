@@ -21,8 +21,8 @@ patch:
     - admin
   summary: Update product by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/product/productId.yaml'
   requestBody:
@@ -46,9 +46,7 @@ patch:
               type: integer
               default: 5
             linkToImages:
-              type: array
-              items:
-                type: string
+              type: string
             title:
               type: string
             description:

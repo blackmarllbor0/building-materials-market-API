@@ -4,8 +4,8 @@ put:
     - admin
   summary: Update order payment type name by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/order-payment-type/orderPaymentTypeId.yaml'
   requestBody:

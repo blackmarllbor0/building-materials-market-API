@@ -1,11 +1,49 @@
+post:
+  tags:
+    - order-detail
+    - customer
+  summary: Add new item to user order.
+  security:
+    - cookie-auth: []
+    - customer-role: []
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  requestBody:
+    description: New product.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            productId:
+              type: integer
+            quantity:
+              type: integer
+              default: 1
+  responses:
+    200:
+      description: Created new user order product.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/order-detail.yaml'
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
 get:
   tags:
-    - user
+    - order-detail
     - customer
   summary: Get all user order products.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -19,7 +57,7 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/product.yaml'
+              $ref: './schemas/order-detail.yaml'
     401:
       $ref: './responses/401.yaml'
     404:

@@ -1,10 +1,10 @@
 post:
   tags:
-    - user
+    - order
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
   requestBody:
@@ -15,7 +15,7 @@ post:
         schema:
           type: object
           properties:
-            userId:
+            orderPaymentTypeId:
               type: integer
   responses:
     201:
@@ -40,12 +40,12 @@ post:
 
 get:
   tags:
-    - user
+    - order
     - customer
   summary: Get all user orders.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/pagination/page-from.yaml'

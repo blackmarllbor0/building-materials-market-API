@@ -1,6 +1,6 @@
 get:
   tags:
-    - product
+    - feedback
     - no-auth
   summary: Get product feedback.
   parameters:

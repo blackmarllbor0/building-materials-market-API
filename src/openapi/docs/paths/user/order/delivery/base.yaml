@@ -1,11 +1,11 @@
 post:
   summary: Create new user order delivery.
   tags:
-    - user
+    - delivery
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -17,8 +17,8 @@ post:
         schema:
           type: object
           properties:
-            orderId:
-              type: integer
+            #            orderId:
+            #              type: integer
             addressFrom:
               type: string
             addressTo:
@@ -37,12 +37,12 @@ post:
 
 get:
   tags:
-    - user
+    - delivery
     - customer
   summary: Get user order delivery.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -60,18 +60,53 @@ get:
 
 patch:
   tags:
-    - user
+    - delivery
     - customer
   summary: Set user order delivery.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
+    - $ref: './parameters/order/orderId.yaml'
+  requestBody:
+    description: New user order status
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            addressFrom:
+              type: string
+            addressTo:
+              type: string
+  responses:
+    200:
+      description: User order delivery received.
+      content:
+        application/json:
+          schema:
+            $ref: './schemas/delivery.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+
+delete:
+  tags:
+    - delivery
+    - customer
+  summary: Cancel user order delivery.
+  security:
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
   responses:
     200:
-      description: User order delivery received.
+      description: User order delivery canceled.
       content:
         application/json:
           schema:

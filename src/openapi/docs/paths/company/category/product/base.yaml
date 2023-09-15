@@ -1,6 +1,6 @@
 get:
   tags:
-    - company
+    - product
     - no-auth
   summary: Get all company products by category.
   parameters:

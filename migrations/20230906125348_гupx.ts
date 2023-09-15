@@ -53,8 +53,8 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').notNullable().unique();
       table.string('phone_number').notNullable().unique();
       table.string('password_hash').notNullable().unique();
-      table.boolean('isBlocked').defaultTo(false);
-      table.boolean('isDeleted').defaultTo(false);
+      table.boolean('is_blocked').defaultTo(false);
+      table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
@@ -140,7 +140,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.orderPaymentType)
         .onDelete(CASCADE);
-      table.boolean('isCanceled').defaultTo(false);
+      table.boolean('is_canceled').defaultTo(false);
       table.integer('number').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
@@ -188,7 +188,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('link_to_logo_image').notNullable().unique();
         table.string('email').notNullable().unique();
         table.text('description').notNullable();
-        table.boolean('isDeleted').defaultTo(false);
+        table.boolean('is_deleted').defaultTo(false);
         table.timestamp('create_date').defaultTo(knex.fn.now());
         table.timestamp('update_date');
       },
@@ -245,7 +245,7 @@ export async function up(knex: Knex): Promise<void> {
       table.decimal('rating').notNullable().defaultTo(5);
       table.string('title').notNullable();
       table.text('message').notNullable();
-      table.boolean('isDeleted').defaultTo(false);
+      table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
@@ -263,7 +263,8 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.product)
         .onDelete(CASCADE);
-      table.boolean('isDeleted').defaultTo(false);
+      table.integer('quantity').notNullable().defaultTo(1);
+      table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     });

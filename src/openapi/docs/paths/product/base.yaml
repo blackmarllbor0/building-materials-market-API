@@ -65,6 +65,24 @@ get:
   parameters:
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'
+    - name: product-title
+      in: query
+      description: Product title.
+      required: false
+      schema:
+        type: string
+    - name: category-name
+      in: query
+      description: Category name
+      required: false
+      schema:
+        type: string
+    - name: company-name
+      in: query
+      description: Company name
+      required: false
+      schema:
+        type: string
   responses:
     200:
       description: All product received.

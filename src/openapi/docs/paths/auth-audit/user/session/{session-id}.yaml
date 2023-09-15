@@ -3,8 +3,8 @@ get:
     - auth-audit
   summary: Get user auth audits by session id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/session/sessionId.yaml'

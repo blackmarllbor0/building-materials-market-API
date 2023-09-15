@@ -1,53 +1,51 @@
-post:
+patch:
   tags:
-    - user
+    - order-detail
     - customer
-  summary: Add new item to user order.
+  summary: Reduce quantity of product.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
-    - $ref: './parameters/product/productId.yaml'
+    - $ref: './parameters/order-detail/orderDetailId.yaml'
   requestBody:
-    description: New product.
+    description: UUpdated quantity.
     required: true
     content:
       application/json:
         schema:
           type: object
           properties:
-            orderId:
-              type: integer
-            productId:
+            quantity:
               type: integer
   responses:
     200:
-      description: Created new user order product.
+      description: Product quantity changed.
       content:
         application/json:
           schema:
             $ref: './schemas/order-detail.yaml'
-    400:
-      $ref: './responses/400.yaml'
     401:
       $ref: './responses/401.yaml'
+    403:
+      $ref: './responses/403.yaml'
     404:
       $ref: './responses/404.yaml'
 
 delete:
   tags:
-    - user
+    - order-detail
     - customer
   summary: Delete product from user order.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
-    - $ref: './parameters/product/productId.yaml'
+    - $ref: './parameters/order-detail/orderDetailId.yaml'
   responses:
     200:
       description: Successfully deleted product.

@@ -1,10 +1,13 @@
 post:
   tags:
-    - user
+    - feedback
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
+  summary: Create new user feedback.
+  parameters:
+    - $ref: './parameters/user/userId.yaml'
   requestBody:
     description: New feedback data.
     required: true
@@ -13,8 +16,6 @@ post:
         schema:
           type: object
           properties:
-            userId:
-              type: integer
             productId:
               type: integer
             companyId:
@@ -53,12 +54,12 @@ post:
 
 get:
   tags:
-    - user
+    - feedback
     - customer
   summary: Get user feedbacks.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/pagination/page-from.yaml'

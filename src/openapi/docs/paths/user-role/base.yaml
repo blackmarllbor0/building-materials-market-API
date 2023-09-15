@@ -4,8 +4,8 @@ post:
     - user-role
     - admin
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   requestBody:
     description: New user role.
     required: true
@@ -40,8 +40,8 @@ get:
     - admin
   summary: Get all user roles.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'
