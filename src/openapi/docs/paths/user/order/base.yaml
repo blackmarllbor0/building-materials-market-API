@@ -1,51 +1,11 @@
-post:
-  tags:
-    - order
-    - customer
-  security:
-    - cookie-auth: []
-    - customer-role: []
-  parameters:
-    - $ref: './parameters/user/userId.yaml'
-  requestBody:
-    description: Only accepts a link to the user.
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            orderPaymentTypeId:
-              type: integer
-  responses:
-    201:
-      description: Order created.
-      content:
-        application/json:
-          example:
-            id: 1
-            userId: 1
-            orderStatusId: 1
-            orderPaymentTypeId: 1
-            isCanceled: false
-            orderNumber: 1515
-    400:
-      $ref: './responses/400.yaml'
-    401:
-      $ref: './responses/401.yaml'
-    404:
-      $ref: './responses/404.yaml'
-    409:
-      $ref: './responses/409.yaml'
-
 get:
   tags:
     - order
     - customer
   summary: Get all user orders.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/pagination/page-from.yaml'

@@ -4,10 +4,9 @@ patch:
     - customer
   summary: Reduce quantity of product.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
     - $ref: './parameters/order-detail/orderDetailId.yaml'
   requestBody:
@@ -40,10 +39,9 @@ delete:
     - customer
   summary: Delete product from user order.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
     - $ref: './parameters/order-detail/orderDetailId.yaml'
   responses:

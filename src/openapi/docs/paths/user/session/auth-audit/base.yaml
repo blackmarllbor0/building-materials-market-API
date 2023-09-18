@@ -4,10 +4,10 @@ get:
     - admin
   summary: Get user session auth audits.
   security:
-    - cookie-auth: []
-    - admin-role: []
+    - cookie-auth: [ ]
+    - admin-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
+    - $ref: "./parameters/user/queryUerId.yaml"
     - $ref: './parameters/session/sessionId.yaml'
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'

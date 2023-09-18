@@ -1,4 +1,4 @@
-name: item-from
+name: limit
 in: query
 description: Starting from number.
 required: false

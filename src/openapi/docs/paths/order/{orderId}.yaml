@@ -1,22 +1,21 @@
 get:
   tags:
-    - feedback
+    - order
     - customer
-  summary: Get user feedback by id.
+  summary: Get all user orders.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
+    - $ref: './parameters/order/orderId.yaml'
     - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: "./parameters/product/queryProductId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
   responses:
     200:
-      description: User feedback received.
+      description: All orders received.
       content:
         application/json:
           schema:
-            $ref: './schemas/feedback.yaml'
+            $ref: './schemas/order.yaml'
     401:
       $ref: './responses/401.yaml'
     404:
@@ -24,39 +23,34 @@ get:
 
 patch:
   tags:
-    - feedback
+    - order
     - customer
-  summary: Set user feedback by id.
+  summary: Set user order status.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
+    - $ref: './parameters/order/orderId.yaml'
     - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
   requestBody:
+    description: New user order status
+    required: true
     content:
       application/json:
         schema:
           type: object
           properties:
-            rating:
+            orderStatusId:
               type: integer
-              minimum: 1
-              maximum: 5
-              default: 5
-            title:
-              type: string
-              minLength: 15
-            message:
-              type: string
-              minLength: 50
+            orderPaymentTypeId:
+              type: integer
   responses:
     200:
-      description: User feedback chanced.
+      description: Successfully updated user order status.
       content:
         application/json:
           schema:
-            $ref: './schemas/feedback.yaml'
+            $ref: './schemas/order.yaml'
     401:
       $ref: './responses/401.yaml'
     404:
@@ -64,18 +58,18 @@ patch:
 
 delete:
   tags:
-    - feedback
+    - order
     - customer
-  summary: Delete user feedback by id.
+  summary: Delete user order by id.
   security:
     - cookie-auth: [ ]
     - customer-role: [ ]
   parameters:
+    - $ref: './parameters/order/orderId.yaml'
     - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
   responses:
     200:
-      description: User feedback successfully deleted
+      description: User order deleted.
     401:
       $ref: './responses/401.yaml'
     404:

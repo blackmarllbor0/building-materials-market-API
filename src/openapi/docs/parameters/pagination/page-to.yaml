@@ -1,4 +1,4 @@
-name: item-to
+name: offset
 in: query
 description: Ending with number.
 required: false

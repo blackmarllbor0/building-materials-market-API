@@ -368,7 +368,7 @@ components:
         updateDate: 99.88.7777
   parameters:
     page-from:
-      name: item-from
+      name: limit
       in: query
       description: Starting from number.
       required: false
@@ -377,7 +377,7 @@ components:
         default: 1
         nullable: true
     page-to:
-      name: item-to
+      name: offset
       in: query
       description: Ending with number.
       required: false
@@ -409,7 +409,7 @@ components:
     queryUserId:
       name: userId
       in: query
-      required: true
+      required: false
       description: User id.
       schema:
         type: integer
@@ -465,7 +465,7 @@ components:
     queryProductId:
       name: productId
       in: query
-      required: true
+      required: false
       description: Product id.
       schema:
         type: integer
@@ -1680,77 +1680,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/block":
-    patch:
-      tags:
-        - user
-        - admin
-      summary: Block user by id.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-      responses:
-        "200":
-          description: User successfully blocked.
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/unblock":
-    patch:
-      tags:
-        - user
-        - admin
-      summary: Unblock user by id.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-      responses:
-        "200":
-          description: User successfully unblocked.
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-  /order:
-    get:
-      tags:
-        - order
-        - admin
-      summary: Get all orders.
-      security:
-        - cookie-auth: []
-        - admin-role: []
-      parameters:
-        - name: order-status-id
-          in: query
-          description: Order status id.
-          schema:
-            type: string
-      responses:
-        "200":
-          description: All orders received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/order"
-        "401":
-          $ref: "#/components/responses/401"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/orders":
+  /orders:
     post:
       tags:
         - order
@@ -1759,7 +1689,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
       requestBody:
         description: Only accepts a link to the user.
         required: true
@@ -1793,15 +1723,20 @@ paths:
     get:
       tags:
         - order
-        - customer
-      summary: Get all user orders.
+        - admin
+      summary: Get all orders.
       security:
         - cookie-auth: []
-        - customer-role: []
+        - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
+        - name: order-status-id
+          in: query
+          description: Order status id.
+          schema:
+            type: string
       responses:
         "200":
           description: All orders received.
@@ -1813,9 +1748,11 @@ paths:
                   $ref: "#/components/schemas/order"
         "401":
           $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}":
+  "/orders/{orderId}":
     get:
       tags:
         - order
@@ -1825,8 +1762,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryUserId"
       responses:
         "200":
           description: All orders received.
@@ -1847,8 +1784,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryUserId"
       requestBody:
         description: New user order status
         required: true
@@ -1881,8 +1818,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryUserId"
       responses:
         "200":
           description: User order deleted.
@@ -1890,7 +1827,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/history":
+  "/orders/{orderId}/history":
     get:
       tags:
         - order
@@ -1900,8 +1837,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:
@@ -1917,7 +1854,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/delivery":
+  /delivery:
     post:
       summary: Create new user order delivery.
       tags:
@@ -1926,9 +1863,6 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
       requestBody:
         description: Delivery details.
         required: true
@@ -1937,6 +1871,8 @@ paths:
             schema:
               type: object
               properties:
+                orderId:
+                  type: integer
                 addressFrom:
                   type: string
                 addressTo:
@@ -1961,8 +1897,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryOrderId"
       responses:
         "200":
           description: User order delivery received.
@@ -1983,8 +1918,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryOrderId"
       requestBody:
         description: New user order status
         required: true
@@ -2017,8 +1951,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
-        - $ref: "#/components/parameters/orderId"
+        - $ref: "#/components/parameters/queryOrderId"
       responses:
         "200":
           description: User order delivery canceled.
@@ -2030,7 +1963,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/order-details":
+  "/orders/{orderId}/order-details":
     post:
       tags:
         - order-detail
@@ -2040,7 +1973,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
       requestBody:
         description: New product.
@@ -2077,7 +2009,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
@@ -2094,7 +2025,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/orders/{orderId}/order-details/{orderDetailId}":
+  "/orders/{orderId}/order-details/{orderDetailId}":
     patch:
       tags:
         - order-detail
@@ -2104,7 +2035,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
         - $ref: "#/components/parameters/orderDetailId"
       requestBody:
@@ -2139,7 +2069,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/orderId"
         - $ref: "#/components/parameters/orderDetailId"
       responses:
@@ -2151,7 +2080,7 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/feedbacks":
+  /feedbacks:
     post:
       tags:
         - feedback
@@ -2161,7 +2090,12 @@ paths:
         - customer-role: []
       summary: Create new user feedback.
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - name: userQueryId
+          in: query
+          required: true
+          description: User id in query parameter.
+          schema:
+            type: integer
       requestBody:
         description: New feedback data.
         required: true
@@ -2214,7 +2148,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
+        - $ref: "#/components/parameters/queryProductId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:
@@ -2230,7 +2165,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/feedbacks/{feedbackId}":
+  "/feedbacks/{feedbackId}":
     get:
       tags:
         - feedback
@@ -2240,7 +2175,8 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
+        - $ref: "#/components/parameters/queryProductId"
         - $ref: "#/components/parameters/feedbackId"
       responses:
         "200":
@@ -2262,7 +2198,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/feedbackId"
       requestBody:
         content:
@@ -2301,7 +2237,7 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/feedbackId"
       responses:
         "200":
@@ -2310,46 +2246,7 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
-  "/products/{productId}/feedbacks/":
-    get:
-      tags:
-        - feedback
-        - no-auth
-      summary: Get all product feedback.
-      parameters:
-        - $ref: "#/components/parameters/productId"
-        - $ref: "#/components/parameters/page-from"
-        - $ref: "#/components/parameters/page-to"
-      responses:
-        "200":
-          description: All product feedback received.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/feedback"
-        "404":
-          $ref: "#/components/responses/404"
-  "/products/{productId}/feedbacks/{feedbackId}":
-    get:
-      tags:
-        - feedback
-        - no-auth
-      summary: Get product feedback.
-      parameters:
-        - $ref: "#/components/parameters/productId"
-        - $ref: "#/components/parameters/feedbackId"
-      responses:
-        "200":
-          description: All products received.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/feedback"
-        "404":
-          $ref: "#/components/responses/404"
-  "/users/{userId}/sessions":
+  /sessions:
     get:
       tags:
         - session
@@ -2359,7 +2256,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:
@@ -2377,7 +2274,7 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/sessions/{sessionId}":
+  "/sessions/{sessionId}":
     get:
       tags:
         - session
@@ -2387,7 +2284,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/sessionId"
       responses:
         "200":
@@ -2402,7 +2299,7 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
-  "/users/{userId}/sessions/{sessionId}/auth-audits":
+  "/sessions/{sessionId}/auth-audits":
     get:
       tags:
         - session
@@ -2412,7 +2309,7 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/sessionId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"

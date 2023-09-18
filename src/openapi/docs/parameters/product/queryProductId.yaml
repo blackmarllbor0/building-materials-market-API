@@ -1,6 +1,6 @@
 name: productId
 in: query
-required: true
+required: false
 description: Product id.
 schema:
   type: integer

@@ -4,8 +4,8 @@ get:
     - customer
   summary: Get all user orders.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -27,8 +27,8 @@ patch:
     - customer
   summary: Set user order status.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
@@ -62,8 +62,8 @@ delete:
     - customer
   summary: Delete user order by id.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
     - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'

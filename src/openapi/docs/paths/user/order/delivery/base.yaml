@@ -4,11 +4,8 @@ post:
     - delivery
     - customer
   security:
-    - cookie-auth: []
-    - customer-role: []
-  parameters:
-    - $ref: './parameters/user/userId.yaml'
-    - $ref: './parameters/order/orderId.yaml'
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   requestBody:
     description: Delivery details.
     required: true
@@ -17,8 +14,8 @@ post:
         schema:
           type: object
           properties:
-            #            orderId:
-            #              type: integer
+            orderId:
+              type: integer
             addressFrom:
               type: string
             addressTo:
@@ -41,11 +38,10 @@ get:
     - customer
   summary: Get user order delivery.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/order/queryOrderId.yaml'
   responses:
     200:
       description: User order delivery received.
@@ -64,11 +60,10 @@ patch:
     - customer
   summary: Set user order delivery.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/order/queryOrderId.yaml'
   requestBody:
     description: New user order status
     required: true
@@ -99,11 +94,10 @@ delete:
     - customer
   summary: Cancel user order delivery.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: './parameters/order/queryOrderId.yaml'
   responses:
     200:
       description: User order delivery canceled.

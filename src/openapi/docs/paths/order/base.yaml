@@ -1,3 +1,43 @@
+post:
+  tags:
+    - order
+    - customer
+  security:
+    - cookie-auth: [ ]
+    - customer-role: [ ]
+  parameters:
+    - $ref: "./parameters/user/queryUerId.yaml"
+  requestBody:
+    description: Only accepts a link to the user.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orderPaymentTypeId:
+              type: integer
+  responses:
+    201:
+      description: Order created.
+      content:
+        application/json:
+          example:
+            id: 1
+            userId: 1
+            orderStatusId: 1
+            orderPaymentTypeId: 1
+            isCanceled: false
+            orderNumber: 1515
+    400:
+      $ref: './responses/400.yaml'
+    401:
+      $ref: './responses/401.yaml'
+    404:
+      $ref: './responses/404.yaml'
+    409:
+      $ref: './responses/409.yaml'
+
 get:
   tags:
     - order
@@ -7,6 +47,9 @@ get:
     - cookie-auth: [ ]
     - admin-role: [ ]
   parameters:
+    - $ref: "./parameters/user/queryUerId.yaml"
+    - $ref: './parameters/pagination/page-from.yaml'
+    - $ref: './parameters/pagination/page-to.yaml'
     - name: order-status-id
       in: query
       description: Order status id.

@@ -3,11 +3,16 @@ post:
     - feedback
     - customer
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   summary: Create new user feedback.
   parameters:
-    - $ref: './parameters/user/userId.yaml'
+    - name: userQueryId
+      in: query
+      required: true
+      description: User id in query parameter.
+      schema:
+        type: integer
   requestBody:
     description: New feedback data.
     required: true
@@ -58,10 +63,11 @@ get:
     - customer
   summary: Get user feedbacks.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
+    - $ref: "./parameters/user/queryUerId.yaml"
+    - $ref: "./parameters/product/queryProductId.yaml"
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'
   responses:

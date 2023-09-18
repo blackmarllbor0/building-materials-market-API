@@ -1,6 +1,6 @@
 name: userId
 in: query
-required: true
+required: false
 description: User id.
 schema:
   type: integer

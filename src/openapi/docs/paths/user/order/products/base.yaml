@@ -4,10 +4,9 @@ post:
     - customer
   summary: Add new item to user order.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
   requestBody:
     description: New product.
@@ -42,10 +41,9 @@ get:
     - customer
   summary: Get all user order products.
   security:
-    - cookie-auth: []
-    - customer-role: []
+    - cookie-auth: [ ]
+    - customer-role: [ ]
   parameters:
-    - $ref: './parameters/user/userId.yaml'
     - $ref: './parameters/order/orderId.yaml'
     - $ref: './parameters/pagination/page-from.yaml'
     - $ref: './parameters/pagination/page-to.yaml'
