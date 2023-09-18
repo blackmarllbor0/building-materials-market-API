@@ -1,40 +1,57 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { IOpenapi } from '../openapi/openapi.interface';
+import { errorMiddleware } from '../middleware/error.middleware';
+import { BaseController } from './base.controller';
+import { ILoggerService } from 'src/logger/logger.service.interface';
 
 export class App {
   private app: express.Application;
+  private readonly apiPath: string;
 
   constructor(
     controllers: any[],
     private readonly port: number,
     private readonly openapiService: IOpenapi,
+    private readonly loggerService: ILoggerService,
   ) {
     this.app = express();
+    this.apiPath = '/api/v1';
 
     this.initMiddlewares();
+    this.initErrorHandling();
     this.initControllers(controllers);
   }
 
   private initMiddlewares(): void {
     this.app.use(bodyParser.json());
     this.app.use(express.json());
-    // this.app.use(this.openapiService.getValidatorMiddleware());
-    // this.app.use(this.openapiService.handlerValidateError);
     this.app.use('/api/docs', this.openapiService.getUIParseMiddleware());
   }
 
-  private initControllers(controllers: any[]): void {
+  private initErrorHandling(): void {
+    this.app.use(errorMiddleware);
+  }
+
+  private initControllers(controllers: BaseController[]): void {
     if (controllers && controllers.length) {
       controllers.forEach((controller) => {
-        this.app.use('/', controller.router);
+        this.loggerService.info(
+          `[ ${(<BaseController>controller).constructor.name} ] { ${
+            this.apiPath
+          }${controller.path} } - all methods are running;`,
+        );
+
+        this.app.use(this.apiPath, controller.router);
       });
-    } else console.log('there is no handler');
+    } else this.loggerService.warn('there is no handler');
   }
 
   public async listen(): Promise<void> {
     this.app.listen(this.port, () => {
-      console.log(`App listening on the port ${this.port}`);
+      this.loggerService.info(
+        `App listening on the port http://loclhost:${this.port}`,
+      );
     });
   }
 }
