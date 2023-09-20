@@ -95,12 +95,6 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.authAuditEvent)
         .onDelete(CASCADE);
-      table
-        .integer('session_id')
-        .notNullable()
-        .references('id')
-        .inTable(tables.session)
-        .onDelete(CASCADE);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
