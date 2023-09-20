@@ -1,4 +1,4 @@
-import OracleDB, * as oracle from 'oracledb';
+import * as oracle from 'oracledb';
 import { IConfigService } from '../config/config.interface';
 import { IDatabaseService } from './database.service.interface';
 
@@ -88,7 +88,6 @@ export class DatabaseService implements IDatabaseService {
    * named placeholders like :arg1, :arg2, etc., to prevent SQL injection.
    *
    * @param {SQLArgs} args - An array of arguments to be used in the WHERE clause conditions.
-   * @param {SQLValues} values - An array of values corresponding to the arguments.
    * @returns {SQLArgs} - A string containing SQL WHERE conditions with bound arguments.
    *
    * @example
@@ -97,70 +96,100 @@ export class DatabaseService implements IDatabaseService {
    * const whereClause = bindWhereArgsToVars(args, values);
    * // result: id = :id, name = :name
    */
-  private bindWhereArgsToVars(args: SQLArgs, values: SQLValues): SQLArgs {
-    if (Array.isArray(args) && Array.isArray(values)) {
-      if (args.length === values.length) {
-        return args
-          .map((arg, index) => `"${arg}" = :arg${index + 1}`)
-          .join(', ');
-      }
-      throw new Error(
-        'you cannot pass different numbers of arguments and values',
-      );
+  private bindWhereArgsToVars(terms: SQLArgs): SQLArgs {
+    if (Array.isArray(terms)) {
+      return terms.map((term, index) => `${term} = :arg${index}`).join(', ');
     }
 
-    return `"${args}" = :arg1`;
+    return `${terms} = :arg_${1}`;
   }
 
-  private rewriteSnakeToCamelCase(
-    obj: Record<string, any>,
-  ): Record<string, any> {
-    const res: Record<string, any> = {};
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  private rewriteSnakeToCamelCase<T extends object>(entity: T | T[]): T | T[] {
+    if (Array.isArray(entity)) {
+      return entity.map((obj) => this.rewriteSnakeToCamelCase(obj)) as T[];
+    }
+
+    const res = {};
+    for (const key in entity) {
+      if (Object.prototype.hasOwnProperty.call(entity, key)) {
         const snakeCase = key;
         const camelCase = snakeCase.replace(/_([a-z])/g, (_, letter: string) =>
           letter.toUpperCase(),
         );
-        res[camelCase] = obj[key];
+        res[camelCase] = entity[key];
       }
     }
 
-    return res;
+    return res as T;
   }
 
-  private cutNullValues<T extends object>(obj: T): T {
-    const res = {};
-    for (const key in obj) {
-      if (obj[key] === null || obj[key] === undefined) {
-        continue;
-      }
-
-      res[key as string] = obj[key];
+  private rewriteCamelToSnakeCase<T extends object>(entity: T | T[]): T | T[] {
+    if (Array.isArray(entity)) {
+      return entity.map((obj) => this.rewriteCamelToSnakeCase(obj)) as T[];
     }
 
-    return this.rewriteSnakeToCamelCase(res) as T;
-  }
+    const snakeObj = {};
 
-  private rewriteCamelToSnake<T extends object>(obj: T): T {
-    const snakeObj = {} as T;
-
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    for (const key in entity) {
+      if (Object.prototype.hasOwnProperty.call(entity, key)) {
         const camelKey = key as keyof T as string;
         const snakeKey = camelKey.replace(
           /[A-Z]/g,
           (match) => `_${match.toLowerCase()}`,
         );
-        snakeObj[snakeKey] = obj[key];
+        snakeObj[snakeKey] = entity[key];
       }
     }
 
-    return snakeObj;
+    return snakeObj as T;
   }
 
-  public async insert<T extends object>(table: string, obj: T): Promise<T> {
-    const toSnake = this.rewriteCamelToSnake<T>(obj);
+  private cutNullValues<T extends object>(entity: T | T[]): T | T[] {
+    if (Array.isArray(entity)) {
+      return entity.map((obj) => this.cutNullValues(obj)) as T[];
+    }
+
+    const res = {};
+
+    for (const key in entity) {
+      if (entity[key] === null || entity[key] === undefined) {
+        continue;
+      }
+
+      res[key as string] = entity[key];
+    }
+
+    return res as T;
+  }
+
+  /**
+   * Inserts a new record into a database table.
+   *
+   * This function inserts a new record into the specified database table using the provided entity
+   * data, which must strictly comply with the table structure. You can also specify a unique key
+   * (e.g., PRIMARY KEY) to retrieve the result, with 'id' as the default key.
+   *
+   * @param {string} table - The name of the database table to insert the record into.
+   * @param {T} entity - The data to be written to the table. It should strictly match the table's structure.
+   * @param returnParam - (Optional) Specify a unique key (e.g., PRIMARY KEY) to retrieve the result.
+   *                             The default key is 'id'.
+   * @returns {Promise<T>} A promise that resolves to the newly created object.
+   *
+   * @example
+   * const user: User = {
+   *   name: "Josh",
+   *   age: 23,
+   * };
+   *
+   * const insertRecord = await insert<User>('users', user, 'name');
+   * // insertedRecord will contain the newly created user object.
+   */
+  public async insert<T extends object>(
+    table: string,
+    entity: T,
+    returnParam = 'id',
+  ): Promise<T> {
+    const toSnake = this.rewriteCamelToSnakeCase<T>(entity);
     const args = this.wrapAgsInQuotes(Object.keys(toSnake));
     const bindValues = this.bindValuesToVars(Object.keys(toSnake));
 
@@ -170,44 +199,120 @@ export class DatabaseService implements IDatabaseService {
     }
 
     const query = `INSERT INTO ${this.PBD}."${table}" (${args}) 
-                  VALUES (${bindValues}) RETURN ("id") INTO :id`;
+                  VALUES (${bindValues}) RETURN ("${returnParam}") INTO :id`;
     const insertRes = await this.connection.execute(
       query,
-      [...values, { type: oracle.NUMBER, dir: oracle.BIND_OUT }],
+      [...values, { dir: oracle.BIND_OUT }],
       { autoCommit: true },
     );
 
-    const findRows = await this.where<T>(
-      table,
-      '*',
-      'id',
-      insertRes.outBinds[0],
-    );
+    const res = await this.selectOne<T>(table, {
+      id: insertRes.outBinds[0],
+    } as T);
 
-    return this.cutNullValues<T>(findRows.rows[0]);
+    return res;
   }
 
+  /**
+   * Retrieves multiple records from a database table.
+   *
+   * This function retrieves records from the specified database table based on optional filtering
+   * criteria provided in the 'where' object and returns only the specified fields as specified in
+   * the 'returnFields' object. If no 'where' object is provided, all records from the table are
+   * retrieved
+   *
+   * @param {string} table - The name of the database table to retrieve records from.
+   * @param {T} where - (Optional) An object with parameters for data filtering and sorting.
+   * @param returnFields - (Optional) An object specifying the fields to return. Set fields to null
+   *                         to exclude them from the result.
+   *
+   * @example
+   * const admins = await selectAll<User>('users', { userRole: 'admin' }, { id: 0 });
+   * // [ id: 12, id: 99, id: 34 ];
+   */
   public async selectAll<T extends object>(
     table: string,
-    args: SQLArgs,
-  ): Promise<OracleDB.Result<T>> {
-    return this.connection.execute(
-      `SELECT ${this.wrapAgsInQuotes(args)} FROM ${this.PBD}."${table}"`,
-    );
+    where?: T,
+    returnFields?: T,
+  ): Promise<T[]> {
+    let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
+    const values: any[] = [];
+    if (returnFields) {
+      const toSnake = this.rewriteCamelToSnakeCase<T>(returnFields);
+      const args = this.wrapAgsInQuotes(Object.keys(toSnake));
+      query = `SELECT ${args} FROM ${this.PBD}."${table}"`;
+    }
+
+    if (where) {
+      const toSnake = this.rewriteCamelToSnakeCase<T>(where);
+      const args = this.wrapAgsInQuotes(Object.keys(toSnake));
+      const bindWhereVars = this.bindWhereArgsToVars(args);
+
+      for (const key in toSnake) {
+        values.push(toSnake[key][0]);
+      }
+      query += ` WHERE ${bindWhereVars}`;
+    }
+
+    const selectRes = await this.connection.execute<T>(query, [...values], {
+      outFormat: oracle.OUT_FORMAT_OBJECT,
+    });
+
+    const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
+
+    return this.cutNullValues<T>(camelCase) as T[];
   }
 
-  public async where<T extends object>(
+  /**
+   * Retrieves a single record from a database table based on specified criteria.
+   *
+   * This function retrieves a single record from the specified database table based on the provided
+   * criteria in the 'where' object. You can also specify which fields to return in the result using
+   * the 'return Fields' object.
+   *
+   * @param {string} table - The name of the database table to retrieve the record from.
+   * @param {T} where - An object with criteria to filter and select the record
+   * @param {T} returnFields - (Optional) An object specifying the fields to return. Set fields to null
+   *                         to exclude them from the result.
+   *
+   * @example
+   * const customer = await selectOne('users', { id: 1, role: 'customer' });
+   * // { id: 1, name: 'Joi', age: 22, role: 'customer' }
+   */
+  public async selectOne<T extends object>(
     table: string,
-    args: SQLArgs,
-    terms: SQLArgs,
-    values: SQLValues,
-  ): Promise<OracleDB.Result<T>> {
-    return this.connection.execute(
-      `SELECT ${this.wrapAgsInQuotes(args)} FROM ${
-        this.PBD
-      }."${table}" WHERE ${this.bindWhereArgsToVars(terms, values)}`,
-      [...values],
-      { outFormat: oracle.OUT_FORMAT_OBJECT },
-    );
+    where: T,
+    returnFields?: T,
+  ): Promise<T> {
+    const res = await this.selectAll<T>(table, where, returnFields);
+    return res[0];
+  }
+
+  /**
+   * Executes an SQL query with bound parameters and specified options.
+   *
+   * This function executes an SQL query with the provided SQL statement, bound parameters, and
+   * execution options. It returns a promise that resolves to the result of the query, including
+   * any fetched rows or metadata.
+   *
+   * @param {string} sql - The SQL statement to execute.
+   * @param {OracleDB.BindParameters} bindParams - An object containing the bound parameters for the query.
+   * @param {OracleDB.ExecuteManyOptions} option - Options for executing the query.
+   * @returns {Promise<OracleDB.Result<T>>} - A promise that resolves to the result of the query.
+   *
+   * @example
+   * const sqlQuery = 'SELECT * FROM users WHERE id = :userId';
+   * const parameters = { userId: 123 };
+   * const executionOptions = { autoCommit: true };
+   *
+   * const queryResult = await execute(sqlQuery, parameters, executionOptions);
+   * // queryResult will contain the result of the SQL query.
+   */
+  public async execute<T>(
+    sql: string,
+    bindParams: oracle.BindParameters,
+    option: oracle.ExecuteOptions,
+  ): Promise<oracle.Result<T>> {
+    return this.connection.execute<T>(sql, bindParams, option);
   }
 }
