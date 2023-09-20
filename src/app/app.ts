@@ -1,9 +1,10 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import { IOpenapi } from '../openapi/openapi.interface';
 import { errorMiddleware } from '../middleware/error.middleware';
 import { BaseController } from './base.controller';
-import { ILoggerService } from 'src/logger/logger.service.interface';
+import { ILoggerService } from '../logger/logger.service.interface';
 
 export class App {
   private app: express.Application;
@@ -26,6 +27,7 @@ export class App {
   private initMiddlewares(): void {
     this.app.use(bodyParser.json());
     this.app.use(express.json());
+    this.app.use(cookieParser());
     this.app.use('/api/docs', this.openapiService.getUIParseMiddleware());
   }
 
@@ -50,7 +52,7 @@ export class App {
   public async listen(): Promise<void> {
     this.app.listen(this.port, () => {
       this.loggerService.info(
-        `App listening on the port http://loclhost:${this.port}`,
+        `App listening on the port http://loclhost:${this.port}${this.apiPath}`,
       );
     });
   }

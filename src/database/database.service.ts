@@ -207,7 +207,7 @@ export class DatabaseService implements IDatabaseService {
     );
 
     const res = await this.selectOne<T>(table, {
-      id: insertRes.outBinds[0],
+      id: insertRes.outBinds[0][0],
     } as T);
 
     return res;
@@ -249,7 +249,7 @@ export class DatabaseService implements IDatabaseService {
       const bindWhereVars = this.bindWhereArgsToVars(args);
 
       for (const key in toSnake) {
-        values.push(toSnake[key][0]);
+        values.push(toSnake[key]);
       }
       query += ` WHERE ${bindWhereVars}`;
     }

@@ -3,5 +3,5 @@ export interface IConfigService {
 
   number(key: string): number;
 
-  bool(key): boolean;
+  bool(key: string): boolean;
 }
