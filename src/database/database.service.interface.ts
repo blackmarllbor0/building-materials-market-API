@@ -101,4 +101,35 @@ export interface IDatabaseService {
     bindParams: OracleDB.BindParameters,
     option: OracleDB.ExecuteOptions,
   ): Promise<OracleDB.Result<T>>;
+
+  /**
+   * Updates a record in a database table based on specified criteria.
+   *
+   * This function updates a record in the specified database table with the provided updatedEntity,
+   * using the criteria specified in the 'where' object. You can also specify the 'returnParam' to
+   * determine the field to return in the result. It returns the updated record.
+   *
+   * @param {string} table - The name of the database table to update the record in.
+   * @param {T} updatedEntity - The data representing the updated record.
+   * @param {T} where - The criteria for identifying the record to be updated.
+   * @param {string} returnParam - (Optional) The field to return in the result. Default is 'id'.
+   * @returns {Promise<T>} - A promise that resolves to the updated record.
+   *
+   * @example
+   * // Update a user's information based on their unique identifier (id).
+   * const updatedUserInfo = {
+   *   id: 123,
+   *   name: 'Updated Name',
+   *   email: 'updated@email.com',
+   * };
+   * const criteria = { id: 123 };
+   * const updatedUser = await update('users', updatedUserInfo, criteria);
+   * // updatedUser will contain the updated user record.
+   */
+  update<T extends object>(
+    table: string,
+    updatedEntity: T,
+    where: T,
+    returnParam?: string,
+  ): Promise<T>;
 }

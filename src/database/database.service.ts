@@ -207,7 +207,7 @@ export class DatabaseService implements IDatabaseService {
     );
 
     const res = await this.selectOne<T>(table, {
-      id: insertRes.outBinds[0][0],
+      [returnParam]: insertRes.outBinds[0][0],
     } as T);
 
     return res;
@@ -286,6 +286,72 @@ export class DatabaseService implements IDatabaseService {
   ): Promise<T> {
     const res = await this.selectAll<T>(table, where, returnFields);
     return res[0];
+  }
+
+  /**
+   * Updates a record in a database table based on specified criteria.
+   *
+   * This function updates a record in the specified database table with the provided updatedEntity,
+   * using the criteria specified in the 'where' object. You can also specify the 'returnParam' to
+   * determine the field to return in the result. It returns the updated record.
+   *
+   * @param {string} table - The name of the database table to update the record in.
+   * @param {T} updatedEntity - The data representing the updated record.
+   * @param {T} where - The criteria for identifying the record to be updated.
+   * @param {string} returnParam - (Optional) The field to return in the result. Default is 'id'.
+   * @returns {Promise<T>} - A promise that resolves to the updated record.
+   *
+   * @example
+   * // Update a user's information based on their unique identifier (id).
+   * const updatedUserInfo = {
+   *   id: 123,
+   *   name: 'Updated Name',
+   *   email: 'updated@email.com',
+   * };
+   * const criteria = { id: 123 };
+   * const updatedUser = await update('users', updatedUserInfo, criteria);
+   * // updatedUser will contain the updated user record.
+   */
+  public async update<T extends object>(
+    table: string,
+    updatedEntity: T,
+    where: T,
+    returnParam: string = 'id',
+  ): Promise<T> {
+    const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(updatedEntity);
+    const updatedArgs = this.wrapAgsInQuotes(Object.keys(updatedEntityToSnake));
+    const bindUpdatedValues = this.bindWhereArgsToVars(updatedArgs);
+
+    const updatedValues: any[] = [];
+    for (const key in updatedEntityToSnake) {
+      updatedValues.push(updatedEntityToSnake[key]);
+    }
+
+    const whereToSnake = this.rewriteCamelToSnakeCase<T>(where);
+    const whereArgs = this.wrapAgsInQuotes(Object.keys(whereToSnake));
+    const bindWhereValues = this.bindWhereArgsToVars(whereArgs);
+
+    const whereValues: any[] = [];
+    for (const key in whereToSnake) {
+      whereValues.push(whereToSnake[key]);
+    }
+
+    const query = `UPDATE ${this.PBD}."${table}" SET ${bindUpdatedValues}
+               WHERE ${bindWhereValues} RETURN ("${returnParam}") INTO :return_param`;
+
+    const updatedResult = await this.connection.execute<T>(
+      query,
+      [...updatedValues, ...whereValues, { dir: oracle.BIND_OUT }],
+      {
+        outFormat: oracle.OUT_FORMAT_OBJECT,
+      },
+    );
+
+    const res = await this.selectOne<T>(table, {
+      [returnParam]: updatedResult.outBinds[0][0],
+    } as T);
+
+    return res;
   }
 
   /**
