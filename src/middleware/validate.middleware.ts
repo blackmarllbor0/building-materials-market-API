@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { validate, ValidationError } from 'class-validator';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
-import { BadRequestException } from 'src/exception/BadRequest.exception';
+import { BadRequestException } from '../exception/BadRequest.exception';
 
 /**
  * Middleware for validating request data against a class-validator class.

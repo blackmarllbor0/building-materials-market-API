@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { IUserService } from './user.service.interface';
 import { BaseController } from '../app/base.controller';
 import { validateMiddleware } from '../middleware/validate.middleware';
@@ -23,13 +23,8 @@ export class UserController extends BaseController {
   public async create(
     { body }: Request<any, any, CreateUserDTO>,
     res: Response,
-    next: NextFunction,
   ): Promise<Response<User>> {
-    try {
-      const user = await this.userService.create(body);
-      return this.created(res, user);
-    } catch (error) {
-      next(error);
-    }
+    const user = await this.userService.create(body);
+    return this.created(res, user);
   }
 }
