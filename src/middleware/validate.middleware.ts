@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { validate, ValidationError } from 'class-validator';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
-import { HttpException } from '../exception/HttpException';
+import { BadRequestException } from 'src/exception/BadRequest.exception';
 
 /**
  * Middleware for validating request data against a class-validator class.
@@ -44,7 +44,7 @@ export function validateMiddleware<T extends object>(
         const msg = errors
           .map((err: ValidationError) => Object.values(err.constraints))
           .join(', ');
-        next(new HttpException(400, msg));
+        next(new BadRequestException(msg));
       } else next();
     });
   };
