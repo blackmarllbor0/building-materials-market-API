@@ -2,8 +2,8 @@ import { IDatabaseService } from '../database/database.service.interface';
 import { Session } from './session.entity';
 import * as moment from 'moment';
 import { IConfigService } from '../config/config.interface';
-import * as bcrypt from 'bcrypt';
 import { ISessionService } from './session.service.interface';
+import * as jwt from 'jsonwebtoken';
 
 export class SessionService implements ISessionService {
   private readonly table = 'session';
@@ -30,8 +30,8 @@ export class SessionService implements ISessionService {
   }
 
   private async generateToken(userId: number): Promise<string> {
-    const token = Math.random().toString(3).substring(0) + `_id:${userId}`;
-
-    return bcrypt.hash(token, this.configService.number('TOKEN_SALT'));
+    return jwt.sign({ userId }, this.configService.string('TOKEN_SECRET'), {
+      expiresIn: this.configService.number('TOKEN_LIVE_TIME_IN_HOURS') + 's',
+    });
   }
 }

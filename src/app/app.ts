@@ -20,8 +20,8 @@ export class App {
     this.apiPath = '/api/v1';
 
     this.initMiddlewares();
-    this.initErrorHandling();
     this.initControllers(controllers);
+    this.initErrorHandling();
   }
 
   private initMiddlewares(): void {

@@ -5,4 +5,5 @@ export interface IUserService {
   create(user: CreateUserDTO): Promise<User>;
   getByEmail(email: string): Promise<User>;
   getByPhoneNumber(phoneNumber: string): Promise<User>;
+  getById(id: number): Promise<User>;
 }

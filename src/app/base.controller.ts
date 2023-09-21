@@ -5,6 +5,7 @@ export abstract class BaseController {
 
   constructor(public readonly path: string) {
     this.router = Router();
+    this.initRoutes();
   }
 
   abstract initRoutes(): void;

@@ -9,7 +9,6 @@ import { excludeMiddleware } from '../middleware/exclude.middleware';
 export class UserController extends BaseController {
   constructor(private readonly userService: IUserService) {
     super('/users');
-    this.initRoutes();
   }
 
   public initRoutes(): void {

@@ -37,4 +37,8 @@ export class UserService implements IUserService {
       phoneNumber,
     } as User);
   }
+
+  public async getById(id: number): Promise<User> {
+    return this.userRepository.selectOne<User>(this.table, { id } as User);
+  }
 }
