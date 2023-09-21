@@ -4,6 +4,7 @@ import { BaseController } from '../app/base.controller';
 import { validateMiddleware } from '../middleware/validate.middleware';
 import { CreateUserDTO } from './DTO/createUser.DTO';
 import { User } from './user.entity';
+import { excludeMiddleware } from '../middleware/exclude.middleware';
 
 export class UserController extends BaseController {
   constructor(private readonly userService: IUserService) {
@@ -15,6 +16,7 @@ export class UserController extends BaseController {
     this.router.post(
       this.path,
       validateMiddleware(CreateUserDTO),
+      excludeMiddleware(User),
       this.create.bind(this),
     );
   }

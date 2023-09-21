@@ -4,7 +4,7 @@ import { validateMiddleware } from '../middleware/validate.middleware';
 import { LogInDto } from './DTO/log-in.dto';
 import { IAuthService } from './auth.service.interface';
 import { User } from '../user/user.entity';
-import { excludeMiddleware } from '../middleware/eclude.middleware';
+import { excludeMiddleware } from '../middleware/exclude.middleware';
 
 export class AuthController extends BaseController {
   constructor(private readonly authService: IAuthService) {
