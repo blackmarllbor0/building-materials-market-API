@@ -30,7 +30,7 @@ import { UserIdNotAdmin } from '../user-role/exceptions/userIsNotAdmin.exception
  */
 export function authMiddleware(
   userService: IUserService,
-  role: UserRoleEnum,
+  role: UserRoleEnum = UserRoleEnum.customer,
 ): RequestHandler {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const cookies = req.cookies;
