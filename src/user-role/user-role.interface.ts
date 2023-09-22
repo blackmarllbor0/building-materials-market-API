@@ -1,9 +1,12 @@
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
+import { CreateUserRoleDto } from './DTO/createUserRole.dto';
+import { UpdateUserRoleDto } from './DTO/updateUserRole.dto';
 import { UserRole } from './user-role.entity';
 
 export interface IUserRole {
-  create(name: string): UserRole;
+  create(dto: CreateUserRoleDto): Promise<UserRole>;
 
-  getAll(): UserRole[];
+  getAll(limitOffset?: LimitOffsetQuery): Promise<UserRole[]>;
 
-  updateById(id: number): UserRole;
+  updateById(id: number, dto: UpdateUserRoleDto): Promise<UserRole>;
 }

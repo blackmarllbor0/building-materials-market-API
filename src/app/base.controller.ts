@@ -19,10 +19,10 @@ export abstract class BaseController {
       return res.status(200).json(dto);
     }
 
-    return res.status(200);
+    return res.sendStatus(200);
   }
 
   public created<T>(res: Response, data?: T): Response<T> {
-    return res.status(201).json(data);
+    return res.status(201).send(data);
   }
 }

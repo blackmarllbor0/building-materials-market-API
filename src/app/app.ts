@@ -1,16 +1,17 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import { IOpenapi } from '../openapi/openapi.interface';
 import { errorMiddleware } from '../middleware/error.middleware';
 import { BaseController } from './base.controller';
-import { ILoggerService } from 'src/logger/logger.service.interface';
+import { ILoggerService } from '../logger/logger.service.interface';
 
 export class App {
   private app: express.Application;
   private readonly apiPath: string;
 
   constructor(
-    controllers: any[],
+    controllers: BaseController[],
     private readonly port: number,
     private readonly openapiService: IOpenapi,
     private readonly loggerService: ILoggerService,
@@ -19,18 +20,19 @@ export class App {
     this.apiPath = '/api/v1';
 
     this.initMiddlewares();
-    this.initErrorHandling();
     this.initControllers(controllers);
+    this.initErrorHandling();
   }
 
   private initMiddlewares(): void {
     this.app.use(bodyParser.json());
     this.app.use(express.json());
+    this.app.use(cookieParser());
     this.app.use('/api/docs', this.openapiService.getUIParseMiddleware());
   }
 
   private initErrorHandling(): void {
-    this.app.use(errorMiddleware);
+    this.app.use(errorMiddleware(this.loggerService));
   }
 
   private initControllers(controllers: BaseController[]): void {
@@ -50,7 +52,7 @@ export class App {
   public async listen(): Promise<void> {
     this.app.listen(this.port, () => {
       this.loggerService.info(
-        `App listening on the port http://loclhost:${this.port}`,
+        `App listening on the port http://loclhost:${this.port}${this.apiPath}`,
       );
     });
   }
