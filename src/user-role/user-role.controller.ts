@@ -9,6 +9,7 @@ import { UserRole } from './user-role.entity';
 import { validateMiddleware } from '../middleware/validate.middleware';
 import { UpdateUserRoleDto } from './DTO/updateUserRole.dto';
 import { UserRoleIdParam } from './params/userRole.param';
+import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
 
 export class UserRoleController extends BaseController {
   constructor(
@@ -51,10 +52,10 @@ export class UserRoleController extends BaseController {
   }
 
   public async getAll(
-    _req: Request,
+    { query }: Request<any, any, any, LimitOffsetQuery>,
     res: Response,
   ): Promise<Response<UserRole[]>> {
-    const userRoles = await this.userRoleService.getAll();
+    const userRoles = await this.userRoleService.getAll(query);
     return this.ok(res, userRoles);
   }
 

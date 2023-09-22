@@ -1,4 +1,5 @@
 import OracleDB from 'oracledb';
+import { OffsetLimit } from './database.service';
 
 export interface IDatabaseService {
   /**
@@ -51,6 +52,7 @@ export interface IDatabaseService {
     table: string,
     where?: T,
     returnFields?: T,
+    limitOffset?: OffsetLimit,
   ): Promise<T[]>;
 
   /**

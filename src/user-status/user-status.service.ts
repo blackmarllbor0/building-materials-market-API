@@ -7,6 +7,7 @@ import * as status from 'http-status';
 import { UserStatusAlreadyExists } from './exceptions/userStatusAlreadyExists.exception';
 import { UserStatusNotFound } from './exceptions/userStatusNotFound.exception';
 import { BadRequestException } from '../exception/BadRequest.exception';
+import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
 
 export class UserStatusService implements IUserStatusService {
   private readonly table: string = 'user_status';
@@ -25,9 +26,12 @@ export class UserStatusService implements IUserStatusService {
     }
   }
 
-  public async getAll(): Promise<UserStatus[]> {
+  public async getAll(limitOffset?: LimitOffsetQuery): Promise<UserStatus[]> {
     const userStatuses = await this.userStatusRepository.selectAll<UserStatus>(
       this.table,
+      null,
+      null,
+      limitOffset,
     );
 
     if (!userStatuses.length) {

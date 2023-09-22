@@ -4,6 +4,10 @@ import { IDatabaseService } from './database.service.interface';
 
 export type SQLArgs = string[] | string;
 export type SQLValues = any[] | any;
+export interface OffsetLimit {
+  offset?: number;
+  limit?: number;
+}
 
 export class DatabaseService implements IDatabaseService {
   private connection: oracle.Connection;
@@ -234,6 +238,7 @@ export class DatabaseService implements IDatabaseService {
     table: string,
     where?: T,
     returnFields?: T,
+    limitOffset?: OffsetLimit,
   ): Promise<T[]> {
     let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
     const values: any[] = [];
@@ -252,6 +257,10 @@ export class DatabaseService implements IDatabaseService {
         values.push(toSnake[key]);
       }
       query += ` WHERE ${bindWhereVars}`;
+    }
+
+    if (limitOffset && Object.keys(limitOffset).length) {
+      query += ` OFFSET ${limitOffset.offset} ROWS FETCH NEXT ${limitOffset.limit} ROWS ONLY`;
     }
 
     const selectRes = await this.connection.execute<T>(query, [...values], {

@@ -7,6 +7,7 @@ import { CreateUserRoleDto } from './DTO/createUserRole.dto';
 import { UserRoleWithThisNameAlreadyExist } from './exceptions/userRoleAlreadyExist.exception';
 import { BadRequestException } from '../exception/BadRequest.exception';
 import { UserRoleNotFound } from './exceptions/userRoleNotFound.exception';
+import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
 
 export class UserRoleService implements IUserRole {
   private readonly table = 'user_role';
@@ -27,9 +28,12 @@ export class UserRoleService implements IUserRole {
     }
   }
 
-  public async getAll(): Promise<UserRole[]> {
+  public async getAll(limitOffset?: LimitOffsetQuery): Promise<UserRole[]> {
     const userRoles = await this.userRoleRepository.selectAll<UserRole>(
       this.table,
+      null,
+      null,
+      limitOffset,
     );
     if (!userRoles.length) {
       throw new UserRoleNotFound();

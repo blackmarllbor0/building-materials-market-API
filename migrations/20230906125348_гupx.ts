@@ -24,19 +24,19 @@ const CASCADE = 'CASCADE';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTableIfNotExists(tables.userStatus, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table.string('name').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.userRole, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table.string('name').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.user, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('user_role_id')
         .notNullable()
@@ -59,7 +59,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.session, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('user_id')
         .notNullable()
@@ -75,14 +75,14 @@ export async function up(knex: Knex): Promise<void> {
     .createTableIfNotExists(
       tables.authAuditEvent,
       (table: Knex.TableBuilder) => {
-        table.increments('id');
+        table.increments('id').primary();
         table.string('name').notNullable().unique();
         table.timestamp('create_date').defaultTo(knex.fn.now());
         table.timestamp('update_date');
       },
     )
     .createTableIfNotExists(tables.authAudit, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('user_id')
         .notNullable()
@@ -101,21 +101,21 @@ export async function up(knex: Knex): Promise<void> {
     .createTableIfNotExists(
       tables.orderPaymentType,
       (table: Knex.TableBuilder) => {
-        table.increments('id');
+        table.increments('id').primary();
         table.string('name').notNullable().unique();
         table.timestamp('create_date').defaultTo(knex.fn.now());
         table.timestamp('update_date');
       },
     )
     .createTableIfNotExists(tables.orderStatus, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table.integer('code').notNullable().unique();
       table.string('name').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.order, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('user_id')
         .notNullable()
@@ -140,7 +140,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.delivery, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('order_id')
         .notNullable()
@@ -175,7 +175,7 @@ export async function up(knex: Knex): Promise<void> {
     .createTableIfNotExists(
       tables.manufacturingCompany,
       (table: Knex.TableBuilder) => {
-        table.increments('id');
+        table.increments('id').primary();
         table.string('name').notNullable().unique();
         table.string('link_to_website').notNullable().unique();
         table.string('phone_number').notNullable().unique();
@@ -188,13 +188,13 @@ export async function up(knex: Knex): Promise<void> {
       },
     )
     .createTableIfNotExists(tables.category, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table.string('name').notNullable().unique();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.product, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('company_id')
         .notNullable()
@@ -217,7 +217,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.feedback, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('user_id')
         .notNullable()
@@ -244,7 +244,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.orderDetail, (table: Knex.TableBuilder) => {
-      table.increments('id');
+      table.increments('id').primary();
       table
         .integer('order_id')
         .notNullable()

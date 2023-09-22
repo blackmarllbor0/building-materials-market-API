@@ -31,7 +31,8 @@ export class SessionService implements ISessionService {
 
   private async generateToken(userId: number): Promise<string> {
     return jwt.sign({ userId }, this.configService.string('TOKEN_SECRET'), {
-      expiresIn: this.configService.number('TOKEN_LIVE_TIME_IN_HOURS') + 's',
+      expiresIn:
+        this.configService.number('TOKEN_LIVE_TIME_IN_HOURS') * 60 * 60 + 's',
     });
   }
 }

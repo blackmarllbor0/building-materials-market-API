@@ -9,6 +9,7 @@ import { UserStatusIdParam } from './params/user-status.param';
 import { UpdateUserStatusDto } from './dto/updateUserStatus.dto';
 import { UserStatus } from './user-role.entity';
 import { UserRoleEnum } from '../user-role/userRole.enun';
+import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
 
 export class UserStatusController extends BaseController {
   constructor(
@@ -50,10 +51,10 @@ export class UserStatusController extends BaseController {
   }
 
   public async getAll(
-    req: Request,
+    { query }: Request<any, any, any, LimitOffsetQuery>,
     res: Response,
   ): Promise<Response<UserStatus[]>> {
-    const userStatuses = await this.userStatusService.getAll();
+    const userStatuses = await this.userStatusService.getAll(query);
     return this.ok(res, userStatuses);
   }
 
