@@ -53,8 +53,10 @@ export class UserRoleService implements IUserRole {
     try {
       return this.userRoleRepository.update<UserRole>(
         this.table,
-        dto as UserRole,
-        { id } as UserRole,
+        { ...dto, updateDate: new Date() } as UserRole,
+        {
+          id,
+        } as UserRole,
       );
     } catch (error) {
       if (error?.status == status.CONFLICT) {
