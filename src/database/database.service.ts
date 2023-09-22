@@ -98,10 +98,10 @@ export class DatabaseService implements IDatabaseService {
    */
   private bindWhereArgsToVars(terms: SQLArgs): SQLArgs {
     if (Array.isArray(terms)) {
-      return terms.map((term, index) => `${term} = :arg${index}`).join(', ');
+      return terms.map((term, index) => `"${term}" = :arg${index}`).join(', ');
     }
 
-    return `${terms} = :arg_${1}`;
+    return `"${terms}" = :arg_${1}`;
   }
 
   private rewriteSnakeToCamelCase<T extends object>(entity: T | T[]): T | T[] {
@@ -245,7 +245,7 @@ export class DatabaseService implements IDatabaseService {
 
     if (where) {
       const toSnake = this.rewriteCamelToSnakeCase<T>(where);
-      const args = this.wrapAgsInQuotes(Object.keys(toSnake));
+      const args = Object.keys(toSnake);
       const bindWhereVars = this.bindWhereArgsToVars(args);
 
       for (const key in toSnake) {
@@ -319,7 +319,7 @@ export class DatabaseService implements IDatabaseService {
     returnParam: string = 'id',
   ): Promise<T> {
     const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(updatedEntity);
-    const updatedArgs = this.wrapAgsInQuotes(Object.keys(updatedEntityToSnake));
+    const updatedArgs = Object.keys(updatedEntityToSnake);
     const bindUpdatedValues = this.bindWhereArgsToVars(updatedArgs);
 
     const updatedValues: any[] = [];
@@ -328,7 +328,7 @@ export class DatabaseService implements IDatabaseService {
     }
 
     const whereToSnake = this.rewriteCamelToSnakeCase<T>(where);
-    const whereArgs = this.wrapAgsInQuotes(Object.keys(whereToSnake));
+    const whereArgs = Object.keys(whereToSnake);
     const bindWhereValues = this.bindWhereArgsToVars(whereArgs);
 
     const whereValues: any[] = [];
