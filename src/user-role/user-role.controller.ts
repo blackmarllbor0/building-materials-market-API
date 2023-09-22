@@ -21,8 +21,6 @@ export class UserRoleController extends BaseController {
   }
 
   public initRoutes(): void {
-    if (!this.userService) return;
-
     this.router.post(
       this.path,
       validateMiddleware(CreateUserRoleDto),

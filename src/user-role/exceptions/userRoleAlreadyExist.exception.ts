@@ -1,8 +1,7 @@
-import { HttpException } from '../../exception/HttpException';
-import * as status from 'http-status';
+import { ConflictException } from '../../exception/Conflict.exception';
 
-export class UserRoleWithThisNameAlreadyExist extends HttpException {
+export class UserRoleWithThisNameAlreadyExist extends ConflictException {
   constructor() {
-    super(status.CONFLICT, 'user role with this name already exist');
+    super('user role with this name already exist');
   }
 }

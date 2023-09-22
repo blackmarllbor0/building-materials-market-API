@@ -13,6 +13,8 @@ import { SessionService } from './session/session.service';
 import { AuthAuditService } from './auth-audit/auth-audit.service';
 import { UserRoleController } from './user-role/user-role.controller';
 import { UserRoleService } from './user-role/user-role.service';
+import { UserStatusService } from './user-status/user-status.service';
+import { UserStatusController } from './user-status/user-status.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -37,6 +39,7 @@ async function main(): Promise<void> {
     authAuditService,
   );
   const userRoleService = new UserRoleService(db);
+  const userStatusService = new UserStatusService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService);
@@ -44,11 +47,16 @@ async function main(): Promise<void> {
     userRoleService,
     userService,
   );
+  const userStatusController = new UserStatusController(
+    userStatusService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
     authController,
     userRoleController,
+    userStatusController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);

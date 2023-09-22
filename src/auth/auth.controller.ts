@@ -9,6 +9,8 @@ import { excludeMiddleware } from '../middleware/exclude.middleware';
 export class AuthController extends BaseController {
   constructor(private readonly authService: IAuthService) {
     super('/auth');
+
+    this.initRoutes();
   }
 
   public initRoutes(): void {
