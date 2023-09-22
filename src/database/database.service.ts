@@ -100,9 +100,14 @@ export class DatabaseService implements IDatabaseService {
    * const whereClause = bindWhereArgsToVars(args, values);
    * // result: id = :id, name = :name
    */
-  private bindWhereArgsToVars(terms: SQLArgs): SQLArgs {
+  private bindWhereArgsToVars(
+    terms: SQLArgs,
+    andStatement: boolean = false,
+  ): SQLArgs {
     if (Array.isArray(terms)) {
-      return terms.map((term, index) => `"${term}" = :arg${index}`).join(', ');
+      return !andStatement
+        ? terms.map((term, index) => `"${term}" = :arg${index}`).join(', ')
+        : terms.map((term, index) => `"${term}" = :arg${index}`).join(' AND ');
     }
 
     return `"${terms}" = :arg_${1}`;
@@ -251,7 +256,7 @@ export class DatabaseService implements IDatabaseService {
     if (where) {
       const toSnake = this.rewriteCamelToSnakeCase<T>(where);
       const args = Object.keys(toSnake);
-      const bindWhereVars = this.bindWhereArgsToVars(args);
+      const bindWhereVars = this.bindWhereArgsToVars(args, true);
 
       for (const key in toSnake) {
         values.push(toSnake[key]);
@@ -327,7 +332,9 @@ export class DatabaseService implements IDatabaseService {
     where: T,
     returnParam: string = 'id',
   ): Promise<T> {
-    const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(updatedEntity);
+    const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(
+      this.cutNullValues(updatedEntity),
+    );
     const updatedArgs = Object.keys(updatedEntityToSnake);
     const bindUpdatedValues = this.bindWhereArgsToVars(updatedArgs);
 
@@ -338,7 +345,7 @@ export class DatabaseService implements IDatabaseService {
 
     const whereToSnake = this.rewriteCamelToSnakeCase<T>(where);
     const whereArgs = Object.keys(whereToSnake);
-    const bindWhereValues = this.bindWhereArgsToVars(whereArgs);
+    const bindWhereValues = this.bindWhereArgsToVars(whereArgs, true);
 
     const whereValues: any[] = [];
     for (const key in whereToSnake) {
@@ -353,6 +360,7 @@ export class DatabaseService implements IDatabaseService {
       [...updatedValues, ...whereValues, { dir: oracle.BIND_OUT }],
       {
         outFormat: oracle.OUT_FORMAT_OBJECT,
+        autoCommit: true,
       },
     );
 
