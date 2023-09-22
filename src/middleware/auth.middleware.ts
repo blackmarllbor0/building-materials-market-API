@@ -6,7 +6,6 @@ import { TokenIsNotValid } from '../session/exceptions/TokenIsNotValid.exception
 import { IUserService } from '../user/user.service.interface';
 import { UserRoleEnum } from '../user-role/userRole.enun';
 import { UserIdNotAdmin } from '../user-role/exceptions/userIsNotAdmin.exception';
-import { NOT_FOUND } from 'http-status';
 import { UserDoesNotExists } from '../user/exception/userDoesNotExist.exception';
 
 /**

@@ -11,7 +11,7 @@ export class App {
   private readonly apiPath: string;
 
   constructor(
-    controllers: any[],
+    controllers: BaseController[],
     private readonly port: number,
     private readonly openapiService: IOpenapi,
     private readonly loggerService: ILoggerService,

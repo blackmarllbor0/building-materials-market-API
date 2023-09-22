@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IUserRole } from './user-role.interface';
 import { BaseController } from '../app/base.controller';
 import { CreateUserRoleDto } from './DTO/createUserRole.dto';
@@ -46,17 +46,27 @@ export class UserRoleController extends BaseController {
   public async create(
     { body }: Request<any, any, CreateUserRoleDto>,
     res: Response,
+    next: NextFunction,
   ): Promise<void> {
-    const userRole = await this.userRoleService.create(body);
-    this.created(res, userRole);
+    try {
+      const userRole = await this.userRoleService.create(body);
+      this.created(res, userRole);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async getAll(
     { query }: Request<any, any, any, LimitOffsetQuery>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<UserRole[]>> {
-    const userRoles = await this.userRoleService.getAll(query);
-    return this.ok(res, userRoles);
+    try {
+      const userRoles = await this.userRoleService.getAll(query);
+      return this.ok(res, userRoles);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async updateById(
@@ -65,8 +75,16 @@ export class UserRoleController extends BaseController {
       params: { userRoleId },
     }: Request<UserRoleIdParam, any, UpdateUserRoleDto>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<UserRole>> {
-    const updatedRole = await this.userRoleService.updateById(userRoleId, body);
-    return this.ok(res, updatedRole);
+    try {
+      const updatedRole = await this.userRoleService.updateById(
+        userRoleId,
+        body,
+      );
+      return this.ok(res, updatedRole);
+    } catch (error) {
+      next(error);
+    }
   }
 }

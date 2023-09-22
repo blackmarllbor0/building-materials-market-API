@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IUserService } from './user.service.interface';
 import { BaseController } from '../app/base.controller';
 import { validateMiddleware } from '../middleware/validate.middleware';
@@ -61,32 +61,52 @@ export class UserController extends BaseController {
   public async getAll(
     { query }: Request<any, any, any, LimitOffsetQuery>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<User[]>> {
-    const users = await this.userService.getAll(query);
-    return this.ok(res, users);
+    try {
+      const users = await this.userService.getAll(query);
+      return this.ok(res, users);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async getById(
     { params: { userId } }: Request<UserIdParam>,
     res: Response,
+    next: NextFunction,
   ) {
-    const user = await this.userService.getById(userId);
-    return this.ok(res, user);
+    try {
+      const user = await this.userService.getById(userId);
+      return this.ok(res, user);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async updateById(
     { body, params: { userId } }: Request<UserIdParam, any, UpdateUserDto>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<User>> {
-    const updatedUser = await this.userService.updateById(userId, body);
-    return this.ok(res, updatedUser);
+    try {
+      const updatedUser = await this.userService.updateById(userId, body);
+      return this.ok(res, updatedUser);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async deleteById(
     { params: { userId } }: Request<UserIdParam>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<void>> {
-    await this.userService.deleteById(userId);
-    return this.ok(res);
+    try {
+      await this.userService.deleteById(userId);
+      return this.ok(res);
+    } catch (error) {
+      next(error);
+    }
   }
 }

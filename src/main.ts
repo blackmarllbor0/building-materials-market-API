@@ -15,6 +15,8 @@ import { UserRoleController } from './user-role/user-role.controller';
 import { UserRoleService } from './user-role/user-role.service';
 import { UserStatusService } from './user-status/user-status.service';
 import { UserStatusController } from './user-status/user-status.controller';
+import { OrderStatusService } from './order-status/order-status.service';
+import { OrderStatusController } from './order-status/order-status.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -40,6 +42,7 @@ async function main(): Promise<void> {
   );
   const userRoleService = new UserRoleService(db);
   const userStatusService = new UserStatusService(db);
+  const orderStatusService = new OrderStatusService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService);
@@ -51,12 +54,17 @@ async function main(): Promise<void> {
     userStatusService,
     userService,
   );
+  const orderStatusController = new OrderStatusController(
+    orderStatusService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
     authController,
     userRoleController,
     userStatusController,
+    orderStatusController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);

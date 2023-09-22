@@ -9,6 +9,7 @@ import { UserNotFoundException } from './exception/userNotFound.exception';
 import * as bcrypt from 'bcrypt';
 import { CONFLICT } from 'http-status';
 import { BadRequestException } from '../exception/BadRequest.exception';
+import { NotFoundException } from '../exception/NotFound.exception';
 
 export class UserService implements IUserService {
   private readonly table = 'user';
@@ -33,21 +34,35 @@ export class UserService implements IUserService {
   }
 
   public async getByEmail(email: string): Promise<User> {
-    return this.userRepository.selectOne<User>(this.table, {
+    const user = await this.userRepository.selectOne<User>(this.table, {
       email,
       isDeleted: 0,
     } as User);
+
+    if (!user) {
+      throw new NotFoundException(`user with this email - ${email} not found`);
+    }
+
+    return user;
   }
 
   public async getByPhoneNumber(phoneNumber: string): Promise<User> {
-    return this.userRepository.selectOne<User>(this.table, {
+    const user = this.userRepository.selectOne<User>(this.table, {
       phoneNumber,
       isDeleted: 0,
     } as User);
+
+    if (!user) {
+      throw new NotFoundException(
+        `user with this phone number - ${phoneNumber} not found`,
+      );
+    }
+
+    return user;
   }
 
   public async getById(id: number): Promise<User> {
-    const user = this.userRepository.selectOne<User>(this.table, {
+    const user = await this.userRepository.selectOne<User>(this.table, {
       id,
       isDeleted: 0,
     } as User);

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { BaseController } from '../app/base.controller';
 import { CreateUserStatusDto } from './dto/createUserStatus.dto';
 import { validateMiddleware } from '../middleware/validate.middleware';
@@ -45,17 +45,27 @@ export class UserStatusController extends BaseController {
   public async create(
     { body }: Request<any, any, CreateUserStatusDto>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<UserStatus>> {
-    const userStatus = await this.userStatusService.create(body);
-    return this.created(res, userStatus);
+    try {
+      const userStatus = await this.userStatusService.create(body);
+      return this.created(res, userStatus);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async getAll(
     { query }: Request<any, any, any, LimitOffsetQuery>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<UserStatus[]>> {
-    const userStatuses = await this.userStatusService.getAll(query);
-    return this.ok(res, userStatuses);
+    try {
+      const userStatuses = await this.userStatusService.getAll(query);
+      return this.ok(res, userStatuses);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async updateById(
@@ -64,11 +74,16 @@ export class UserStatusController extends BaseController {
       params: { userStatusId },
     }: Request<UserStatusIdParam, any, UpdateUserStatusDto>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<UserStatus>> {
-    const updatedUserStatus = await this.userStatusService.updateById(
-      userStatusId,
-      body,
-    );
-    return this.ok(res, updatedUserStatus);
+    try {
+      const updatedUserStatus = await this.userStatusService.updateById(
+        userStatusId,
+        body,
+      );
+      return this.ok(res, updatedUserStatus);
+    } catch (error) {
+      next(error);
+    }
   }
 }
