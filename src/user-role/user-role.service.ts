@@ -7,7 +7,7 @@ import { CreateUserRoleDto } from './DTO/createUserRole.dto';
 import { UserRoleWithThisNameAlreadyExist } from './exceptions/userRoleAlreadyExist.exception';
 import { BadRequestException } from '../exception/BadRequest.exception';
 import { UserRoleNotFound } from './exceptions/userRoleNotFound.exception';
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
 
 export class UserRoleService implements IUserRole {
   private readonly table = 'user_role';

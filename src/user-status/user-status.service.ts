@@ -7,7 +7,7 @@ import * as status from 'http-status';
 import { UserStatusAlreadyExists } from './exceptions/userStatusAlreadyExists.exception';
 import { UserStatusNotFound } from './exceptions/userStatusNotFound.exception';
 import { BadRequestException } from '../exception/BadRequest.exception';
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
 
 export class UserStatusService implements IUserStatusService {
   private readonly table: string = 'user_status';

@@ -9,7 +9,7 @@ import { UserStatusIdParam } from './params/user-status.param';
 import { UpdateUserStatusDto } from './dto/updateUserStatus.dto';
 import { UserStatus } from './user-role.entity';
 import { UserRoleEnum } from '../user-role/userRole.enun';
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
 
 export class UserStatusController extends BaseController {
   constructor(

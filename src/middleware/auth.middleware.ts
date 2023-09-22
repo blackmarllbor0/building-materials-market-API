@@ -6,6 +6,8 @@ import { TokenIsNotValid } from '../session/exceptions/TokenIsNotValid.exception
 import { IUserService } from '../user/user.service.interface';
 import { UserRoleEnum } from '../user-role/userRole.enun';
 import { UserIdNotAdmin } from '../user-role/exceptions/userIsNotAdmin.exception';
+import { NOT_FOUND } from 'http-status';
+import { UserDoesNotExists } from '../user/exception/userDoesNotExist.exception';
 
 /**
  * Authentication middleware for protecting routes based on user role.
@@ -45,8 +47,11 @@ export function authMiddleware(
       ) as { userId: number };
 
       const user = await userService.getById(payload.userId);
+      if (!user) {
+        next(new UserDoesNotExists());
+      }
 
-      if (user.userRoleId !== role) {
+      if (user.userRoleId !== role && role === UserRoleEnum.admin) {
         next(new UserIdNotAdmin());
       }
 

@@ -1,4 +1,4 @@
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
 import { CreateUserRoleDto } from './DTO/createUserRole.dto';
 import { UpdateUserRoleDto } from './DTO/updateUserRole.dto';
 import { UserRole } from './user-role.entity';

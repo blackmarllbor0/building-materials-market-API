@@ -9,7 +9,7 @@ import { UserRole } from './user-role.entity';
 import { validateMiddleware } from '../middleware/validate.middleware';
 import { UpdateUserRoleDto } from './DTO/updateUserRole.dto';
 import { UserRoleIdParam } from './params/userRole.param';
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
 
 export class UserRoleController extends BaseController {
   constructor(

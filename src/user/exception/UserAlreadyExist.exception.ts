@@ -1,8 +1,7 @@
-import { HttpException } from '../../exception/HttpException';
-import status from 'http-status';
+import { ConflictException } from '../../exception/Conflict.exception';
 
-export class UserAlreadyExistsException extends HttpException {
+export class UserAlreadyExistsException extends ConflictException {
   constructor() {
-    super(status.CONFLICT, 'User already exists');
+    super('User already exists');
   }
 }
