@@ -23,6 +23,6 @@ export abstract class BaseController {
   }
 
   public created<T>(res: Response, data?: T): Response<T> {
-    return res.status(201).json(data);
+    return res.status(201).send(data);
   }
 }

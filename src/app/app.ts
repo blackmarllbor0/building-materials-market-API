@@ -32,7 +32,7 @@ export class App {
   }
 
   private initErrorHandling(): void {
-    this.app.use(errorMiddleware);
+    this.app.use(errorMiddleware(this.loggerService));
   }
 
   private initControllers(controllers: BaseController[]): void {
