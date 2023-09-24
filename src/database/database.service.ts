@@ -277,6 +277,10 @@ export class DatabaseService implements IDatabaseService {
 
     const selectRes = await this.connection.execute<T>(query, [...values], {
       outFormat: oracle.OUT_FORMAT_OBJECT,
+      maxRows:
+        limitOffset && limitOffset.limit && !limitOffset.offset
+          ? +limitOffset.limit
+          : null,
     });
 
     const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
