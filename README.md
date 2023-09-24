@@ -21,4 +21,7 @@ ORACLE_EDITION=enterprise
 ORACLE_USER=daniil
 ORACLE_PWD=mama
 ORACLE_CONN_STRING=localhost:1521/blackmarllbor0
+
+TOKEN_LIVE_TIME_IN_HOURS=10
+TOKEN_SECRET=token_secret
 ```
