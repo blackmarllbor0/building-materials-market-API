@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { HttpException } from '../exception/HttpException';
-import { ILoggerService } from 'src/logger/logger.service.interface';
+import { ILoggerService } from '../logger/logger.service.interface';
 
 export function errorMiddleware(
   loggerService: ILoggerService,

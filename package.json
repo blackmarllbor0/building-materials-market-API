@@ -18,15 +18,12 @@
   "author": "blackmarllbor0",
   "license": "ISC",
   "dependencies": {
+    "all": "^0.0.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
-<<<<<<< HEAD
-    "bun-types": "^1.0.2",
-=======
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
->>>>>>> refs/remotes/origin/main
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-openapi-validator": "^5.0.6",
@@ -60,6 +57,10 @@
     "eslint-plugin-prettier": "^5.0.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

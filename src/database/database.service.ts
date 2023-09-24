@@ -171,6 +171,12 @@ export class DatabaseService implements IDatabaseService {
     return res as T;
   }
 
+  private async oracleLobToString(lob: oracle.Lob | object): Promise<string> {
+    if ('getData' in lob) {
+      return (await lob.getData()) as string;
+    }
+  }
+
   /**
    * Inserts a new record into a database table.
    *
@@ -273,6 +279,22 @@ export class DatabaseService implements IDatabaseService {
     });
 
     const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
+
+    for (const obj of camelCase) {
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const elem = obj[key];
+          let value: string;
+          if (typeof elem === 'object' && !(elem instanceof Date) && elem) {
+            value = await this.oracleLobToString(elem);
+
+            if (value) {
+              obj[key] = value as any;
+            }
+          }
+        }
+      }
+    }
 
     return this.cutNullValues<T>(camelCase) as T[];
   }

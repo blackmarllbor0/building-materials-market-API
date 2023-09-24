@@ -20,10 +20,6 @@ export class CompanyService implements ICompanyService {
         isDeleted: 0,
       } as Company);
 
-      if (typeof company.description !== 'string') {
-        company.description = (await company.description.getData()) as string;
-      }
-
       return company;
     } catch (error) {
       throw new CompanyAlreadyExistsException();
@@ -34,9 +30,16 @@ export class CompanyService implements ICompanyService {
     limitOffset?: LimitOffsetQuery,
     companyName?: CompanyNameQuery,
   ): Promise<Company[]> {
+    if (companyName) {
+      console.log(companyName);
+    }
+
+    const isCompanyName = () =>
+      companyName ? { name: companyName.companyName } : null;
+
     const companies = await this.companyRepository.selectAll<Company>(
       this.table,
-      { name: companyName.companyName } as Company,
+      isCompanyName() as Company,
       null,
       limitOffset,
     );
