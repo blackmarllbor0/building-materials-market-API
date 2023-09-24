@@ -19,6 +19,8 @@ import { OrderStatusService } from './order-status/order-status.service';
 import { OrderStatusController } from './order-status/order-status.controller';
 import { CompanyService } from './company/company.service';
 import { CompanyController } from './company/company.controller';
+import { CategoryService } from './category/category.service';
+import { CategoryController } from './category/category.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -46,6 +48,7 @@ async function main(): Promise<void> {
   const userStatusService = new UserStatusService(db);
   const orderStatusService = new OrderStatusService(db);
   const companyService = new CompanyService(db);
+  const categoryService = new CategoryService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService);
@@ -62,6 +65,10 @@ async function main(): Promise<void> {
     userService,
   );
   const companyController = new CompanyController(companyService, userService);
+  const categoryController = new CategoryController(
+    categoryService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
@@ -70,6 +77,7 @@ async function main(): Promise<void> {
     userStatusController,
     orderStatusController,
     companyController,
+    categoryController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);

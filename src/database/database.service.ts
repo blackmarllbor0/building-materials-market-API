@@ -280,7 +280,7 @@ export class DatabaseService implements IDatabaseService {
       maxRows:
         limitOffset && limitOffset.limit && !limitOffset.offset
           ? +limitOffset.limit
-          : null,
+          : 0,
     });
 
     const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
