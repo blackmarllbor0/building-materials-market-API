@@ -275,6 +275,11 @@ export class DatabaseService implements IDatabaseService {
        ROWS FETCH NEXT ${limitOffset.limit} ROWS ONLY`;
     }
 
+    if (limitOffset && !limitOffset.limit && limitOffset.offset) {
+      query += ` OFFSET ${limitOffset.offset}
+      ROWS`;
+    }
+
     const selectRes = await this.connection.execute<T>(query, [...values], {
       outFormat: oracle.OUT_FORMAT_OBJECT,
       maxRows:
