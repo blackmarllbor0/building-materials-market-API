@@ -270,8 +270,9 @@ export class DatabaseService implements IDatabaseService {
       query += ` WHERE ${bindWhereVars}`;
     }
 
-    if (limitOffset && Object.keys(limitOffset).length) {
-      query += ` OFFSET ${limitOffset.offset} ROWS FETCH NEXT ${limitOffset.limit} ROWS ONLY`;
+    if (limitOffset && limitOffset.limit && limitOffset.offset) {
+      query += ` OFFSET ${limitOffset.offset}
+       ROWS FETCH NEXT ${limitOffset.limit} ROWS ONLY`;
     }
 
     const selectRes = await this.connection.execute<T>(query, [...values], {

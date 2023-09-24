@@ -9,6 +9,7 @@ Welcome to the Builder Materials Market, your one-stop online shop for construct
 - [npm Scripts](#npm-scripts)
 - [Getting Started](#getting-started)
 - [Current State](#current-state)
+- [Contact Us](#contact-us)
 
 ## Introduction
 
@@ -81,3 +82,12 @@ Please note that the application is currently in development, and further update
 Thank you for choosing Builder Materials Market for your construction material needs! If you have any questions or encounter any issues, please feel free to reach out to us.
 
 Happy shopping!
+
+## Contact Us
+
+If you have any questions, suggestions, or encounter any issues, please feel free to reach out to us:
+
+- Telegram: @blackmarllbor0
+- Email: 3100194@gmail.com
+
+Thank you for choosing Builder Materials Market for your construction material needs! Happy shopping!

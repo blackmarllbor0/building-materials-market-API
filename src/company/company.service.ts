@@ -26,20 +26,18 @@ export class CompanyService implements ICompanyService {
     }
   }
 
-  async getAll(
+  public async getAll(
     limitOffset?: LimitOffsetQuery,
     companyName?: CompanyNameQuery,
   ): Promise<Company[]> {
-    if (companyName) {
-      console.log(companyName);
-    }
-
     const isCompanyName = () =>
-      companyName ? { name: companyName.companyName } : null;
+      companyName && companyName.companyName
+        ? { name: companyName.companyName }
+        : null;
 
     const companies = await this.companyRepository.selectAll<Company>(
       this.table,
-      isCompanyName() as Company,
+      { ...isCompanyName(), isDeleted: 0 } as Company,
       null,
       limitOffset,
     );
@@ -52,11 +50,14 @@ export class CompanyService implements ICompanyService {
   }
 
   async getById(id: number): Promise<Company> {
-    const company = await this.companyRepository.selectOne(this.table, { id });
+    const company = await this.companyRepository.selectOne(this.table, {
+      id,
+      isDeleted: 0,
+    } as Company);
 
     if (!company) throw new CompanyNotFoundException(id);
 
-    return company as Company;
+    return company;
   }
 
   public async updateById(
@@ -65,7 +66,7 @@ export class CompanyService implements ICompanyService {
   ): Promise<Company> {
     const company = await this.companyRepository.selectOne<Company>(
       this.table,
-      { id } as Company,
+      { id, isDeleted: 0 } as Company,
       { id } as Company,
     );
 
@@ -90,7 +91,7 @@ export class CompanyService implements ICompanyService {
   async deleteById(id: number): Promise<void> {
     const company = await this.companyRepository.selectOne<Company>(
       this.table,
-      { id } as Company,
+      { id, isDeleted: 0 } as Company,
       { id } as Company,
     );
 

@@ -31,7 +31,7 @@ export class CompanyController extends BaseController {
 
     this.router.get(this.path, this.getAll.bind(this));
 
-    this.router.get(`${this.path}/:companyId"`, this.getById.bind(this));
+    this.router.get(`${this.path}/:companyId`, this.getById.bind(this));
 
     this.router.patch(
       `${this.path}/:companyId`,
@@ -61,12 +61,17 @@ export class CompanyController extends BaseController {
   }
 
   public async getAll(
-    { query }: Request<any, any, any, LimitOffsetQuery & CompanyNameQuery>,
+    {
+      query: { companyName, limit, offset },
+    }: Request<any, any, any, LimitOffsetQuery & CompanyNameQuery>,
     res: Response,
     next: NextFunction,
   ): Promise<Response<Company[]>> {
     try {
-      const companies = await this.companyService.getAll(query);
+      const companies = await this.companyService.getAll(
+        { limit, offset },
+        { companyName },
+      );
       return this.ok(res, companies);
     } catch (error) {
       next(error);
