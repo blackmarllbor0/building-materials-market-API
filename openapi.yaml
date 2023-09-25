@@ -1688,8 +1688,6 @@ paths:
       security:
         - cookie-auth: []
         - customer-role: []
-      parameters:
-        - $ref: "#/components/parameters/queryUserId"
       requestBody:
         description: Only accepts a link to the user.
         required: true
@@ -1698,6 +1696,8 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
                 orderPaymentTypeId:
                   type: integer
       responses:
@@ -1712,6 +1712,8 @@ paths:
                 orderPaymentTypeId: 1
                 isCanceled: false
                 orderNumber: 1515
+                totalCost: 150000
+                totalQuantity: 5
         "400":
           $ref: "#/components/responses/400"
         "401":
@@ -1727,7 +1729,7 @@ paths:
       summary: Get all orders.
       security:
         - cookie-auth: []
-        - admin-role: []
+        - customer-role: []
       parameters:
         - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
@@ -1798,6 +1800,10 @@ paths:
                   type: integer
                 orderPaymentTypeId:
                   type: integer
+                totalCost:
+                  type: integer
+                totalQuantity:
+                  type: integer
       responses:
         "200":
           description: Successfully updated user order status.
@@ -1838,7 +1844,6 @@ paths:
         - customer-role: []
       parameters:
         - $ref: "#/components/parameters/orderId"
-        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:
