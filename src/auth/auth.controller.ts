@@ -5,9 +5,14 @@ import { LogInDto } from './DTO/log-in.dto';
 import { IAuthService } from './auth.service.interface';
 import { User } from '../user/user.entity';
 import { excludeMiddleware } from '../middleware/exclude.middleware';
+import { authMiddleware } from '../middleware/auth.middleware';
+import { IUserService } from '../user/user.service.interface';
 
 export class AuthController extends BaseController {
-  constructor(private readonly authService: IAuthService) {
+  constructor(
+    private readonly authService: IAuthService,
+    private readonly userService: IUserService,
+  ) {
     super('/auth');
 
     this.initRoutes();
@@ -19,6 +24,12 @@ export class AuthController extends BaseController {
       validateMiddleware(LogInDto),
       excludeMiddleware(User),
       this.logIn.bind(this),
+    );
+
+    this.router.get(
+      `${this.path}/log-out`,
+      authMiddleware(this.userService),
+      this.logOut.bind(this),
     );
   }
 
@@ -34,6 +45,21 @@ export class AuthController extends BaseController {
       res.setHeader('Set-Cookie', cookie);
 
       return this.ok(res, user) as Response<User>;
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async logOut(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response> {
+    try {
+      const cookie = this.authService.clearCookieForLogOut();
+      res.setHeader('Set-Cookie', cookie);
+
+      return this.ok(res);
     } catch (error) {
       next(error);
     }

@@ -63,4 +63,8 @@ export class AuthService implements IAuthService {
     const { token, liveTime } = await this.sessionService.create(userId);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${liveTime.getHours()}`;
   }
+
+  public clearCookieForLogOut(): string {
+    return 'Authentication=; HttpOnly; Path=/; Max-Age=';
+  }
 }

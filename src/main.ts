@@ -54,7 +54,7 @@ async function main(): Promise<void> {
   const authAuditEventService = new AuthAuditEventService(db);
 
   const userController = new UserController(userService);
-  const authController = new AuthController(authService);
+  const authController = new AuthController(authService, userService);
   const userRoleController = new UserRoleController(
     userRoleService,
     userService,
