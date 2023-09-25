@@ -5,7 +5,7 @@ import { CreateOrderStatusDto } from './dto/createOrderStatus.dto';
 import { UpdateOrderStatusDto } from './dto/updateOrderStatus.dto';
 import { OrderStatus } from './order-status.entity';
 import { OrderStatusNotFoundException } from './exceptions/orderStatusNotFound.exception';
-import { OrderStatusAlreadyExists } from './exceptions/orderStatusAlreadyExists.exception';
+import { OrderStatusAlreadyExistsException } from './exceptions/orderStatusAlreadyExists.exception';
 import { BadRequestException } from '../exception/BadRequest.exception';
 import { CONFLICT } from 'http-status';
 
@@ -21,7 +21,7 @@ export class OrderStatusService implements IOrderStatusService {
       );
     } catch (error) {
       if (error?.status == CONFLICT) {
-        throw new OrderStatusAlreadyExists();
+        throw new OrderStatusAlreadyExistsException();
       }
 
       throw new BadRequestException(error.message);
@@ -66,7 +66,7 @@ export class OrderStatusService implements IOrderStatusService {
       );
     } catch (error) {
       if (error?.status == CONFLICT) {
-        throw new OrderStatusAlreadyExists();
+        throw new OrderStatusAlreadyExistsException();
       }
 
       throw new BadRequestException(error.message);
