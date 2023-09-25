@@ -1,18 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
-import { BaseController } from 'src/app/base.controller';
-import { CategoryNameQuery } from 'src/category/params/categoryName.query';
-import { CompanyNameQuery } from 'src/company/params/companyTitle.query';
-import { authMiddleware } from 'src/middleware/auth.middleware';
-import { validateMiddleware } from 'src/middleware/validate.middleware';
-import { LimitOffsetQuery } from 'src/params/LimitOffset.query';
-import { UserRoleEnum } from 'src/user-role/userRole.enun';
-import { IUserService } from 'src/user/user.service.interface';
+import { BaseController } from '../app/base.controller';
+import { authMiddleware } from '../middleware/auth.middleware';
+import { validateMiddleware } from '../middleware/validate.middleware';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
+import { UserRoleEnum } from '../user-role/userRole.enun';
+import { IUserService } from '../user/user.service.interface';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { UpdateProductDto } from './dto/updateProduct.dto';
 import { ProductIdParam } from './param/productId.param';
 import { ProductNameQuery } from './param/productName.query';
 import { Product } from './product.entity';
 import { IProductService } from './product.service.interface';
+import { CategoryIdParam } from '../category/params/categoryId.param';
+import { CompanyIdParam } from '../company/params/companyId.param';
 
 export class ProductController extends BaseController {
   constructor(
@@ -58,12 +58,12 @@ export class ProductController extends BaseController {
 
   public async getAll(
     {
-      query: { categoryName, limit, offset, productName, companyName },
+      query: { categoryId, limit, offset, productName, companyId },
     }: Request<
       any,
       any,
       any,
-      LimitOffsetQuery & ProductNameQuery & CategoryNameQuery & CompanyNameQuery
+      LimitOffsetQuery & ProductNameQuery & CategoryIdParam & CompanyIdParam
     >,
     res: Response,
     next: NextFunction,
@@ -75,8 +75,8 @@ export class ProductController extends BaseController {
           offset,
         },
         { productName },
-        { categoryName },
-        { companyName },
+        { categoryId },
+        { companyId },
       );
 
       return this.ok(res, products);

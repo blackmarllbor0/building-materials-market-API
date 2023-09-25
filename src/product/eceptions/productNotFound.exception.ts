@@ -1,4 +1,4 @@
-import { NotFoundException } from 'src/exception/NotFound.exception';
+import { NotFoundException } from '../../exception/NotFound.exception';
 
 export class ProductNotFoundException extends NotFoundException {
   constructor(id?: number) {

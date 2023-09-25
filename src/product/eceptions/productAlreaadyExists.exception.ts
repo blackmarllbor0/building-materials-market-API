@@ -1,4 +1,4 @@
-import { ConflictException } from 'src/exception/Conflict.exception';
+import { ConflictException } from '../../exception/Conflict.exception';
 
 export class ProductAlreadyExitsException extends ConflictException {
   constructor() {
