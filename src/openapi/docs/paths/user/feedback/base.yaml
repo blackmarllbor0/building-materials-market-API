@@ -3,16 +3,9 @@ post:
     - feedback
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   summary: Create new user feedback.
-  parameters:
-    - name: userQueryId
-      in: query
-      required: true
-      description: User id in query parameter.
-      schema:
-        type: integer
   requestBody:
     description: New feedback data.
     required: true
@@ -21,6 +14,8 @@ post:
         schema:
           type: object
           properties:
+            userId:
+              type: integer
             productId:
               type: integer
             companyId:
@@ -51,11 +46,11 @@ post:
             message: text
             createDate: 00.11.2222
     400:
-      $ref: './responses/400.yaml'
+      $ref: "./responses/400.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     409:
-      $ref: './responses/409.yaml'
+      $ref: "./responses/409.yaml"
 
 get:
   tags:
@@ -63,13 +58,13 @@ get:
     - customer
   summary: Get user feedbacks.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: "./parameters/user/queryUerId.yaml"
     - $ref: "./parameters/product/queryProductId.yaml"
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - $ref: "./parameters/pagination/page-from.yaml"
+    - $ref: "./parameters/pagination/page-to.yaml"
   responses:
     200:
       description: User feedback received.
@@ -78,8 +73,8 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/feedback.yaml'
+              $ref: "./schemas/feedback.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

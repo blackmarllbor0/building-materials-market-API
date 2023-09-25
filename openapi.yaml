@@ -2094,13 +2094,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       summary: Create new user feedback.
-      parameters:
-        - name: userQueryId
-          in: query
-          required: true
-          description: User id in query parameter.
-          schema:
-            type: integer
       requestBody:
         description: New feedback data.
         required: true
@@ -2109,6 +2102,8 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
                 productId:
                   type: integer
                 companyId:

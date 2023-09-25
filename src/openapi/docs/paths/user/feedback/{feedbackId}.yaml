@@ -4,23 +4,22 @@ get:
     - customer
   summary: Get user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: "./parameters/user/queryUerId.yaml"
     - $ref: "./parameters/product/queryProductId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
+    - $ref: "./parameters/feedback/feedbackId.yaml"
   responses:
     200:
       description: User feedback received.
       content:
         application/json:
           schema:
-            $ref: './schemas/feedback.yaml'
+            $ref: "./schemas/feedback.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 patch:
   tags:
@@ -28,11 +27,11 @@ patch:
     - customer
   summary: Set user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
+    - $ref: "./parameters/feedback/feedbackId.yaml"
   requestBody:
     content:
       application/json:
@@ -56,11 +55,11 @@ patch:
       content:
         application/json:
           schema:
-            $ref: './schemas/feedback.yaml'
+            $ref: "./schemas/feedback.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 delete:
   tags:
@@ -68,15 +67,15 @@ delete:
     - customer
   summary: Delete user feedback by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
     - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/feedback/feedbackId.yaml'
+    - $ref: "./parameters/feedback/feedbackId.yaml"
   responses:
     200:
       description: User feedback successfully deleted
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

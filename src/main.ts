@@ -29,6 +29,8 @@ import { AuthAuditEventService } from './auth-audit-event/auth-audit-event.servi
 import { OrderHistoryService } from './order-history/order-history.service';
 import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
+import { FeedbackService } from './feedback/feedback.service';
+import { FeedbackController } from './feedback/feedback.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -57,6 +59,7 @@ async function main(): Promise<void> {
   const authAuditEventService = new AuthAuditEventService(db);
   const orderHistoryService = new OrderHistoryService(db);
   const orderService = new OrderService(db, orderHistoryService);
+  const feedbackService = new FeedbackService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService, userService);
@@ -87,6 +90,10 @@ async function main(): Promise<void> {
     userService,
   );
   const orderController = new OrderController(orderService, userService);
+  const feedbackController = new FeedbackController(
+    feedbackService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
@@ -100,6 +107,7 @@ async function main(): Promise<void> {
     orderPaymentTypeController,
     authAuditEventController,
     orderController,
+    feedbackController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);
