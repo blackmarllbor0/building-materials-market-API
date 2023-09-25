@@ -136,6 +136,7 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete(CASCADE);
       table.boolean('is_canceled').defaultTo(false);
       table.integer('number').notNullable().unique();
+      table.decimal('total_cost').notNullable();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
@@ -155,6 +156,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('update_date');
     })
     .createTableIfNotExists(tables.orderHistory, (table: Knex.TableBuilder) => {
+      table.increments('id').primary();
       table
         .integer('order_status_id')
         .notNullable()
