@@ -2,7 +2,6 @@ import { App } from './app/app';
 import { OpenapiService } from './openapi/openapi.service';
 import { ConfigService } from './config/config.service';
 import { DatabaseService } from './database/database.service';
-import { CreateUserDTO } from './user/DTO/createUser.DTO';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { LoggerService } from './logger/logger.service';
@@ -25,6 +24,8 @@ import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
 import { OrderPaymentTypeService } from './order-payment-type/orderPaymentType.service';
 import { OrderPaymentTypeController } from './order-payment-type/orderPaymentType.controller';
+import { AuthAuditEventController } from './auth-audit-event/auth-audit-event.controller';
+import { AuthAuditEventService } from './auth-audit-event/auth-audit-event.service';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -32,11 +33,6 @@ async function main(): Promise<void> {
 
   const db = new DatabaseService(configService);
   await db.connect();
-
-  const k = Object.keys(new CreateUserDTO());
-  for (const name of k) {
-    console.log(name);
-  }
 
   const openapiService = new OpenapiService();
   const loggerService = new LoggerService();
@@ -55,6 +51,7 @@ async function main(): Promise<void> {
   const categoryService = new CategoryService(db);
   const productService = new ProductService(db);
   const orderPaymentTypeService = new OrderPaymentTypeService(db);
+  const authAuditEventService = new AuthAuditEventService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService);
@@ -80,6 +77,10 @@ async function main(): Promise<void> {
     orderPaymentTypeService,
     userService,
   );
+  const authAuditEventController = new AuthAuditEventController(
+    authAuditEventService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
@@ -91,6 +92,7 @@ async function main(): Promise<void> {
     categoryController,
     productController,
     orderPaymentTypeController,
+    authAuditEventController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);
