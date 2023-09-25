@@ -40,10 +40,11 @@ export function authMiddleware(
     }
 
     try {
-      const payload = jwt.verify(
-        cookies['Authorization'],
-        process.env.TOKEN_SECRET,
-      ) as { userId: number };
+      const token = cookies['Authorization'];
+
+      const payload = jwt.verify(token, process.env.TOKEN_SECRET) as {
+        userId: number;
+      };
 
       const user = await userService.getById(payload.userId);
       if (!user) {

@@ -1,4 +1,4 @@
-import { NotFoundException } from '../exception/NotFound.exception';
+import { NotFoundException } from '../../exception/NotFound.exception';
 
 export class OrderPaymentTypeNotFoundException extends NotFoundException {
   constructor(id?: number) {

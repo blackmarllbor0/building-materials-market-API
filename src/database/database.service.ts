@@ -78,7 +78,9 @@ export class DatabaseService implements IDatabaseService {
    */
   private bindValuesToVars(args: SQLValues): SQLArgs {
     if (Array.isArray(args)) {
-      return args.map((arg) => `:${arg}`).join(', ');
+      return args
+        .map((arg, ind) => `:${arg}`.substring(0, 5) + ind.toString())
+        .join(', ');
     }
 
     return `:${args}`;
@@ -276,8 +278,7 @@ export class DatabaseService implements IDatabaseService {
     }
 
     if (limitOffset && !limitOffset.limit && limitOffset.offset) {
-      query += ` OFFSET ${limitOffset.offset}
-      ROWS`;
+      query += ` OFFSET ${limitOffset.offset} ROWS`;
     }
 
     const selectRes = await this.connection.execute<T>(query, [...values], {

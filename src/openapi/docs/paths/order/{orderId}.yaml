@@ -4,10 +4,10 @@ get:
     - customer
   summary: Get all user orders.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: "./parameters/order/orderId.yaml"
     - $ref: "./parameters/user/queryUerId.yaml"
   responses:
     200:
@@ -15,11 +15,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: './schemas/order.yaml'
+            $ref: "./schemas/order.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 patch:
   tags:
@@ -27,10 +27,10 @@ patch:
     - customer
   summary: Set user order status.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: "./parameters/order/orderId.yaml"
     - $ref: "./parameters/user/queryUerId.yaml"
   requestBody:
     description: New user order status
@@ -44,17 +44,21 @@ patch:
               type: integer
             orderPaymentTypeId:
               type: integer
+            totalCost:
+              type: integer
+            totalQuantity:
+              type: integer
   responses:
     200:
       description: Successfully updated user order status.
       content:
         application/json:
           schema:
-            $ref: './schemas/order.yaml'
+            $ref: "./schemas/order.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 delete:
   tags:
@@ -62,15 +66,15 @@ delete:
     - customer
   summary: Delete user order by id.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/orderId.yaml'
+    - $ref: "./parameters/order/orderId.yaml"
     - $ref: "./parameters/user/queryUerId.yaml"
   responses:
     200:
       description: User order deleted.
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

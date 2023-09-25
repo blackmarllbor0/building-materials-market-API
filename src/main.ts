@@ -26,6 +26,9 @@ import { OrderPaymentTypeService } from './order-payment-type/orderPaymentType.s
 import { OrderPaymentTypeController } from './order-payment-type/orderPaymentType.controller';
 import { AuthAuditEventController } from './auth-audit-event/auth-audit-event.controller';
 import { AuthAuditEventService } from './auth-audit-event/auth-audit-event.service';
+import { OrderHistoryService } from './order-history/order-history.service';
+import { OrderService } from './order/order.service';
+import { OrderController } from './order/order.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -52,6 +55,8 @@ async function main(): Promise<void> {
   const productService = new ProductService(db);
   const orderPaymentTypeService = new OrderPaymentTypeService(db);
   const authAuditEventService = new AuthAuditEventService(db);
+  const orderHistoryService = new OrderHistoryService(db);
+  const orderService = new OrderService(db, orderHistoryService);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService, userService);
@@ -81,6 +86,7 @@ async function main(): Promise<void> {
     authAuditEventService,
     userService,
   );
+  const orderController = new OrderController(orderService, userService);
 
   const controllers: BaseController[] = [
     userController,
@@ -93,6 +99,7 @@ async function main(): Promise<void> {
     productController,
     orderPaymentTypeController,
     authAuditEventController,
+    orderController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);
