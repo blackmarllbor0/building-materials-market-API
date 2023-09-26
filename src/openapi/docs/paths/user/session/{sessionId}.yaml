@@ -4,21 +4,20 @@ get:
     - admin
   summary: Get user session by id.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
-    - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/session/sessionId.yaml'
+    - $ref: "./parameters/session/sessionId.yaml"
   responses:
     200:
       description: User session received.
       content:
         application/json:
           schema:
-            $ref: './schemas/session.yaml'
+            $ref: "./schemas/session.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

@@ -255,13 +255,13 @@ export class DatabaseService implements IDatabaseService {
   ): Promise<T[]> {
     let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
     const values: any[] = [];
-    if (returnFields) {
+    if (returnFields && Object.keys(returnFields).length) {
       const toSnake = this.rewriteCamelToSnakeCase<T>(returnFields);
       const args = this.wrapAgsInQuotes(Object.keys(toSnake));
       query = `SELECT ${args} FROM ${this.PBD}."${table}"`;
     }
 
-    if (where) {
+    if (where && Object.keys(where).length) {
       const toSnake = this.rewriteCamelToSnakeCase<T>(where);
       const args = Object.keys(toSnake);
       const bindWhereVars = this.bindWhereArgsToVars(args, true);

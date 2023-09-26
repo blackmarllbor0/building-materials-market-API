@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import { IConfigService } from '../config/config.interface';
 import { ISessionService } from './session.service.interface';
 import * as jwt from 'jsonwebtoken';
+import { LimitOffsetQuery } from '../params/LimitOffset.query';
+import { SessionNotFoundException } from './exceptions/SessionNotFound.exception';
 
 export class SessionService implements ISessionService {
   private readonly table = 'session';
@@ -35,5 +37,34 @@ export class SessionService implements ISessionService {
       expiresIn:
         this.configService.number('TOKEN_LIVE_TIME_IN_HOURS') * 60 * 60 + 's',
     });
+  }
+
+  public async getAll(
+    userId?: number,
+    limitOffset?: LimitOffsetQuery,
+  ): Promise<Session[]> {
+    const where = {} as Session;
+    if (userId) where.userId = userId;
+
+    const sessions = await this.sessionRepository.selectAll(
+      this.table,
+      where,
+      null,
+      limitOffset,
+    );
+
+    if (!sessions.length) throw new SessionNotFoundException();
+
+    return sessions;
+  }
+
+  async getById(id: number): Promise<Session> {
+    const session = await this.sessionRepository.selectOne(this.table, {
+      id,
+    } as Session);
+
+    if (!session) throw new SessionNotFoundException(id);
+
+    return session;
   }
 }

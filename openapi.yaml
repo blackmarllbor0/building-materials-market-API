@@ -2263,7 +2263,6 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:
@@ -2291,7 +2290,6 @@ paths:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/sessionId"
       responses:
         "200":

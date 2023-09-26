@@ -4,12 +4,11 @@ get:
     - admin
   summary: Get user sessions.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
-    - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - $ref: "./parameters/pagination/page-from.yaml"
+    - $ref: "./parameters/pagination/page-to.yaml"
   responses:
     200:
       description: User sessions received.
@@ -18,10 +17,10 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/session.yaml'
+              $ref: "./schemas/session.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

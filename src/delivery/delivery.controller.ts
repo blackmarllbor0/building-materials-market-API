@@ -79,7 +79,10 @@ export class DeliveryController extends BaseController {
         return this.ok(res, deliveries);
       }
 
-      const deliveries = await this.deliverService.getDelivery(orderId);
+      const deliveries = await this.deliverService.getDelivery(orderId, {
+        limit,
+        offset,
+      });
       return this.ok(res, deliveries);
     } catch (error) {
       next(error);
