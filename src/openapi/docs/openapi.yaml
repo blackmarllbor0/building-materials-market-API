@@ -212,7 +212,7 @@ paths:
   /orders:
     $ref: "./paths/order/base.yaml"
   /orders/{orderId}:
-    $ref: './paths/order/{orderId}.yaml'
+    $ref: "./paths/order/{orderId}.yaml"
   /orders/{orderId}/history:
     $ref: "./paths/order/history/base.yaml"
 
@@ -237,5 +237,5 @@ paths:
     $ref: "./paths/user/session/base.yaml"
   /sessions/{sessionId}:
     $ref: "./paths/user/session/{sessionId}.yaml"
-  /sessions/{sessionId}/auth-audits:
+  /users/{userId}/auth-audits:
     $ref: "./paths/user/session/auth-audit/base.yaml"

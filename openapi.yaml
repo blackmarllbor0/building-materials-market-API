@@ -2306,18 +2306,17 @@ paths:
           $ref: "#/components/responses/403"
         "404":
           $ref: "#/components/responses/404"
-  "/sessions/{sessionId}/auth-audits":
+  "/users/{userId}/auth-audits":
     get:
       tags:
-        - session
+        - user
         - admin
       summary: Get user session auth audits.
       security:
         - cookie-auth: []
         - admin-role: []
       parameters:
-        - $ref: "#/components/parameters/queryUserId"
-        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
       responses:

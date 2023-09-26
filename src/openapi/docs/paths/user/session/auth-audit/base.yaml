@@ -1,16 +1,15 @@
 get:
   tags:
-    - session
+    - user
     - admin
   summary: Get user session auth audits.
   security:
-    - cookie-auth: [ ]
-    - admin-role: [ ]
+    - cookie-auth: []
+    - admin-role: []
   parameters:
-    - $ref: "./parameters/user/queryUerId.yaml"
-    - $ref: './parameters/session/sessionId.yaml'
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - $ref: "./parameters/user/userId.yaml"
+    - $ref: "./parameters/pagination/page-from.yaml"
+    - $ref: "./parameters/pagination/page-to.yaml"
   responses:
     200:
       description: User session auth audits received.
@@ -19,10 +18,10 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/auth-audit.yaml'
+              $ref: "./schemas/auth-audit.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
