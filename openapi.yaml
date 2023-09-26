@@ -1880,6 +1880,10 @@ paths:
                   type: integer
                 addressFrom:
                   type: string
+                approximateDate:
+                  type: string
+                amount:
+                  type: integer
                 addressTo:
                   type: string
       responses:
@@ -1936,6 +1940,10 @@ paths:
                   type: string
                 addressTo:
                   type: string
+                approximateDate:
+                  type: string
+                amount:
+                  type: integer
       responses:
         "200":
           description: User order delivery received.
@@ -2175,7 +2183,6 @@ paths:
         - cookie-auth: []
         - customer-role: []
       parameters:
-        - $ref: "#/components/parameters/queryUserId"
         - $ref: "#/components/parameters/queryProductId"
         - $ref: "#/components/parameters/feedbackId"
       responses:

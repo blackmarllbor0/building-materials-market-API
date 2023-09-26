@@ -4,8 +4,8 @@ post:
     - delivery
     - customer
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   requestBody:
     description: Delivery details.
     required: true
@@ -18,6 +18,10 @@ post:
               type: integer
             addressFrom:
               type: string
+            approximateDate:
+              type: string
+            amount:
+              type: integer
             addressTo:
               type: string
   responses:
@@ -26,11 +30,11 @@ post:
       content:
         application/json:
           schema:
-            $ref: './schemas/delivery.yaml'
+            $ref: "./schemas/delivery.yaml"
     400:
-      $ref: './responses/400.yaml'
+      $ref: "./responses/400.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
 
 get:
   tags:
@@ -38,21 +42,21 @@ get:
     - customer
   summary: Get user order delivery.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/queryOrderId.yaml'
+    - $ref: "./parameters/order/queryOrderId.yaml"
   responses:
     200:
       description: User order delivery received.
       content:
         application/json:
           schema:
-            $ref: './schemas/delivery.yaml'
+            $ref: "./schemas/delivery.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 patch:
   tags:
@@ -60,10 +64,10 @@ patch:
     - customer
   summary: Set user order delivery.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/queryOrderId.yaml'
+    - $ref: "./parameters/order/queryOrderId.yaml"
   requestBody:
     description: New user order status
     required: true
@@ -76,17 +80,21 @@ patch:
               type: string
             addressTo:
               type: string
+            approximateDate:
+              type: string
+            amount:
+              type: integer
   responses:
     200:
       description: User order delivery received.
       content:
         application/json:
           schema:
-            $ref: './schemas/delivery.yaml'
+            $ref: "./schemas/delivery.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
 
 delete:
   tags:
@@ -94,18 +102,18 @@ delete:
     - customer
   summary: Cancel user order delivery.
   security:
-    - cookie-auth: [ ]
-    - customer-role: [ ]
+    - cookie-auth: []
+    - customer-role: []
   parameters:
-    - $ref: './parameters/order/queryOrderId.yaml'
+    - $ref: "./parameters/order/queryOrderId.yaml"
   responses:
     200:
       description: User order delivery canceled.
       content:
         application/json:
           schema:
-            $ref: './schemas/delivery.yaml'
+            $ref: "./schemas/delivery.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

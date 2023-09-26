@@ -33,6 +33,8 @@ import { FeedbackService } from './feedback/feedback.service';
 import { FeedbackController } from './feedback/feedback.controller';
 import { OrderDetailsService } from './order-detail/order-detail.service';
 import { OrderDetailController } from './order-detail/order-detail.controller';
+import { DeliveryService } from './delivery/delivery.service';
+import { DeliveryController } from './delivery/delivery.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -63,6 +65,7 @@ async function main(): Promise<void> {
   const orderService = new OrderService(db, orderHistoryService);
   const feedbackService = new FeedbackService(db);
   const orderDetailService = new OrderDetailsService(db);
+  const deliveryService = new DeliveryService(db);
 
   const userController = new UserController(userService);
   const authController = new AuthController(authService, userService);
@@ -101,6 +104,10 @@ async function main(): Promise<void> {
     orderDetailService,
     userService,
   );
+  const deliveryController = new DeliveryController(
+    deliveryService,
+    userService,
+  );
 
   const controllers: BaseController[] = [
     userController,
@@ -116,6 +123,7 @@ async function main(): Promise<void> {
     orderController,
     feedbackController,
     orderDetailController,
+    deliveryController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);
