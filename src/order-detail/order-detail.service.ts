@@ -28,7 +28,7 @@ export class OrderDetailsService implements IOrderDetailService {
   ): Promise<OrderDetail[]> {
     const orderDetails = await this.orderDetailRepository.selectAll(
       this.table,
-      { orderId } as OrderDetail,
+      { orderId, isDeleted: 0 } as OrderDetail,
       null,
       limitOffset,
     );
@@ -45,11 +45,11 @@ export class OrderDetailsService implements IOrderDetailService {
   ): Promise<OrderDetail> {
     const orderDetail = await this.orderDetailRepository.selectOne(
       this.table,
-      { id, orderId } as OrderDetail,
+      { id, orderId, isDeleted: 0 } as OrderDetail,
       { id } as OrderDetail,
     );
 
-    if (orderDetail) throw new OrderDetailNotFoundException(id);
+    if (!orderDetail) throw new OrderDetailNotFoundException(id);
 
     try {
       return this.orderDetailRepository.update(
@@ -65,11 +65,11 @@ export class OrderDetailsService implements IOrderDetailService {
   public async deleteById(id: number, orderId: number): Promise<void> {
     const orderDetail = await this.orderDetailRepository.selectOne(
       this.table,
-      { id, orderId } as OrderDetail,
+      { id, orderId, isDeleted: 0 } as OrderDetail,
       { id } as OrderDetail,
     );
 
-    if (orderDetail) throw new OrderDetailNotFoundException(id);
+    if (!orderDetail) throw new OrderDetailNotFoundException(id);
 
     await this.orderDetailRepository.update(
       this.table,
