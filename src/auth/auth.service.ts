@@ -60,8 +60,8 @@ export class AuthService implements IAuthService {
   }
 
   public async writeTokenToCookie(userId: number): Promise<string> {
-    const { token, liveTime } = await this.sessionService.create(userId);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${liveTime.getHours()}`;
+    const { token } = await this.sessionService.create(userId);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.TOKEN_LIVE_TIME_IN_HOURS}`;
   }
 
   public clearCookieForLogOut(): string {

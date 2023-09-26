@@ -15,10 +15,11 @@ export class SessionService implements ISessionService {
 
   public async create(userId: number): Promise<Session> {
     const token = await this.generateToken(userId);
+    const liveTime = this.createTokenLiveTime();
     return this.sessionRepository.insert<Session>(this.table, {
       userId,
       token,
-      liveTime: this.createTokenLiveTime(),
+      liveTime,
     } as Session);
   }
 
