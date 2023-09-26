@@ -37,6 +37,7 @@ export function validateMiddleware<T extends object>(
   skipMissingProperties: boolean = false,
 ): RequestHandler {
   return ({ body }: Request, _res: Response, next: NextFunction) => {
+    if (!body) next(new BadRequestException('Dto object is empty'));
     validate(plainToInstance(type as ClassConstructor<T>, body), {
       skipMissingProperties,
     }).then((errors: ValidationError[]) => {
