@@ -12,24 +12,50 @@ import { OrderAlreadyExistsException } from './exception/orderAlreadyExists.exce
 import { OrderNotFoundException } from './exception/orderNotFound.exception';
 import { OrderIdParam } from './params/orderId.param';
 import { OrderStatusEnum } from '../order-status/order-status.enum';
+import { IOrderDetailService } from 'src/order-detail/order-detail.service.interface';
 
 export class OrderService implements IOrderService {
   private readonly table: string = 'order';
   constructor(
     private readonly orderRepository: IDatabaseService,
     private readonly orderHistoryService: IOrderHistoryService,
+    private readonly orderDetailsService: IOrderDetailService,
   ) {}
 
-  create(createDto: CreateOrderDto): Promise<Order> {
+  async create(createDto: CreateOrderDto): Promise<Order> {
+    const orders = await this.orderRepository.selectAll(this.table, {
+      userId: createDto.userId,
+      orderStatusId: OrderStatusEnum.decoration,
+      isCanceled: 0,
+    } as Order);
+
+    if (orders && orders.length) throw new OrderAlreadyExistsException();
+
     try {
       const number = this.genOrderNumber();
-      return this.orderRepository.insert(this.table, {
+
+      const productsId = createDto.productsId;
+      delete createDto['productsId'];
+
+      const order = await this.orderRepository.insert(this.table, {
         ...createDto,
         orderStatusId: OrderStatusEnum.decoration,
         number,
       } as Order);
+
+      if (productsId && productsId.length) {
+        productsId.forEach(async (productId) => {
+          await this.orderDetailsService.create({
+            orderId: order.id,
+            productId,
+            quantity: 1,
+          });
+        });
+      }
+
+      return order;
     } catch (error) {
-      throw new OrderAlreadyExistsException();
+      throw new Error(error.message);
     }
   }
 

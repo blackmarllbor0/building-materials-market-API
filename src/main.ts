@@ -64,9 +64,13 @@ async function main(): Promise<void> {
   const orderPaymentTypeService = new OrderPaymentTypeService(db);
   const authAuditEventService = new AuthAuditEventService(db);
   const orderHistoryService = new OrderHistoryService(db);
-  const orderService = new OrderService(db, orderHistoryService);
   const feedbackService = new FeedbackService(db);
   const orderDetailService = new OrderDetailsService(db);
+  const orderService = new OrderService(
+    db,
+    orderHistoryService,
+    orderDetailService,
+  );
   const deliveryService = new DeliveryService(db);
 
   const userController = new UserController(userService);

@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsArray, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateOrderDto {
   @IsNumber()
@@ -6,4 +6,8 @@ export class CreateOrderDto {
 
   @IsNumber()
   public orderPaymentTypeId: number;
+
+  @IsArray()
+  @IsOptional()
+  public productsId?: number[];
 }
