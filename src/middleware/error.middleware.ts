@@ -5,10 +5,15 @@ import { ILoggerService } from '../logger/logger.service.interface';
 export function errorMiddleware(
   loggerService: ILoggerService,
 ): ErrorRequestHandler {
-  return (err: unknown, req: Request, res: Response, next: NextFunction) => {
+  return (err: any, req: Request, res: Response, next: NextFunction) => {
+    const status = err.status || 500;
+    const message = err.message || 'Internal Server Error';
     if (err instanceof HttpException) {
-      const status = err.status || 500;
-      const message = err.message || 'Internal Server Error';
+      res.status(status).json({
+        status,
+        message,
+      });
+    } else {
       res.status(status).json({
         status,
         message,
