@@ -37,16 +37,28 @@ export function validateMiddleware<T extends object>(
   skipMissingProperties: boolean = false,
 ): RequestHandler {
   return ({ body }: Request, _res: Response, next: NextFunction) => {
-    if (!body) next(new BadRequestException('Dto object is empty'));
+    if (!body) {
+      next(new BadRequestException('Dto object is empty'));
+    }
+
     validate(plainToInstance(type as ClassConstructor<T>, body), {
       skipMissingProperties,
     }).then((errors: ValidationError[]) => {
       if (errors.length > 0) {
-        const msg = errors
-          .map((err: ValidationError) => Object.values(err.constraints))
-          .join(', ');
+        const msg = errors.map((err) => validateChildren(err)).join(', ');
+
         next(new BadRequestException(msg));
-      } else next();
+      } else {
+        next();
+      }
     });
   };
+}
+
+function validateChildren(error: ValidationError) {
+  if (error.children.length) {
+    return error.children.map((err) => validateChildren(err));
+  }
+
+  return Object.values(error.constraints);
 }
