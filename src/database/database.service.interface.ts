@@ -28,6 +28,7 @@ export interface IDatabaseService {
     table: string,
     entity: T,
     returnParam?: string,
+    autoCommit?: boolean,
   ): Promise<T>;
 
   /**
@@ -134,4 +135,6 @@ export interface IDatabaseService {
     where: T,
     returnParam?: string,
   ): Promise<T>;
+
+  commit(): Promise<void>;
 }

@@ -17,21 +17,45 @@ export class DatabaseService implements IDatabaseService {
     this.PBD = configService.string('ORACLE_PDB').toUpperCase();
   }
 
-  public async connect(): Promise<void> {
+  public async connect<T>(callback: () => Promise<T>): Promise<T> {
     try {
-      this.connection = await oracle.getConnection({
+      await oracle.createPool({
         user: this.configService.string('ORACLE_USER'),
         password: this.configService.string('ORACLE_PWD'),
         connectString: this.configService.string('ORACLE_CONN_STRING'),
       });
+
+      try {
+        this.connection = await oracle.getConnection({
+          user: this.configService.string('ORACLE_USER'),
+          password: this.configService.string('ORACLE_PWD'),
+          connectString: this.configService.string('ORACLE_CONN_STRING'),
+        });
+
+        return callback();
+      } catch (error) {
+        throw new Error(error.message);
+      } finally {
+        if (this.connection) {
+          try {
+            await this.disconnect();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
     } catch (error) {
       throw new Error(error.message);
+    } finally {
+      await oracle.getPool().close(0);
     }
   }
 
   public async disconnect() {
     this.connection.close((error: oracle.DBError) => {
-      throw new Error(error.message);
+      if (error) {
+        throw new Error(error.message);
+      }
     });
   }
 
@@ -173,12 +197,6 @@ export class DatabaseService implements IDatabaseService {
     return res as T;
   }
 
-  private async oracleLobToString(lob: oracle.Lob | object): Promise<string> {
-    if ('getData' in lob) {
-      return (await lob.getData()) as string;
-    }
-  }
-
   /**
    * Inserts a new record into a database table.
    *
@@ -205,29 +223,33 @@ export class DatabaseService implements IDatabaseService {
     table: string,
     entity: T,
     returnParam = 'id',
+    autoCommit = true,
   ): Promise<T> {
-    const toSnake = this.rewriteCamelToSnakeCase<T>(entity);
-    const args = this.wrapAgsInQuotes(Object.keys(toSnake));
-    const bindValues = this.bindValuesToVars(Object.keys(toSnake));
+    return this.connect(async () => {
+      const toSnake = this.rewriteCamelToSnakeCase<T>(entity);
+      const args = this.wrapAgsInQuotes(Object.keys(toSnake));
+      const bindValues = this.bindValuesToVars(Object.keys(toSnake));
 
-    const values = [];
-    for (const key in toSnake) {
-      values.push(toSnake[key]);
-    }
+      const values = [];
+      for (const key in toSnake) {
+        values.push(toSnake[key]);
+      }
 
-    const query = `INSERT INTO ${this.PBD}."${table}" (${args}) 
-                  VALUES (${bindValues}) RETURN ("${returnParam}") INTO :id`;
-    const insertRes = await this.connection.execute(
-      query,
-      [...values, { dir: oracle.BIND_OUT }],
-      { autoCommit: true },
-    );
+      const query = `INSERT INTO ${this.PBD}."${table}" (${args}) 
+                    VALUES (${bindValues}) RETURN ("${returnParam}") INTO :id`;
 
-    const res = await this.selectOne<T>(table, {
-      [returnParam]: insertRes.outBinds[0][0],
-    } as T);
+      const insertRes = await this.connection.execute(
+        query,
+        [...values, { dir: oracle.BIND_OUT }],
+        { autoCommit },
+      );
 
-    return res;
+      const res = await this.selectOne<T>(table, {
+        [returnParam]: insertRes.outBinds[0][0],
+      } as T);
+
+      return res;
+    });
   }
 
   /**
@@ -253,61 +275,83 @@ export class DatabaseService implements IDatabaseService {
     returnFields?: T,
     limitOffset?: OffsetLimit,
   ): Promise<T[]> {
-    let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
-    const values: any[] = [];
-    if (returnFields && Object.keys(returnFields).length) {
-      const toSnake = this.rewriteCamelToSnakeCase<T>(returnFields);
-      const args = this.wrapAgsInQuotes(Object.keys(toSnake));
-      query = `SELECT ${args} FROM ${this.PBD}."${table}"`;
-    }
-
-    if (where && Object.keys(where).length) {
-      const toSnake = this.rewriteCamelToSnakeCase<T>(where);
-      const args = Object.keys(toSnake);
-      const bindWhereVars = this.bindWhereArgsToVars(args, true);
-
-      for (const key in toSnake) {
-        values.push(toSnake[key]);
+    const callback = async () => {
+      let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
+      const values: any[] = [];
+      if (returnFields && Object.keys(returnFields).length) {
+        const toSnake = this.rewriteCamelToSnakeCase<T>(returnFields);
+        const args = this.wrapAgsInQuotes(Object.keys(toSnake));
+        query = `SELECT ${args} FROM ${this.PBD}."${table}"`;
       }
-      query += ` WHERE ${bindWhereVars}`;
-    }
 
-    if (limitOffset && limitOffset.limit && limitOffset.offset) {
-      query += ` OFFSET ${limitOffset.offset}
+      if (where && Object.keys(where).length) {
+        const toSnake = this.rewriteCamelToSnakeCase<T>(where);
+        const args = Object.keys(toSnake);
+        const bindWhereVars = this.bindWhereArgsToVars(args, true);
+
+        for (const key in toSnake) {
+          values.push(toSnake[key]);
+        }
+        query += ` WHERE ${bindWhereVars}`;
+      }
+
+      if (limitOffset && limitOffset.limit && limitOffset.offset) {
+        query += ` OFFSET ${limitOffset.offset}
        ROWS FETCH NEXT ${limitOffset.limit} ROWS ONLY`;
-    }
+      }
 
-    if (limitOffset && !limitOffset.limit && limitOffset.offset) {
-      query += ` OFFSET ${limitOffset.offset} ROWS`;
-    }
+      if (limitOffset && !limitOffset.limit && limitOffset.offset) {
+        query += ` OFFSET ${limitOffset.offset} ROWS`;
+      }
 
-    const selectRes = await this.connection.execute<T>(query, [...values], {
-      outFormat: oracle.OUT_FORMAT_OBJECT,
-      maxRows:
-        limitOffset && limitOffset.limit && !limitOffset.offset
-          ? +limitOffset.limit
-          : 0,
-    });
+      const selectRes = await this.connection.execute<T>(query, [...values], {
+        outFormat: oracle.OUT_FORMAT_OBJECT,
+        maxRows:
+          limitOffset && limitOffset.limit && !limitOffset.offset
+            ? +limitOffset.limit
+            : 0,
+      });
 
-    const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
+      const camelCase = this.rewriteSnakeToCamelCase<T>(selectRes.rows) as T[];
 
-    for (const obj of camelCase) {
-      for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          const elem = obj[key];
-          let value: string;
-          if (typeof elem === 'object' && !(elem instanceof Date) && elem) {
-            value = await this.oracleLobToString(elem);
+      for (const obj of camelCase) {
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const elem = obj[key];
+            let value: string;
+            if (typeof elem === 'object' && !(elem instanceof Date) && elem) {
+              const bind = (
+                await this.execute(
+                  `SELECT ("${key}") FROM ${this.PBD}."${table}"`,
+                  [],
+                  {
+                    fetchInfo: {
+                      [key]: { type: oracle.STRING },
+                    },
+                  },
+                )
+              ).rows[0][0];
 
-            if (value) {
-              obj[key] = value as any;
+              value = bind;
+
+              if (value) {
+                obj[key] = value as any;
+              }
             }
           }
         }
       }
-    }
 
-    return this.cutNullValues<T>(camelCase) as T[];
+      return this.cutNullValues<T>(camelCase) as T[];
+    };
+
+    try {
+      await this.connection.ping();
+
+      return callback();
+    } catch (error) {
+      return this.connect(callback);
+    }
   }
 
   /**
@@ -365,43 +409,45 @@ export class DatabaseService implements IDatabaseService {
     where: T,
     returnParam: string = 'id',
   ): Promise<T> {
-    const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(
-      this.cutNullValues(updatedEntity),
-    );
-    const updatedArgs = Object.keys(updatedEntityToSnake);
-    const bindUpdatedValues = this.bindWhereArgsToVars(updatedArgs);
+    return this.connect(async () => {
+      const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(
+        this.cutNullValues(updatedEntity),
+      );
+      const updatedArgs = Object.keys(updatedEntityToSnake);
+      const bindUpdatedValues = this.bindWhereArgsToVars(updatedArgs);
 
-    const updatedValues: any[] = [];
-    for (const key in updatedEntityToSnake) {
-      updatedValues.push(updatedEntityToSnake[key]);
-    }
+      const updatedValues: any[] = [];
+      for (const key in updatedEntityToSnake) {
+        updatedValues.push(updatedEntityToSnake[key]);
+      }
 
-    const whereToSnake = this.rewriteCamelToSnakeCase<T>(where);
-    const whereArgs = Object.keys(whereToSnake);
-    const bindWhereValues = this.bindWhereArgsToVars(whereArgs, true);
+      const whereToSnake = this.rewriteCamelToSnakeCase<T>(where);
+      const whereArgs = Object.keys(whereToSnake);
+      const bindWhereValues = this.bindWhereArgsToVars(whereArgs, true);
 
-    const whereValues: any[] = [];
-    for (const key in whereToSnake) {
-      whereValues.push(whereToSnake[key]);
-    }
+      const whereValues: any[] = [];
+      for (const key in whereToSnake) {
+        whereValues.push(whereToSnake[key]);
+      }
 
-    const query = `UPDATE ${this.PBD}."${table}" SET ${bindUpdatedValues}
-               WHERE ${bindWhereValues} RETURN ("${returnParam}") INTO :return_param`;
+      const query = `UPDATE ${this.PBD}."${table}" SET ${bindUpdatedValues}
+                 WHERE ${bindWhereValues} RETURN ("${returnParam}") INTO :return_param`;
 
-    const updatedResult = await this.connection.execute<T>(
-      query,
-      [...updatedValues, ...whereValues, { dir: oracle.BIND_OUT }],
-      {
-        outFormat: oracle.OUT_FORMAT_OBJECT,
-        autoCommit: true,
-      },
-    );
+      const updatedResult = await this.connection.execute<T>(
+        query,
+        [...updatedValues, ...whereValues, { dir: oracle.BIND_OUT }],
+        {
+          outFormat: oracle.OUT_FORMAT_OBJECT,
+          autoCommit: true,
+        },
+      );
 
-    const res = await this.selectOne<T>(table, {
-      [returnParam]: updatedResult.outBinds[0][0],
-    } as T);
+      const res = await this.selectOne<T>(table, {
+        [returnParam]: updatedResult.outBinds[0][0],
+      } as T);
 
-    return res;
+      return res;
+    });
   }
 
   /**
@@ -429,6 +475,18 @@ export class DatabaseService implements IDatabaseService {
     bindParams: oracle.BindParameters,
     option: oracle.ExecuteOptions,
   ): Promise<oracle.Result<T>> {
-    return this.connection.execute<T>(sql, bindParams, option);
+    try {
+      await this.connection.ping();
+
+      return this.connection.execute<T>(sql, bindParams, option);
+    } catch (error) {
+      return this.connect(() =>
+        this.connection.execute<T>(sql, bindParams, option),
+      );
+    }
+  }
+
+  public async commit(): Promise<void> {
+    this.connect(async () => this.connection.commit());
   }
 }
