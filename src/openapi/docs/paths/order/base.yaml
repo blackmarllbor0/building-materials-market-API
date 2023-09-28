@@ -17,11 +17,15 @@ post:
               type: integer
             orderPaymentTypeId:
               type: integer
-            productsId:
+            orderDetails:
               type: array
               items:
-                type: integer
-
+                type: object
+                properties:
+                  productsId:
+                    type: integer
+                  quantity:
+                    type: integer
   responses:
     201:
       description: Order created.

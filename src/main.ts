@@ -43,7 +43,6 @@ async function main(): Promise<void> {
   const PORT = configService.number('SERVER_PORT');
 
   const db = new DatabaseService(configService);
-  await db.connect();
 
   const openapiService = new OpenapiService();
   const loggerService = new LoggerService();

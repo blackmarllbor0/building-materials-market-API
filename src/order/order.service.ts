@@ -11,8 +11,9 @@ import { IOrderHistoryService } from '../order-history/order-history.service.int
 import { OrderAlreadyExistsException } from './exception/orderAlreadyExists.exception';
 import { OrderNotFoundException } from './exception/orderNotFound.exception';
 import { OrderIdParam } from './params/orderId.param';
-import { OrderStatusEnum } from '../order-status/order-status.enum';
-import { IOrderDetailService } from 'src/order-detail/order-detail.service.interface';
+import { IOrderDetailService } from '../order-detail/order-detail.service.interface';
+import { OrderDetail } from '../order-detail/order-detail.entity';
+import { NotFoundException } from '../exception/NotFound.exception';
 
 export class OrderService implements IOrderService {
   private readonly table: string = 'order';
@@ -23,40 +24,45 @@ export class OrderService implements IOrderService {
   ) {}
 
   async create(createDto: CreateOrderDto): Promise<Order> {
-    const orders = await this.orderRepository.selectAll(this.table, {
-      userId: createDto.userId,
-      orderStatusId: OrderStatusEnum.decoration,
-      isCanceled: 0,
+    const orderDetails = createDto.orderDetails;
+    delete createDto['orderDetails'];
+
+    const orderNumber = this.genOrderNumber();
+
+    const order = await this.orderRepository.insert(this.table, {
+      ...createDto,
+      number: orderNumber,
+      orderStatusId: 1,
     } as Order);
 
-    if (orders && orders.length) throw new OrderAlreadyExistsException();
-
-    try {
-      const number = this.genOrderNumber();
-
-      const productsId = createDto.productsId;
-      delete createDto['productsId'];
-
-      const order = await this.orderRepository.insert(this.table, {
-        ...createDto,
-        orderStatusId: OrderStatusEnum.decoration,
-        number,
-      } as Order);
-
-      if (productsId && productsId.length) {
-        productsId.forEach(async (productId) => {
-          await this.orderDetailsService.create({
+    if (orderDetails && orderDetails.length) {
+      let positionNumber = 0;
+      for (const { productId, quantity } of orderDetails) {
+        positionNumber++;
+        try {
+          await this.orderRepository.insert('order_detail', {
             orderId: order.id,
             productId,
-            quantity: 1,
-          });
-        });
+            quantity,
+            positionNumber,
+          } as OrderDetail);
+        } catch (error) {
+          this.deleteById(order.id);
+          await this.orderRepository.update(
+            'order_detail',
+            {
+              orderId: order.id,
+              productId,
+            } as OrderDetail,
+            { isDeleted: 1 } as OrderDetail,
+          );
+          throw new NotFoundException(`product with id ${productId} not found`);
+        }
       }
-
-      return order;
-    } catch (error) {
-      throw new Error(error.message);
     }
+
+    await this.orderRepository.commit();
+    return order;
   }
 
   private genOrderNumber(): number {
