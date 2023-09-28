@@ -3,6 +3,7 @@ export class OrderDetail {
   public orderId: number;
   public productId: number;
   public quantity: number;
+  public positionNumber: number;
   public isDeleted: number;
   public createDate: number;
   public updateDate: number;
