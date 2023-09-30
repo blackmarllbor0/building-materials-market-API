@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
+import * as cors from 'cors';
 import { IOpenapi } from '../openapi/openapi.interface';
 import { errorMiddleware } from '../middleware/error.middleware';
 import { BaseController } from './base.controller';
@@ -26,6 +27,7 @@ export class App {
 
   private initMiddlewares(): void {
     this.app.use(bodyParser.json());
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(cookieParser());
     this.app.use('/api/docs', this.openapiService.getUIParseMiddleware());
