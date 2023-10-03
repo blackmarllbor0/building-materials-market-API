@@ -15,6 +15,20 @@ export class UserService implements IUserService {
   private readonly table = 'user';
   constructor(private readonly userRepository: IDatabaseService) {}
   public async create(user: CreateUserDTO): Promise<User> {
+    const isUserAlreadyExist = await this.userRepository.selectOne(
+      this.table,
+      {
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        isDeleted: 0,
+      } as User,
+      { id: 0 } as User,
+    );
+
+    if (isUserAlreadyExist) {
+      throw new UserAlreadyExistsException();
+    }
+
     try {
       const passwordHash = await this.hashPassword(user.password);
       delete user['password'];
@@ -25,7 +39,7 @@ export class UserService implements IUserService {
         passwordHash,
       } as unknown as User);
     } catch (error) {
-      throw new UserAlreadyExistsException();
+      throw new BadRequestException(error.message);
     }
   }
 

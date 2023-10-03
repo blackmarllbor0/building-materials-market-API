@@ -22,10 +22,28 @@ export class CategoryService implements ICategoryService {
     }
   }
 
-  public async getAll(limitOffset?: LimitOffsetQuery): Promise<Category[]> {
+  public async getById(id: number): Promise<Category> {
+    const category = await this.categoryRepository.selectOne(this.table, {
+      id,
+    } as Category);
+
+    if (!category) throw new CategoryNotFoundException(id);
+
+    return category;
+  }
+
+  public async getAll(
+    limitOffset?: LimitOffsetQuery,
+    categoryName?: string,
+  ): Promise<Category[]> {
+    const where = {} as Category;
+    if (categoryName) {
+      where.name = categoryName;
+    }
+
     const categories = await this.categoryRepository.selectAll<Category>(
       this.table,
-      null,
+      where,
       null,
       limitOffset,
     );

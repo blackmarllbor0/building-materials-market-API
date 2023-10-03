@@ -1,3 +1,20 @@
+get:
+  tags:
+    - category
+    - no-auth
+  summary: Get category by  id.
+  parameters:
+    - $ref: "./parameters/category/categoryId.yaml"
+  responses:
+    200:
+      description: Category received.
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas/category.yaml"
+    404:
+      $ref: "./responses/404.yaml"
+
 put:
   tags:
     - category
@@ -7,7 +24,7 @@ put:
     - cookie-auth: []
     - admin-role: []
   parameters:
-    - $ref: './parameters/category/categoryId.yaml'
+    - $ref: "./parameters/category/categoryId.yaml"
   requestBody:
     description: New category name.
     required: true
@@ -24,14 +41,14 @@ put:
       content:
         application/json:
           schema:
-            $ref: './schemas/category.yaml'
+            $ref: "./schemas/category.yaml"
     400:
-      $ref: './responses/400.yaml'
+      $ref: "./responses/400.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"
     409:
-      $ref: './responses/409.yaml'
+      $ref: "./responses/409.yaml"

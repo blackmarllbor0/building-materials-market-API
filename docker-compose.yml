@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  builder-materials-market:
+  builder-materials-market-oracle:
     image: 'container-registry.oracle.com/database/enterprise:latest'
-    container_name: ${DOCKER_CONTAINER_NAME}
+    container_name: ${DOCKER_DB_CONTAINER_NAME}
     restart: always
     env_file:
       - .env

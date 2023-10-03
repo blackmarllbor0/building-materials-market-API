@@ -53,9 +53,14 @@ export class UserController extends BaseController {
   public async create(
     { body }: Request<any, any, CreateUserDTO>,
     res: Response,
+    next: NextFunction,
   ): Promise<Response<User>> {
-    const user = await this.userService.create(body);
-    return this.created(res, user);
+    try {
+      const user = await this.userService.create(body);
+      return this.created(res, user);
+    } catch (error) {
+      next(error);
+    }
   }
 
   public async getAll(

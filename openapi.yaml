@@ -1154,6 +1154,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
+        - name: categoryName
+          in: path
+          required: true
+          description: Category id.
+          schema:
+            type: string
       responses:
         "200":
           description: All categories received.
@@ -1166,6 +1172,22 @@ paths:
         "404":
           $ref: "#/components/responses/404"
   "/categories/{categoryId}":
+    get:
+      tags:
+        - category
+        - no-auth
+      summary: Get category by  id.
+      parameters:
+        - $ref: "#/components/parameters/categoryId"
+      responses:
+        "200":
+          description: Category received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/category"
+        "404":
+          $ref: "#/components/responses/404"
     put:
       tags:
         - category

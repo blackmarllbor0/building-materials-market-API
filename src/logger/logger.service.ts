@@ -13,7 +13,9 @@ export class LoggerService implements ILoggerService {
   }
 
   error(message: string, code: number): void {
-    this.logger.error(`{\ncode: ${code},\nmessage: ${message}\n}`);
+    this.logger.error(
+      `{\ncode: ${code},\nmessage: ${message}\n}, time: ${new Date().getDate()}`,
+    );
   }
 
   warn(message: string): void {

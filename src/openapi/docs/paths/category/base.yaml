@@ -26,13 +26,13 @@ post:
             name: concrete
             createDate: 00.11.2222
     400:
-      $ref: './responses/400.yaml'
+      $ref: "./responses/400.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     409:
-      $ref: './responses/409.yaml'
+      $ref: "./responses/409.yaml"
 
 get:
   tags:
@@ -40,8 +40,14 @@ get:
     - no-auth
   summary: Get all categories.
   parameters:
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - $ref: "./parameters/pagination/page-from.yaml"
+    - $ref: "./parameters/pagination/page-to.yaml"
+    - name: categoryName
+      in: path
+      required: true
+      description: Category id.
+      schema:
+        type: string
   responses:
     200:
       description: All categories received.
@@ -50,6 +56,6 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/category.yaml'
+              $ref: "./schemas/category.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

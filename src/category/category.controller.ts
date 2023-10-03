@@ -10,6 +10,7 @@ import { ICategoryService } from './category.service.interface';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 import { UpdateCategoryDto } from './dto/updateCategory.dto';
 import { CategoryIdParam } from './params/categoryId.param';
+import { CategoryNameQuery } from './params/categoryName.query';
 
 export class CategoryController extends BaseController {
   constructor(
@@ -24,11 +25,13 @@ export class CategoryController extends BaseController {
     this.router.post(
       this.path,
       validateMiddleware(CreateCategoryDto),
-      authMiddleware(this.userService, UserRoleEnum.admin),
+      // authMiddleware(this.userService, UserRoleEnum.admin),
       this.create.bind(this),
     );
 
     this.router.get(this.path, this.getAll.bind(this));
+
+    this.router.get(`${this.path}/:categoryId`, this.getGyId.bind(this));
 
     this.router.put(
       `${this.path}/:categoryId`,
@@ -52,13 +55,31 @@ export class CategoryController extends BaseController {
   }
 
   public async getAll(
-    { query }: Request<any, any, any, LimitOffsetQuery>,
+    {
+      query: { categoryName, limit, offset },
+    }: Request<any, any, any, LimitOffsetQuery & CategoryNameQuery>,
     res: Response,
     next: NextFunction,
   ): Promise<Response<Category[]>> {
     try {
-      const categories = await this.categoryService.getAll(query);
+      const categories = await this.categoryService.getAll(
+        { limit, offset },
+        categoryName,
+      );
       return this.ok(res, categories);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getGyId(
+    { params: { categoryId } }: Request<CategoryIdParam>,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const category = await this.categoryService.getById(categoryId);
+      return this.ok(res, category);
     } catch (error) {
       next(error);
     }

@@ -5,6 +5,10 @@ import { UpdateCategoryDto } from './dto/updateCategory.dto';
 
 export interface ICategoryService {
   create(createDto: CreateCategoryDto): Promise<Category>;
-  getAll(limitOffset?: LimitOffsetQuery): Promise<Category[]>;
+  getAll(
+    limitOffset?: LimitOffsetQuery,
+    categoryName?: string,
+  ): Promise<Category[]>;
+  getById(id: number): Promise<Category>;
   updateById(id: number, updateDto: UpdateCategoryDto): Promise<Category>;
 }

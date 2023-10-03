@@ -50,9 +50,9 @@ export async function up(knex: Knex): Promise<void> {
         .inTable(tables.userStatus)
         .onDelete(CASCADE);
       table.string('name').notNullable();
-      table.string('email').notNullable().unique();
-      table.string('phone_number').notNullable().unique();
-      table.string('password_hash').notNullable().unique();
+      table.string('email').notNullable();
+      table.string('phone_number').notNullable();
+      table.string('password_hash').notNullable();
       table.boolean('is_blocked').defaultTo(false);
       table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
@@ -67,7 +67,7 @@ export async function up(knex: Knex): Promise<void> {
         .inTable(tables.user)
         .onDelete(CASCADE);
 
-      table.string('token').unique().notNullable();
+      table.string('token').notNullable();
       table.timestamp('live_time').notNullable();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
@@ -135,7 +135,7 @@ export async function up(knex: Knex): Promise<void> {
         .inTable(tables.orderPaymentType)
         .onDelete(CASCADE);
       table.boolean('is_canceled').defaultTo(false);
-      table.integer('number').notNullable().unique();
+      table.integer('number').notNullable();
       table.decimal('total_cost').notNullable();
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
@@ -178,11 +178,11 @@ export async function up(knex: Knex): Promise<void> {
       tables.manufacturingCompany,
       (table: Knex.TableBuilder) => {
         table.increments('id').primary();
-        table.string('name').notNullable().unique();
-        table.string('link_to_website').notNullable().unique();
-        table.string('phone_number').notNullable().unique();
-        table.string('link_to_logo_image').notNullable().unique();
-        table.string('email').notNullable().unique();
+        table.string('name').notNullable();
+        table.string('link_to_website').notNullable();
+        table.string('phone_number').notNullable();
+        table.string('link_to_logo_image').notNullable();
+        table.string('email').notNullable();
         table.text('description').notNullable();
         table.boolean('is_deleted').defaultTo(false);
         table.timestamp('create_date').defaultTo(knex.fn.now());
@@ -212,9 +212,10 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('quantity').notNullable();
       table.decimal('price').notNullable();
       table.decimal('rating').notNullable().defaultTo(5);
-      table.string('link_to_images').notNullable().unique();
+      table.string('link_to_images').notNullable();
       table.string('title').notNullable();
       table.text('description').notNullable();
+      table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
     })
@@ -259,7 +260,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('id')
         .inTable(tables.product)
         .onDelete(CASCADE);
-      table.integer('quantity').notNullable().defaultTo(1);
+      table.integer('quantity').notNullable();
       table.boolean('is_deleted').defaultTo(false);
       table.timestamp('create_date').defaultTo(knex.fn.now());
       table.timestamp('update_date');
