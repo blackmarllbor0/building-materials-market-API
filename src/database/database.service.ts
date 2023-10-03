@@ -275,7 +275,11 @@ export class DatabaseService implements IDatabaseService {
     returnFields?: T,
     limitOffset?: OffsetLimit,
   ): Promise<T[]> {
-    const callback = async () => {
+    const cfg = this.getRandomPoolAlias();
+    const pool = await this.createPool(cfg);
+    const connection = await oracle.getConnection(cfg);
+
+    try {
       let query: string = `SELECT * FROM ${this.PBD}."${table}"`;
       const values: any[] = [];
       if (returnFields && Object.keys(returnFields).length) {
@@ -304,7 +308,7 @@ export class DatabaseService implements IDatabaseService {
         query += ` OFFSET ${limitOffset.offset} ROWS`;
       }
 
-      const selectRes = await this.connection.execute<T>(query, [...values], {
+      const selectRes = await connection.execute<T>(query, [...values], {
         outFormat: oracle.OUT_FORMAT_OBJECT,
         maxRows:
           limitOffset && limitOffset.limit && !limitOffset.offset
@@ -343,14 +347,11 @@ export class DatabaseService implements IDatabaseService {
       }
 
       return this.cutNullValues<T>(camelCase) as T[];
-    };
-
-    try {
-      await this.connection.ping();
-
-      return callback();
     } catch (error) {
-      return this.connect(callback);
+      throw new Error(error.message);
+    } finally {
+      await connection.close();
+      await this.destroyConnectionPool(pool);
     }
   }
 
@@ -488,5 +489,30 @@ export class DatabaseService implements IDatabaseService {
 
   public async commit(): Promise<void> {
     this.connect(async () => this.connection.commit());
+  }
+
+  public async createPool(cfg: oracle.PoolAttributes) {
+    try {
+      return await oracle.createPool(cfg);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async destroyConnectionPool(pool: oracle.Pool) {
+    try {
+      await pool.close();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public getRandomPoolAlias(): oracle.PoolAttributes {
+    return {
+      user: this.configService.string('ORACLE_USER'),
+      password: this.configService.string('ORACLE_PWD'),
+      connectString: this.configService.string('ORACLE_CONN_STRING'),
+      poolAlias: Math.floor(Math.random() * (1000 - 1) + 1).toString(),
+    };
   }
 }
