@@ -20,7 +20,7 @@ export function errorMiddleware(
       });
     }
 
-    loggerService.error(err?.['message'] as string, err?.['code']);
+    loggerService.error(err?.['message'] as string, err?.['status']);
 
     next();
   };
