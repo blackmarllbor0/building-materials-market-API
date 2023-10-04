@@ -9,6 +9,7 @@ DROP TABLE "order_payment_type";
 DROP TABLE "feedback";
 DROP TABLE "product";
 DROP TABLE "company";
+DROP TABLE "category_type";
 DROP TABLE "category";
 DROP TABLE "order_status";
 DROP TABLE "user";
