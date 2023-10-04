@@ -8,6 +8,7 @@ export interface ICategoryService {
   getAll(
     limitOffset?: LimitOffsetQuery,
     categoryName?: string,
+    categoryTypeId?: number,
   ): Promise<Category[]>;
   getById(id: number): Promise<Category>;
   updateById(id: number, updateDto: UpdateCategoryDto): Promise<Category>;

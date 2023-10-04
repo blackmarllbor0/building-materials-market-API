@@ -1129,6 +1129,8 @@ paths:
               properties:
                 categoryName:
                   type: string
+                categoryType:
+                  type: string
       responses:
         "201":
           description: The new category has been successfully created.
@@ -1155,6 +1157,12 @@ paths:
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
         - name: categoryName
+          in: path
+          required: true
+          description: Category id.
+          schema:
+            type: string
+        - name: categoryType
           in: path
           required: true
           description: Category id.
@@ -1207,6 +1215,8 @@ paths:
               type: object
               properties:
                 categoryName:
+                  type: string
+                categoryType:
                   type: string
       responses:
         "200":

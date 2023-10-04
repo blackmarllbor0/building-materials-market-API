@@ -37,6 +37,8 @@ import { DeliveryService } from './delivery/delivery.service';
 import { DeliveryController } from './delivery/delivery.controller';
 import { AuthAuditController } from './auth-audit/auth-audit.controller';
 import { SessionController } from './session/session.controller';
+import { CategoryTypeService } from './categoryType/categoryType.service';
+import { CategoryTypeController } from './categoryType/categoryType.controller';
 
 async function main(): Promise<void> {
   const configService = new ConfigService('.env');
@@ -58,6 +60,7 @@ async function main(): Promise<void> {
   const userStatusService = new UserStatusService(db);
   const orderStatusService = new OrderStatusService(db);
   const companyService = new CompanyService(db);
+  const categoryTypeService = new CategoryTypeService(db);
   const categoryService = new CategoryService(db);
   const productService = new ProductService(db);
   const orderPaymentTypeService = new OrderPaymentTypeService(db);
@@ -117,7 +120,10 @@ async function main(): Promise<void> {
     authAuditService,
     userService,
   );
-
+  const categoryTypeController = new CategoryTypeController(
+    categoryTypeService,
+    userService,
+  );
   const sessionController = new SessionController(sessionService, userService);
 
   const controllers: BaseController[] = [
@@ -137,6 +143,7 @@ async function main(): Promise<void> {
     deliveryController,
     authAuditController,
     sessionController,
+    categoryTypeController,
   ];
 
   const app = new App(controllers, PORT, openapiService, loggerService);

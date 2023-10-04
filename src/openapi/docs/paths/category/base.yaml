@@ -16,6 +16,8 @@ post:
           properties:
             categoryName:
               type: string
+            categoryType:
+              type: string
   responses:
     201:
       description: The new category has been successfully created.
@@ -43,6 +45,12 @@ get:
     - $ref: "./parameters/pagination/page-from.yaml"
     - $ref: "./parameters/pagination/page-to.yaml"
     - name: categoryName
+      in: path
+      required: true
+      description: Category id.
+      schema:
+        type: string
+    - name: categoryType
       in: path
       required: true
       description: Category id.

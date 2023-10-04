@@ -35,10 +35,15 @@ export class CategoryService implements ICategoryService {
   public async getAll(
     limitOffset?: LimitOffsetQuery,
     categoryName?: string,
+    categoryTypeId?: number,
   ): Promise<Category[]> {
     const where = {} as Category;
     if (categoryName) {
       where.name = categoryName;
+    }
+
+    if (categoryTypeId) {
+      where.categoryTypeId = categoryTypeId;
     }
 
     const categories = await this.categoryRepository.selectAll<Category>(

@@ -11,6 +11,7 @@ import { CreateCategoryDto } from './dto/createCategory.dto';
 import { UpdateCategoryDto } from './dto/updateCategory.dto';
 import { CategoryIdParam } from './params/categoryId.param';
 import { CategoryNameQuery } from './params/categoryName.query';
+import { CategoryTypeQuery } from './params/CategoryType.query';
 
 export class CategoryController extends BaseController {
   constructor(
@@ -25,7 +26,7 @@ export class CategoryController extends BaseController {
     this.router.post(
       this.path,
       validateMiddleware(CreateCategoryDto),
-      // authMiddleware(this.userService, UserRoleEnum.admin),
+      authMiddleware(this.userService, UserRoleEnum.admin),
       this.create.bind(this),
     );
 
@@ -56,8 +57,13 @@ export class CategoryController extends BaseController {
 
   public async getAll(
     {
-      query: { categoryName, limit, offset },
-    }: Request<any, any, any, LimitOffsetQuery & CategoryNameQuery>,
+      query: { categoryName, limit, offset, categoryTypeId },
+    }: Request<
+      any,
+      any,
+      any,
+      LimitOffsetQuery & CategoryNameQuery & CategoryTypeQuery
+    >,
     res: Response,
     next: NextFunction,
   ): Promise<Response<Category[]>> {
@@ -65,6 +71,7 @@ export class CategoryController extends BaseController {
       const categories = await this.categoryService.getAll(
         { limit, offset },
         categoryName,
+        categoryTypeId,
       );
       return this.ok(res, categories);
     } catch (error) {

@@ -35,6 +35,8 @@ put:
           properties:
             categoryName:
               type: string
+            categoryType:
+              type: string
   responses:
     200:
       description: Category name successfully updated.
