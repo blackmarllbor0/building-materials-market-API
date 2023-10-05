@@ -34,6 +34,12 @@ export class UserStatusController extends BaseController {
       this.getAll.bind(this),
     );
 
+    this.router.get(
+      `${this.path}/:userStatusId`,
+      authMiddleware(this.userService),
+      this.getById.bind(this),
+    );
+
     this.router.put(
       `${this.path}/:userStatusId`,
       validateMiddleware(UpdateUserStatusDto),
@@ -63,6 +69,19 @@ export class UserStatusController extends BaseController {
     try {
       const userStatuses = await this.userStatusService.getAll(query);
       return this.ok(res, userStatuses);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getById(
+    { params: { userStatusId } }: Request<{ userStatusId: number }>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<UserStatus>> {
+    try {
+      const userStatus = await this.userStatusService.getById(userStatusId);
+      return this.ok(res, userStatus);
     } catch (error) {
       next(error);
     }

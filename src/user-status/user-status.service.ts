@@ -41,6 +41,18 @@ export class UserStatusService implements IUserStatusService {
     return userStatuses;
   }
 
+  public async getById(id: number): Promise<UserStatus> {
+    const userStatus = await this.userStatusRepository.selectOne(this.table, {
+      id,
+    } as UserStatus);
+
+    if (!userStatus) {
+      throw new UserStatusNotFound();
+    }
+
+    return userStatus;
+  }
+
   public async updateById(
     id: number,
     updateDto: UpdateUserStatusDto,

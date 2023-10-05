@@ -696,6 +696,36 @@ paths:
         "404":
           $ref: "#/components/responses/404"
   "/user-statuses/{userStatusId}":
+    get:
+      tags:
+        - user-status
+        - customer
+      summary: Get user status by id.
+      security:
+        - cookie-auth: []
+        - admin-role: []
+      parameters:
+        - name: userStatusId
+          in: path
+          required: true
+          description: User status id.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: All user status received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user-status"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
     put:
       tags:
         - user-status

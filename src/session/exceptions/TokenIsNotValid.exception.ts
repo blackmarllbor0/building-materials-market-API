@@ -1,8 +1,8 @@
 import { HttpException } from '../../exception/HttpException';
-import * as status from 'http-status';
+import { UNAUTHORIZED } from 'http-status';
 
 export class TokenIsNotValid extends HttpException {
   constructor() {
-    super(status.UNAUTHORIZED, 'token is not valid');
+    super(UNAUTHORIZED || 401, 'token is not valid');
   }
 }
