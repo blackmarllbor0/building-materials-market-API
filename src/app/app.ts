@@ -27,9 +27,14 @@ export class App {
 
   private initMiddlewares(): void {
     this.app.use(bodyParser.json());
-    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(cookieParser());
+    this.app.use(
+      cors({
+        credentials: true,
+        origin: 'http://localhost:3000',
+      }),
+    );
     this.app.use('/api/docs', this.openapiService.getUIParseMiddleware());
   }
 
