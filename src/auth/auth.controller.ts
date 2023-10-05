@@ -7,6 +7,7 @@ import { User } from '../user/user.entity';
 import { excludeMiddleware } from '../middleware/exclude.middleware';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { IUserService } from '../user/user.service.interface';
+import { RequestWithUser } from '../user/requestWithUser';
 
 export class AuthController extends BaseController {
   constructor(
@@ -30,6 +31,12 @@ export class AuthController extends BaseController {
       `${this.path}/log-out`,
       authMiddleware(this.userService),
       this.logOut.bind(this),
+    );
+
+    this.router.get(
+      this.path,
+      authMiddleware(this.userService),
+      this.auth.bind(this),
     );
   }
 
@@ -63,5 +70,12 @@ export class AuthController extends BaseController {
     } catch (error) {
       next(error);
     }
+  }
+
+  public async auth(
+    { user }: RequestWithUser,
+    res: Response,
+  ): Promise<Response<User>> {
+    return this.ok(res, user);
   }
 }

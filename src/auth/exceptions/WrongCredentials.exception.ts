@@ -1,8 +1,8 @@
 import { HttpException } from '../../exception/HttpException';
-import status from 'http-status';
+import { UNAUTHORIZED } from 'http-status';
 
 export class WrongCredentialsException extends HttpException {
   constructor() {
-    super(status.UNAUTHORIZED, 'wrong credentials');
+    super(UNAUTHORIZED || 401, 'wrong credentials');
   }
 }
