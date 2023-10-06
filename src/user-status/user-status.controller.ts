@@ -30,7 +30,7 @@ export class UserStatusController extends BaseController {
 
     this.router.get(
       this.path,
-      authMiddleware(this.userService, UserRoleEnum.admin),
+      authMiddleware(this.userService),
       this.getAll.bind(this),
     );
 

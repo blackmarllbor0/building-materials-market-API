@@ -1,5 +1,7 @@
 INSERT INTO "user_status" us ("name") VALUES ('online');
 
+INSERT INTO "user_status" us ("name") VALUES ('offline');
+
 INSERT INTO "user_role" ur ("name") VALUES ('customer');
 
 INSERT INTO "user_role" ur ("name") VALUES ('admin');

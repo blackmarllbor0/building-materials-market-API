@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNumber,
   IsOptional,
   IsPhoneNumber,
   IsString,
@@ -24,4 +25,12 @@ export class UpdateUserDto {
   @MinLength(8)
   @IsOptional()
   public password: string;
+
+  @IsString()
+  @MinLength(8)
+  public oldPassword: string;
+
+  @IsNumber()
+  @IsOptional()
+  public userStatusId: number;
 }

@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { CONFLICT } from 'http-status';
 import { BadRequestException } from '../exception/BadRequest.exception';
 import { NotFoundException } from '../exception/NotFound.exception';
+import { WrongCredentialsException } from '../auth/exceptions/WrongCredentials.exception';
 
 export class UserService implements IUserService {
   private readonly table = 'user';
@@ -104,22 +105,26 @@ export class UserService implements IUserService {
   }
 
   public async updateById(id: number, updateDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.selectOne<User>(
-      this.table,
-      { id, isDeleted: 0 } as User,
-      { id } as User,
-    );
+    const user = await this.userRepository.selectOne<User>(this.table, {
+      id,
+      isDeleted: 0,
+    } as User);
 
     if (!user) {
       throw new UserNotFoundException();
     }
 
     try {
+      if (!(await bcrypt.compare(updateDto.oldPassword, user.passwordHash))) {
+        throw new WrongCredentialsException();
+      }
+
       const passwordHash = updateDto.password
         ? await this.hashPassword(updateDto.password)
         : null;
 
       delete updateDto.password;
+      delete updateDto.oldPassword;
 
       return this.userRepository.update(
         this.table,

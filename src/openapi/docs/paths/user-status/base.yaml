@@ -26,25 +26,25 @@ post:
             name: online
             createDate: 00.11.2222
     400:
-      $ref: './responses/400.yaml'
+      $ref: "./responses/400.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     409:
-      $ref: './responses/409.yaml'
+      $ref: "./responses/409.yaml"
 
 get:
   tags:
     - user-status
-    - admin
+    - customer
   summary: Get all user status.
   security:
     - cookie-auth: []
     - admin-role: []
   parameters:
-    - $ref: './parameters/pagination/page-from.yaml'
-    - $ref: './parameters/pagination/page-to.yaml'
+    - $ref: "./parameters/pagination/page-from.yaml"
+    - $ref: "./parameters/pagination/page-to.yaml"
   responses:
     200:
       description: All user status received.
@@ -53,10 +53,10 @@ get:
           schema:
             type: array
             items:
-              $ref: './schemas/user-status.yaml'
+              $ref: "./schemas/user-status.yaml"
     401:
-      $ref: './responses/401.yaml'
+      $ref: "./responses/401.yaml"
     403:
-      $ref: './responses/403.yaml'
+      $ref: "./responses/403.yaml"
     404:
-      $ref: './responses/404.yaml'
+      $ref: "./responses/404.yaml"

@@ -16,6 +16,8 @@ properties:
     minLength: 10
   password:
     type: string
+  user-status-id:
+    type: integer
 example:
   id: 1
   userRoleId: 1
