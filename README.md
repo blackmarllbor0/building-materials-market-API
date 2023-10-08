@@ -69,7 +69,9 @@ To get started with the Builder Materials Market application, follow these steps
 
 `npm run gen:spec`
 
-5. Start the application:
+5. If you want your user to be automatically created when building the database, and also create data to be filled in, then go to the `migrations` folder and in all `.sql` files, on the first lines, change the names of your PDB and USER_NAME.
+
+6. Start the application:
 
 `npm start`
 

@@ -10,9 +10,6 @@
     "build": "tsc",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
-    "db:migrate:up": "npx knex migrate:latest",
-    "db:migrate:down": "npx knex migrate:rollback",
-    "db:migrate:unlock": "npx kenx migrate:unlock",
     "lint": "eslint",
     "format": "prettier --write .",
     "gen:spec": "npx speccy resolve ./src/openapi/docs/openapi.yaml -o ./openapi.yaml"
