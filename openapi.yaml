@@ -2233,6 +2233,12 @@ paths:
         - $ref: "#/components/parameters/queryProductId"
         - $ref: "#/components/parameters/page-from"
         - $ref: "#/components/parameters/page-to"
+        - name: rating
+          in: query
+          required: true
+          description: Sort By Rating
+          schema:
+            type: integer
       responses:
         "200":
           description: User feedback received.

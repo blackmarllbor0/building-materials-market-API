@@ -11,6 +11,7 @@ export interface IFeedbackService {
     userId?: UserIdParam,
     productId?: ProductIdParam,
     limitOffset?: LimitOffsetQuery,
+    rating?: number,
   ): Promise<Feedback[]>;
   getById(id: number): Promise<Feedback>;
   updateById(id: number, updateDto: UpdateFeedbackDto): Promise<Feedback>;

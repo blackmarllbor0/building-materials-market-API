@@ -27,12 +27,15 @@ export class FeedbackService implements IFeedbackService {
     userId?: UserIdParam,
     productId?: ProductIdParam,
     limitOffset?: LimitOffsetQuery,
+    rating?: number,
   ): Promise<Feedback[]> {
     const where = { isDeleted: 0 } as Feedback;
 
     if (userId && userId.userId) where.userId = userId.userId;
 
     if (productId && productId.productId) where.productId = productId.productId;
+
+    if (rating) where.rating = rating;
 
     const feedbacks = await this.feedbackRepository.selectAll(
       this.table,

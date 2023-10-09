@@ -72,18 +72,28 @@ export class FeedbackController extends BaseController {
 
   public async getAll(
     {
-      query: { limit, offset, productId, userId },
-    }: Request<any, any, any, UserIdParam & ProductIdParam & LimitOffsetQuery>,
+      query: { limit, offset, productId, userId, rating },
+    }: Request<
+      any,
+      any,
+      any,
+      UserIdParam & ProductIdParam & LimitOffsetQuery & { rating: number }
+    >,
     res: Response,
     next: NextFunction,
   ): Promise<Response<Feedback[]>> {
     try {
       const user = res.req['user'] as User;
       if (user.userRoleId === UserRoleEnum.admin && !productId && !userId) {
-        const feedback = await this.feedbackService.getAll(null, null, {
-          limit,
-          offset,
-        });
+        const feedback = await this.feedbackService.getAll(
+          null,
+          null,
+          {
+            limit,
+            offset,
+          },
+          rating,
+        );
 
         return this.ok(res, feedback);
       }
@@ -102,6 +112,7 @@ export class FeedbackController extends BaseController {
           limit,
           offset,
         },
+        rating,
       );
 
       return this.ok(res, feedback);

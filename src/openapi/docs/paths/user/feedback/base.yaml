@@ -65,6 +65,13 @@ get:
     - $ref: "./parameters/product/queryProductId.yaml"
     - $ref: "./parameters/pagination/page-from.yaml"
     - $ref: "./parameters/pagination/page-to.yaml"
+    - name: rating
+      in: query
+      required: true
+      description: Sort By Rating
+      schema:
+        type: integer
+
   responses:
     200:
       description: User feedback received.
