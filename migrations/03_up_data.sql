@@ -1,6 +1,10 @@
-ALTER SESSION SET CONTAINER=${YOUR_PDB};
+ALTER SESSION SET CONTAINER={PBD};
 
-ALTER SESSION SET CURRENT_SCHEMA=${YOUR_USER_NAME};
+ALTER SESSION SET CURRENT_SCHEMA={USER};
+
+INSERT INTO "order_status" os ("code", "name") VALUES (1, 'created');
+
+INSERT INTO "order_payment_type" opt ("name") VALUES ('cash');
 
 INSERT INTO "user_status" us ("name") VALUES ('online');
 
