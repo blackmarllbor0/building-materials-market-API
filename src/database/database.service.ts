@@ -225,7 +225,11 @@ export class DatabaseService implements IDatabaseService {
     returnParam = 'id',
     autoCommit = true,
   ): Promise<T> {
-    return this.connect(async () => {
+    const cfg = this.getRandomPoolAlias();
+    const pool = await this.createPool(cfg);
+    const connection = await oracle.getConnection(cfg);
+
+    try {
       const toSnake = this.rewriteCamelToSnakeCase<T>(entity);
       const args = this.wrapAgsInQuotes(Object.keys(toSnake));
       const bindValues = this.bindValuesToVars(Object.keys(toSnake));
@@ -238,7 +242,7 @@ export class DatabaseService implements IDatabaseService {
       const query = `INSERT INTO ${this.PBD}."${table}" (${args}) 
                     VALUES (${bindValues}) RETURN ("${returnParam}") INTO :id`;
 
-      const insertRes = await this.connection.execute(
+      const insertRes = await connection.execute(
         query,
         [...values, { dir: oracle.BIND_OUT }],
         { autoCommit },
@@ -249,7 +253,10 @@ export class DatabaseService implements IDatabaseService {
       } as T);
 
       return res;
-    });
+    } finally {
+      await connection.close();
+      await this.destroyConnectionPool(pool);
+    }
   }
 
   /**
@@ -347,8 +354,6 @@ export class DatabaseService implements IDatabaseService {
       }
 
       return this.cutNullValues<T>(camelCase) as T[];
-    } catch (error) {
-      throw new Error(error.message);
     } finally {
       await connection.close();
       await this.destroyConnectionPool(pool);
@@ -410,7 +415,11 @@ export class DatabaseService implements IDatabaseService {
     where: T,
     returnParam: string = 'id',
   ): Promise<T> {
-    return this.connect(async () => {
+    const cfg = this.getRandomPoolAlias();
+    const pool = await this.createPool(cfg);
+    const connection = await oracle.getConnection(cfg);
+
+    try {
       const updatedEntityToSnake = this.rewriteCamelToSnakeCase<T>(
         this.cutNullValues(updatedEntity),
       );
@@ -434,7 +443,7 @@ export class DatabaseService implements IDatabaseService {
       const query = `UPDATE ${this.PBD}."${table}" SET ${bindUpdatedValues}
                  WHERE ${bindWhereValues} RETURN ("${returnParam}") INTO :return_param`;
 
-      const updatedResult = await this.connection.execute<T>(
+      const updatedResult = await connection.execute<T>(
         query,
         [...updatedValues, ...whereValues, { dir: oracle.BIND_OUT }],
         {
@@ -448,7 +457,10 @@ export class DatabaseService implements IDatabaseService {
       } as T);
 
       return res;
-    });
+    } finally {
+      await connection.close();
+      await this.destroyConnectionPool(pool);
+    }
   }
 
   /**
