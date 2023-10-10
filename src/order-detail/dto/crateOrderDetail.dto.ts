@@ -11,4 +11,8 @@ export class CreateOrderDetailDto {
   @IsNumber()
   @Min(1)
   public quantity: number;
+
+  @IsNumber()
+  @Min(1)
+  public price: number;
 }

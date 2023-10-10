@@ -67,7 +67,7 @@ get:
     - $ref: "./parameters/pagination/page-to.yaml"
     - name: rating
       in: query
-      required: true
+      required: false
       description: Sort By Rating
       schema:
         type: integer

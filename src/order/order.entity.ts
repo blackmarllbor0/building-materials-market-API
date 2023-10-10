@@ -4,7 +4,7 @@ export class Order {
   public orderStatusId: number;
   public orderPaymentTypeId: number;
   public isCanceled: number;
-  public number: number;
+  public orderNumber: number;
   public totalCost: number;
   public totalQuantity: number;
   public createDate: Date;

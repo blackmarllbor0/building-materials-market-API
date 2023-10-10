@@ -85,7 +85,7 @@ export class OrderDetailController extends BaseController {
 
   public async updateById(
     {
-      params: { orderDetailId, orderId },
+      params: { orderId, orderDetailId },
       body,
     }: Request<OrderIdParam & OrderDetailIdParam, any, UpdateOrderDetailDro>,
     res: Response,

@@ -14,6 +14,7 @@ import { OrderIdParam } from './params/orderId.param';
 import { IOrderDetailService } from '../order-detail/order-detail.service.interface';
 import { OrderDetail } from '../order-detail/order-detail.entity';
 import { NotFoundException } from '../exception/NotFound.exception';
+import { OrderStatusEnum } from '../order-status/order-status.enum';
 
 export class OrderService implements IOrderService {
   private readonly table: string = 'order';
@@ -31,21 +32,19 @@ export class OrderService implements IOrderService {
 
     const order = await this.orderRepository.insert(this.table, {
       ...createDto,
-      number: orderNumber,
-      orderStatusId: 1,
+      orderNumber,
+      orderStatusId: OrderStatusEnum.decoration,
     } as Order);
 
     if (orderDetails && orderDetails.length) {
-      let positionNumber = 0;
-      for (const { productId, quantity } of orderDetails) {
-        positionNumber++;
+      for (const { productId, quantity, price } of orderDetails) {
         try {
-          await this.orderRepository.insert('order_detail', {
+          await this.orderDetailsService.create({
             orderId: order.id,
             productId,
             quantity,
-            positionNumber,
-          } as OrderDetail);
+            price,
+          });
         } catch (error) {
           this.deleteById(order.id);
           await this.orderRepository.update(
@@ -61,7 +60,6 @@ export class OrderService implements IOrderService {
       }
     }
 
-    await this.orderRepository.commit();
     return order;
   }
 

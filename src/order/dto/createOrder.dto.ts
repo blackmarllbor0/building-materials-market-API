@@ -18,6 +18,11 @@ class CreateOrderDetails {
   @IsNotEmpty()
   @Min(1)
   public quantity: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(1)
+  public price: number;
 }
 
 export class CreateOrderDto {

@@ -4,6 +4,7 @@ export class OrderDetail {
   public productId: number;
   public quantity: number;
   public positionNumber: number;
+  public price: number;
   public isDeleted: number;
   public createDate: number;
   public updateDate: number;
