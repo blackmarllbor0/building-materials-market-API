@@ -94,7 +94,7 @@ CREATE TABLE "order" (
 CREATE TABLE "delivery" (
 	"id" INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
 	"order_id" INTEGER NOT NULL,
-	"ammount" decimal NOT NULL,
+	"ammount" INTEGER NOT NULL,
 	"address_from" VARCHAR(255) NOT NULL,
 	"address_to" VARCHAR(255) NOT NULL,
 	"approximate_date" TIMESTAMP NOT NULL,
