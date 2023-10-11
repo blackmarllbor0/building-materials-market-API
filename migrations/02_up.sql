@@ -1,6 +1,6 @@
-ALTER SESSION SET CONTAINER={PBD};
+ALTER SESSION SET CONTAINER=builder_materials_market;
 
-ALTER SESSION SET CURRENT_SCHEMA={USER};
+ALTER SESSION SET CURRENT_SCHEMA=builder_materials_market;
 
 CREATE TABLE "user_role" (
 	"id" INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
@@ -109,7 +109,7 @@ CREATE TABLE "order_history" (
 	"order_status_id" INTEGER NOT NULL,
 	"order_id" INTEGER NOT NULL,
 	"total_quantity" INTEGER NOT NULL,
-	"total_cost" decimal NOT NULL,
+	"total_cost" DECIMAL NOT NULL,
 	"create_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"update_date" TIMESTAMP,
 	CONSTRAINT os_oh_fk FOREIGN KEY ( "order_status_id" )
@@ -189,6 +189,7 @@ CREATE TABLE "order_detail" (
 	"is_deleted" number(1) DEFAULT 0,
 	"position_number" INTEGER NOT NULL,
 	"quantity" INTEGER NOT NULL,
+	"price" DECIMAL NOT NULL,
 	"create_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"update_date" TIMESTAMP,
 	CONSTRAINT o_od_fk FOREIGN KEY ( "order_id" ) REFERENCES "order" ( "id" ) ON DELETE CASCADE,

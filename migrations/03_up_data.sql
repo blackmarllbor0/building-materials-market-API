@@ -1,14 +1,16 @@
-ALTER SESSION SET CONTAINER={PBD};
+ALTER SESSION SET CONTAINER=builder_materials_market;
 
-ALTER SESSION SET CURRENT_SCHEMA={USER};
+ALTER SESSION SET CURRENT_SCHEMA=builder_materials_market;
 
 INSERT INTO "order_status" os ("code", "name") VALUES (1, 'created');
+
+INSERT INTO "order_status" os ("name", "code") VALUES ('decoration', 2);
 
 INSERT INTO "order_payment_type" opt ("name") VALUES ('Cash');
 
 INSERT INTO "order_payment_type" opt ("name") VALUES ('Visa');
 
-INSERT INTO "order_payment_type" opt ("name") VALUES ('Master_card');
+INSERT INTO "order_payment_type" opt ("name") VALUES ('Master Card');
 
 INSERT INTO "user_status" us ("name") VALUES ('online');
 
