@@ -4,7 +4,11 @@ ALTER SESSION SET CURRENT_SCHEMA={USER};
 
 INSERT INTO "order_status" os ("code", "name") VALUES (1, 'created');
 
-INSERT INTO "order_payment_type" opt ("name") VALUES ('cash');
+INSERT INTO "order_payment_type" opt ("name") VALUES ('Cash');
+
+INSERT INTO "order_payment_type" opt ("name") VALUES ('Visa');
+
+INSERT INTO "order_payment_type" opt ("name") VALUES ('Master_card');
 
 INSERT INTO "user_status" us ("name") VALUES ('online');
 
