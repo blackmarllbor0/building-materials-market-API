@@ -884,7 +884,7 @@ paths:
         - admin
       security:
         - cookie-auth: []
-        - admin-role: []
+        - customer-role: []
       requestBody:
         description: New order payment type.
         required: true
@@ -939,6 +939,36 @@ paths:
         "404":
           $ref: "#/components/responses/404"
   "/order-payment-types/{orderPaymentTypeId}":
+    get:
+      tags:
+        - order-payment-type
+        - admin
+      summary: Update order payment type name by id.
+      security:
+        - cookie-auth: []
+        - customer-role: []
+      parameters:
+        - name: order-payment-type-id
+          in: path
+          required: true
+          description: Order Payment Type Id.
+      responses:
+        "200":
+          description: Order payment type successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order-payment-type"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "409":
+          $ref: "#/components/responses/409"
     put:
       tags:
         - order-payment-type
@@ -2235,7 +2265,7 @@ paths:
         - $ref: "#/components/parameters/page-to"
         - name: rating
           in: query
-          required: true
+          required: false
           description: Sort By Rating
           schema:
             type: integer

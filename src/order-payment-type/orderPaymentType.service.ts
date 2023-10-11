@@ -38,6 +38,19 @@ export class OrderPaymentTypeService implements IOrderPaymentTypeService {
     return orderPaymentTypes;
   }
 
+  public async getById(id: number): Promise<OrderPaymentType> {
+    const orderPaymentType = await this.orderPaymentTypeRepository.selectOne(
+      this.table,
+      { id } as OrderPaymentType,
+    );
+
+    if (!orderPaymentType) {
+      throw new OrderStatusNotFoundException(id);
+    }
+
+    return orderPaymentType;
+  }
+
   async updateById(
     id: number,
     updateDto: UpdateOrderPaymentTypeDto,

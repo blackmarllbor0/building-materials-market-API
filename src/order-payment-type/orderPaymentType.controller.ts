@@ -30,8 +30,14 @@ export class OrderPaymentTypeController extends BaseController {
 
     this.router.get(
       this.path,
-      authMiddleware(this.userService, UserRoleEnum.admin),
+      authMiddleware(this.userService),
       this.getAll.bind(this),
+    );
+
+    this.router.get(
+      `${this.path}/:orderPaymentTypeId`,
+      authMiddleware(this.userService),
+      this.getById.bind(this),
     );
 
     this.router.put(
@@ -64,6 +70,20 @@ export class OrderPaymentTypeController extends BaseController {
       const orderPaymentTypes =
         await this.orderPaymentTypeService.getAll(query);
       return this.ok(res, orderPaymentTypes);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getById(
+    { params: { orderPaymentTypeId } }: Request<{ orderPaymentTypeId: number }>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<OrderPaymentType>> {
+    try {
+      const opt =
+        await this.orderPaymentTypeService.getById(orderPaymentTypeId);
+      return this.ok(res, opt);
     } catch (error) {
       next(error);
     }
