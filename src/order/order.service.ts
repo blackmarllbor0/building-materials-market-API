@@ -126,8 +126,8 @@ export class OrderService implements IOrderService {
       await this.orderHistoryService.create({
         orderId: updatedOrder.id,
         orderStatusId: updatedOrder.orderStatusId,
-        totalCost: updatedOrder.totalCost,
-        totalQuantity: updatedOrder.totalQuantity,
+        totalCost: 0,
+        totalQuantity: 0,
       });
 
       return updatedOrder;
@@ -137,13 +137,13 @@ export class OrderService implements IOrderService {
   }
 
   async deleteById(id: number): Promise<void> {
-    const { orderStatusId, totalCost, totalQuantity } = await this.getById(id);
+    const { orderStatusId } = await this.getById(id);
 
     await this.orderHistoryService.create({
       orderId: id,
-      totalCost,
+      totalCost: 0,
       orderStatusId,
-      totalQuantity,
+      totalQuantity: 0,
     });
 
     await this.orderRepository.update(

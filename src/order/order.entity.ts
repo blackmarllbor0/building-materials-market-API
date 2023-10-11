@@ -5,8 +5,6 @@ export class Order {
   public orderPaymentTypeId: number;
   public isCanceled: number;
   public orderNumber: number;
-  public totalCost: number;
-  public totalQuantity: number;
   public createDate: Date;
   public updateDate: Date;
 }
