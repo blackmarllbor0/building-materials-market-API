@@ -78,6 +78,8 @@ We have included several npm scripts to help you manage the application. Here ar
 
 ### Or you can launch a docker image with a ready-made app using the command `npm run app:up`
 
+If you decide to run the application via docker image, then in your `.env` file change the `ORACLE_CONN_STRING` value to `ORACLE_CONN_STRING=${DOCKER_DB_CONTAINER_NAME}`.
+
 ### Your Builder Materials Market online store should now be up and running.
 
 ## Current State
