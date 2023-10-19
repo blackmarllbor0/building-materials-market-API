@@ -1,10 +1,30 @@
 version: '3.9'
 
 services:
+  builder-materials-market-api:
+    container_name: ${DOCKER_APP_CONTAINER_NAME}
+    networks:
+      - bmm_networkd
+      - bmm_main_network
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${SERVER_PORT}:8080'
+    env_file:
+      - .env
+    depends_on:
+      builder-materials-market-oracle:
+        condition: service_healthy
+        restart: true
+
   builder-materials-market-oracle:
     image: 'container-registry.oracle.com/database/enterprise:latest'
     container_name: ${DOCKER_DB_CONTAINER_NAME}
     restart: always
+    networks:
+      - bmm_networkd
     env_file:
       - .env
     environment:
@@ -24,3 +44,8 @@ services:
 
 volumes:
   data:
+
+networks:
+  bmm_main_network:
+    external: true
+  bmm_networkd:

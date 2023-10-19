@@ -1,13 +1,15 @@
-FROM node
+FROM node:14
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install
+COPY tsconfig.json ./
+COPY .env ./
 
 COPY . .
 
-RUN npm run build
+RUN npm i -g typescript
 
-CMD [ "node", "dist/main.js" ]
+RUN npm install
+
+CMD [ "npm", "start" ]

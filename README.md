@@ -23,6 +23,7 @@ Before running the application, make sure to set up the following environment va
 SERVER_PORT=8080
 
 DOCKER_CONTAINER_NAME=builder_materials_market
+DOCKER_APP_CONTAINER_NAME=builder_materials_market_app
 
 ORACLE_SID=bmm
 ORACLE_PDB=builder_materials_market
@@ -53,7 +54,7 @@ We have included several npm scripts to help you manage the application. Here ar
 
 ## Getting Started
 
-To get started with the Builder Materials Market application, follow these steps:
+### To get started with the Builder Materials Market application, follow these steps:
 
 1. Clone the repository to your local machine.
 
@@ -75,7 +76,9 @@ To get started with the Builder Materials Market application, follow these steps
 
 `npm start`
 
-Your Builder Materials Market online store should now be up and running.
+### Or you can launch a docker image with a ready-made app using the command `npm run app:up`
+
+### Your Builder Materials Market online store should now be up and running.
 
 ## Current State
 
