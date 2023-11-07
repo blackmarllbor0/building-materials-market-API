@@ -13,7 +13,7 @@ services:
     ports:
       - '${SERVER_PORT}:8080'
     env_file:
-      - .env
+      - .env.docker
     depends_on:
       builder-materials-market-oracle:
         condition: service_healthy
@@ -26,7 +26,7 @@ services:
     networks:
       - bmm_networkd
     env_file:
-      - .env
+      - .env.docker
     environment:
       ORACLE_SID: ${ORACLE_SID}
       ORACLE_PWD: ${ORACLE_PWD}

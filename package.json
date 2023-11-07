@@ -7,7 +7,7 @@
     "start": "npm run build && node dist/main.js",
     "dev": "npx nodemon ./src/main.ts",
     "debug": "npx ts-node --inspect=9229 src/index.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "app:up": "docker-compose up -d",
     "app:down": "docker-compose down",
     "lint": "eslint",
@@ -60,6 +60,6 @@
     "ts-node": "^10.9.1"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.2.2"
   }
 }

@@ -1,15 +1,29 @@
-FROM node:14
+FROM node:latest AS build
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
-COPY package*.json ./
-COPY tsconfig.json ./
-COPY .env ./
+ARG APP_DIR=/usr/src/app
+RUN mkdir -p ${APP_DIR}
+WORKDIR ${APP_DIR}
 
-COPY . .
+COPY --chown=node:node . .
 
-RUN npm i -g typescript
+COPY *.json ${APP_DIR}
+COPY tsconfig.json ${APP_DIR}
+COPY .env ${APP_DIR}
 
-RUN npm install
+RUN npm cache clean --force && \
+    npm install --omit=dev && \
+    npm install typescript && \
+    npm run build 
 
-CMD [ "npm", "start" ]
+FROM node:14-bullseye-slim
+
+COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
+
+USER node
+WORKDIR /usr/src/app
+
+COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --chown=node:node . /usr/src/app/
+CMD [ "dumb-init", "node", "./dist/main.js" ]
