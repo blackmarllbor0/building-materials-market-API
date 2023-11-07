@@ -8,7 +8,7 @@ WORKDIR ${APP_DIR}
 
 COPY --chown=node:node . .
 
-COPY *.json ${APP_DIR}
+COPY package*.json ${APP_DIR}
 COPY tsconfig.json ${APP_DIR}
 COPY .env ${APP_DIR}
 
